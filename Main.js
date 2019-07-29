@@ -1,9 +1,3 @@
-// Try edit msg
-var msg = 'Hello world'
-var icon = ' <i class="fa fa-smile-o"></i>'
-
-console.log(msg)
-
 class Account {
   constructor(credit, debit, accountNumber) {
     this.credit = credit;
@@ -52,6 +46,7 @@ function sortAccounts(accountArray) {
   sortAccountByAccountNumber(creditAccounts);
   sortAccountByAccountNumber(debitAccounts);
   sortAccountByAccountNumber(unidentifiedAccounts);
+  accountArray = [...creditAccounts, ...debitAccounts, ...unidentifiedAccounts];
 }
 
 var creditAccount1 = new Account(1, undefined, 1);
