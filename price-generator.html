@@ -29126,23 +29126,32 @@
         grid-row-gap: 0px;
         grid-template-columns: 10vw 5vw 10vw auto;
         background-color: #ffffff;
-        padding: 10px;
+        padding: 2%;
+        align-items: center;
     }
 
     .grid-item {
         background-color: rgba(255, 255, 255, 0.8);
         font-size: 0.8em;
         text-align: center;
+
     }
-    .ok-button{
-        display: none;
-        grid-row: 1/5;
+
+    .ok-button {
+        /* display: none; */
+        grid-area: 1/3/5/3;
+        align-items: center;
     }
+
     .grid-item>input {
-        font-size: 1.2em;
+        font-size: 0.8em;
         text-align: center;
         width: 100%;
         border-radius: 20px;
+    }
+
+    .grid-item>span {
+        font-size: 2vh;
     }
 
     .excel-import {
@@ -29151,6 +29160,7 @@
         border-radius: 10px;
         cursor: pointer;
         padding: 6px 12px;
+        font-size: 2vh;
     }
 
     .excel-import:hover {
@@ -29168,6 +29178,7 @@
         color: white;
         cursor: pointer;
         display: inline-block;
+        font-size: 2vh;
     }
 
     .generate-button:hover {
@@ -29227,6 +29238,10 @@
         height: 100%;
         z-index: 4;
     }
+
+    .display {
+        display: none;
+    }
 </style>
 
 <body>
@@ -29239,9 +29254,9 @@
             <span>First price</span>
         </div>
         <div class="grid-item">
-            <input id="first-price-limit">
+            <input id="first-price-limit" class="winner-limit" required="true">
         </div>
-        <div class="grid-item">
+        <div class="grid-item display">
             <div class="generate-button" onclick="generateFirstPriceWinner()">Generate</div>
         </div>
         <div class="grid-item">
@@ -29252,9 +29267,9 @@
             <span>Second price</span>
         </div>
         <div class="grid-item">
-            <input id="second-price-limit">
+            <input id="second-price-limit" class="winner-limit" required="true">
         </div>
-        <div class="grid-item">
+        <div class="grid-item display">
             <div class="generate-button" onclick="generateSecondPriceWinner()">Generate</div>
         </div>
         <div class="grid-item">
@@ -29265,9 +29280,9 @@
             <span>Third price</span>
         </div>
         <div class="grid-item">
-            <input id="third-price-limit">
+            <input id="third-price-limit" class="winner-limit" required="true">
         </div>
-        <div class="grid-item">
+        <div class="grid-item display">
             <div class="generate-button" onclick="generateThirdPriceWinner()">Generate</div>
         </div>
         <div class="grid-item">
@@ -29278,9 +29293,9 @@
             <span>Common price</span>
         </div>
         <div class="grid-item">
-            <input id="common-price-limit">
+            <input id="common-price-limit" class="winner-limit" required="true">
         </div>
-        <div class="grid-item">
+        <div class="grid-item display">
             <div class="generate-button" onclick="generateCommonPriceWinner()">Generate</div>
         </div>
         <div class="grid-item">
@@ -29317,6 +29332,20 @@
         let currentPriceType;
 
         let generatorInterval = 10;
+
+        var validateInput = document.getElementsByClassName("winner-limit");
+       for (let i of validateInput) {
+           i.addEventListener("keypress",function(){
+               allowDigitKey(event);
+           });
+        
+       }
+       function allowDigitKey(event) {
+            if (event.keyCode >= 48 && event.keyCode <= 57)
+                return true;
+            event.preventDefault();
+            return false;
+        }
 
         let generateWinner = function (winners) {
             if (generatorInterval > 500) {
