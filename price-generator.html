@@ -29113,6 +29113,12 @@
 </head>
 
 <style>
+    :root {
+        --main-button-color: #4dc3f9;
+        --main-button-color-hover: #35baf9;
+        --overlay-color: rgba(0, 0, 0, 0.8);
+    }
+
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-weight: normal;
@@ -29155,7 +29161,7 @@
     }
 
     .excel-import {
-        background-color: #4dc3f9;
+        background-color: var(--main-button-color);
         color: white;
         border-radius: 10px;
         cursor: pointer;
@@ -29164,7 +29170,7 @@
     }
 
     .excel-import:hover {
-        background-color: #35baf9;
+        background-color: var(--main-button-color-hover);
     }
 
     input[type="file"] {
@@ -29172,7 +29178,7 @@
     }
 
     .generate-button {
-        background-color: #4dc3f9;
+        background-color: var(--main-button-color);
         padding: 6px 12px;
         border-radius: 10px;
         color: white;
@@ -29182,7 +29188,7 @@
     }
 
     .generate-button:hover {
-        background-color: #35baf9;
+        background-color: var(--main-button-color-hover);
     }
 
     #overlay {
@@ -29194,9 +29200,8 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0, 0, 0, 0.8);
+        background-color: var(--overlay-color);
         z-index: 2;
-        cursor: pointer;
     }
 
     .button {
@@ -29211,21 +29216,22 @@
     }
 
     .button.overlay-button {
-        background-color: #4dc3f9;
+        background-color: var(--main-button-color);
     }
 
     .button.overlay-button:hover {
-        background-color: #35baf9;
+        background-color: var(--main-button-color-hover);
     }
 
     .winner-container {
         width: 100%;
         height: 100%;
         display: flex;
+        position: relative;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        z-index: 5;
+        z-index: 4;
     }
 
     .current-winner {
@@ -29233,10 +29239,13 @@
         font-size: 5em;
     }
 
-    .winner-firework {
+    #firework-overlay {
+        position: absolute;
         width: 100%;
         height: 100%;
-        z-index: 4;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0);
     }
 
     .display {
@@ -29245,9 +29254,13 @@
 </style>
 
 <body>
-    <div class="winner-container">
-        <span id="current-winner" class="current-winner"></span>
-        <div id="ok-overlay" class="button overlay-button">OK</div>
+    <div id="overlay">
+        <canvas id="firework-overlay"></canvas>
+        <div id="winner-display" class="winner-container">
+            <span id="current-winner" class="current-winner"></span>
+            <div id="ok-overlay" class="button overlay-button">OK</div>
+        </div>
+
     </div>
     <div class="grid-container">
         <div class="grid-item">
@@ -29316,8 +29329,10 @@
 
     <script>
         let displayCurrentWinner = document.getElementById("current-winner");
-        let overlay = document.getElementById("overlay");
         document.getElementById("ok-overlay").addEventListener('click', updateWinnerList);
+        let overlay = document.getElementById("overlay");
+        overlay.style.display = "none";
+        window.addEventListener("DOMContentLoaded", onLoad, false);
 
         let participants;
         let participantSize;
@@ -29346,6 +29361,10 @@
             event.preventDefault();
             return false;
         }
+        let fireworkCanvas, ctx, w, h, particles = [],
+            probability = 0.04,
+            xPoint, yPoint;
+        let continueFirework = false;
 
         let generateWinner = function (winners) {
             if (generatorInterval > 500) {
@@ -29374,9 +29393,10 @@
                 participantSize = participants.size;
                 generatorInterval = 10;
                 document.getElementById("ok-overlay").style.display = "block";
-                if (!!canvas) {
-                    w = canvas.width = document.getElementsByClassName("winner-firework").item(0).offsetWidth;
-                    h = canvas.height = document.getElementsByClassName("winner-firework").item(0).offsetHeight;
+                showFirework();
+                if (!!fireworkCanvas) {
+                    w = fireworkCanvas.width = document.getElementById("firework-overlay").offsetWidth;
+                    h = fireworkCanvas.height = document.getElementById("firework-overlay").offsetHeight;
                 }
             }
         };
@@ -29414,6 +29434,7 @@
 
         function updateWinnerList() {
             hideOverlay();
+            hideFirework();
 
             switch (currentPriceType) {
                 case "first":
@@ -29462,24 +29483,28 @@
         }
 
         function generateFirstPriceWinner() {
+            hideFirework();
             currentPriceType = "first";
             showOverlay();
             generateWinner(firstPriceWinners);
         }
 
         function generateSecondPriceWinner() {
+            hideFirework();
             currentPriceType = "second";
             showOverlay();
             generateWinner(secondPriceWinners);
         }
 
         function generateThirdPriceWinner() {
+            hideFirework();
             currentPriceType = "third";
             showOverlay();
             generateWinner(thirdPriceWinners);
         }
 
         function generateCommonPriceWinner() {
+            hideFirework();
             currentPriceType = "common";
             showOverlay();
             generateWinner(commonPriceWinners);
@@ -29491,11 +29516,24 @@
         }
 
         function showOverlay() {
-            overlay.style.display = "grid";
+            overlay.style.display = "block";
         }
 
-        // window.addEventListener("resize", resizeCanvas, false);
-        window.addEventListener("DOMContentLoaded", onLoad, false);
+        function showFirework() {
+            continueFirework = true;
+            updateFirework();
+        }
+
+        function hideFirework() {
+            continueFirework = false;
+            let ctxx = fireworkCanvas.getContext("2d");
+            ctxx.clearRect(0, 0, fireworkCanvas.width, fireworkCanvas.height);
+        }
+
+        function onLoad() {
+            fireworkCanvas = document.getElementById("firework-overlay");
+            ctx = fireworkCanvas.getContext("2d");
+        }
 
         window.requestAnimationFrame =
             window.requestAnimationFrame ||
@@ -29507,29 +29545,16 @@
                 window.setTimeout(callback, 1000 / 60);
             };
 
-        var canvas, ctx, w, h, particles = [],
-            probability = 0.04,
-            xPoint, yPoint;
 
-        function onLoad() {
-            canvas = document.getElementById("canvas");
-            ctx = canvas.getContext("2d");
-            // resizeCanvas();
 
-            window.requestAnimationFrame(updateWorld);
-        }
-
-        function resizeCanvas() {
-            if (!!canvas) {
-                // w = canvas.width = document.getElementsByClassName("winner-firework").item(0).style.width;
-                // h = canvas.height = document.getElementsByClassName("winner-firework").item(1).style.height;                
-            }
-        }
-
-        function updateWorld() {
+        function updateFirework() {
             update();
             paint();
-            window.requestAnimationFrame(updateWorld);
+            if (continueFirework) {
+                window.requestAnimationFrame(updateFirework);
+            } else {
+                window.requestAnimationFrame(null);
+            }
         }
 
         function update() {
@@ -29547,7 +29572,7 @@
 
         function paint() {
             ctx.globalCompositeOperation = 'source-over';
-            ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+            ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
             ctx.fillRect(0, 0, w, h);
             ctx.globalCompositeOperation = 'lighter';
             for (var i = 0; i < particles.length; i++) {
