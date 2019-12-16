@@ -29316,8 +29316,8 @@
 
     <script>
         let displayCurrentWinner = document.getElementById("current-winner");
-        let overlay = document.getElementById("overlay");
         document.getElementById("ok-overlay").addEventListener('click', updateWinnerList);
+        let overlay = document.getElementById("overlay");
         overlay.style.display = "none";
         window.addEventListener("DOMContentLoaded", onLoad, false);
 
@@ -29457,24 +29457,28 @@
         }
 
         function generateFirstPriceWinner() {
+            hideFirework();
             currentPriceType = "first";
             showOverlay();
             generateWinner(firstPriceWinners);
         }
 
         function generateSecondPriceWinner() {
+            hideFirework();
             currentPriceType = "second";
             showOverlay();
             generateWinner(secondPriceWinners);
         }
 
         function generateThirdPriceWinner() {
+            hideFirework();
             currentPriceType = "third";
             showOverlay();
             generateWinner(thirdPriceWinners);
         }
 
         function generateCommonPriceWinner() {
+            hideFirework();
             currentPriceType = "common";
             showOverlay();
             generateWinner(commonPriceWinners);
@@ -29496,7 +29500,8 @@
 
         function hideFirework() {
             continueFirework = false;
-            ctx.clearRect(0, 0, fireworkCanvas.width, fireworkCanvas.height);
+            let ctxx = fireworkCanvas.getContext("2d");
+            ctxx.clearRect(0, 0, fireworkCanvas.width, fireworkCanvas.height);
         }
 
         function onLoad() {
