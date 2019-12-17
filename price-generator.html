@@ -29135,6 +29135,8 @@
         background-color: var(--white-color);
         padding: 2%;
         align-items: center;
+
+        transition: background-color 2s;
     }
 
     .grid-item {
@@ -29267,8 +29269,17 @@
         font-size: 11px;
     }
 
-    .display {
-        display: none;
+    .gradient-1 {
+        background: linear-gradient(90deg, var(--c1, #f6d365), var(--c2, #fda085) 51%, var(--c1, #f6d365)) var(--x, 0)/ 200%;
+        /* background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%); */
+    }
+
+    .gradient-2 {
+        background: linear-gradient(90deg, rgba(0, 212, 255, 1) 0%, rgba(2, 0, 36, 1) 35%, rgba(9, 9, 121, 1) 100%);
+    }
+
+    .gradient-3 {
+        background: linear-gradient(90deg, rgba(9, 9, 121, 1) 0%, rgba(0, 212, 255, 1) 35%, rgba(2, 0, 36, 1) 100%);
     }
 </style>
 
@@ -29283,6 +29294,22 @@
     </div>
 
     <div>
+
+        <div id="special-price-container" class="grid-container"
+            style="background: linear-gradient(90deg, #f6d365, #fda085 51%, #f6d365) 0/ 200%;">
+            <div class="grid-item">
+                <span>Special price</span>
+            </div>
+            <div class="grid-item">
+                <input id="special-price-limit" class="winner-limit" required="true">
+            </div>
+            <div class="grid-item">
+                <div class="button generate-button" onclick="generateFirstPriceWinner()">Generate</div>
+            </div>
+            <div class="grid-item">
+                <div id="special-price-winners"></div>
+            </div>
+        </div>
 
         <div id="first-price-container" class="grid-container">
             <div class="grid-item">
@@ -29366,6 +29393,22 @@
     </div>
 
     <script>
+        // setInterval(function () {
+        //     let specialPriceContainer = document.getElementById("special-price-container");
+        //     if (specialPriceContainer.style.background ==
+        //         "linear-gradient(90deg, rgb(246, 211, 101), rgb(253, 160, 133) 51%, rgb(246, 211, 101)) 0px center / 200%"
+        //     ) {
+        //         console.log("change 1");
+        //         specialPriceContainer.style.background =
+        //             "linear-gradient(90deg, #f6d365, #fda085 51%, #f6d365) 100%/ 200%;"
+        //     }else{
+        //         console.log("change 2");
+        //         specialPriceContainer.style.background =
+        //             "linear-gradient(90deg, #f6d365, #fda085 51%, #f6d365) 0/ 200%;"
+        //     }
+        // }, 2000);
+
+
         let displayCurrentWinner = document.getElementById("current-winner");
         document.getElementById("ok-overlay").addEventListener('click', updateWinnerList);
         let overlay = document.getElementById("overlay");
@@ -29375,7 +29418,7 @@
             input.addEventListener("keypress", function () {
                 allowDigitKey(event);
             });
-        }        
+        }
 
         let participants;
         let participantSize;
@@ -29400,7 +29443,7 @@
             fireworkCanvas = document.getElementById("firework-overlay");
             ctx = fireworkCanvas.getContext("2d");
             hideGenerateButtons();
-        }                
+        }
 
         function allowDigitKey(event) {
             if (event.keyCode >= 48 && event.keyCode <= 57)
@@ -29419,9 +29462,9 @@
             if (generatorInterval > 0) {
                 generatorInterval += 10;
             }
-            let participantId = Math.floor(Math.random() * participantSize) + 1;
 
-            displayCurrentWinner.innerHTML = participantId + ".   " + participants.get(`${participantId}`);
+            let randomIndex = Math.floor(Math.random() * participantSize);
+            displayCurrentWinner.innerHTML = `${participants[randomIndex].Id}.   ${participants[randomIndex].Fullname}`;
 
             if (generatorInterval <= 1000) {
                 setTimeout(function () {
@@ -29429,13 +29472,13 @@
                 }, generatorInterval);
             } else {
                 let winner = {
-                    Id: participantId,
-                    Fullname: participants.get(`${participantId}`)
+                    Id: participants[randomIndex].Id,
+                    Fullname: participants[randomIndex].Fullname
                 };
 
                 winners.push(winner);
-                participants.delete(`${participantId}`);
-                participantSize = participants.size;
+                participants.splice(randomIndex, 1);                
+                participantSize = participants.length;
 
                 generatorInterval = 10;
 
@@ -29576,8 +29619,9 @@
                         }
                     }
 
-                    participants = new Map(rowObj.map(i => [i.Id, i.Fullname]));
-                    participantSize = participants.size;
+                    console.log(rowObj);
+                    participants = rowObj;
+                    participantSize = participants.length;
                     isImported = true;
                 })
             };
@@ -29670,6 +29714,7 @@
             currentPriceType = "first";
             showOverlay();
             generateWinner(firstPriceWinners);
+            console.log(firstPriceWinners);
         }
 
         function generateSecondPriceWinner() {
@@ -29677,6 +29722,7 @@
             currentPriceType = "second";
             showOverlay();
             generateWinner(secondPriceWinners);
+            console.log(secondPriceWinners);
         }
 
         function generateThirdPriceWinner() {
@@ -29684,6 +29730,7 @@
             currentPriceType = "third";
             showOverlay();
             generateWinner(thirdPriceWinners);
+            console.log(thirdPriceWinners);
         }
 
         function generateCommonPriceWinner() {
@@ -29711,7 +29758,7 @@
             continueFirework = false;
             let ctxx = fireworkCanvas.getContext("2d");
             ctxx.clearRect(0, 0, fireworkCanvas.width, fireworkCanvas.height);
-        }        
+        }
 
         window.requestAnimationFrame =
             window.requestAnimationFrame ||
