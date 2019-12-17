@@ -29180,21 +29180,7 @@
 
     input[type="file"] {
         display: none;
-    }
-
-    .generate-button {
-        background-color: var(--main-button-color);
-        padding: 6px 12px;
-        border-radius: 10px;
-        color: white;
-        cursor: pointer;
-        display: inline-block;
-        font-size: 2vh;
-    }
-
-    .generate-button:hover {
-        background-color: var(--main-button-color-hover);
-    }
+    }    
 
     #overlay {
         position: fixed;
@@ -29226,6 +29212,8 @@
 
     .button.overlay-button {
         width: 50vw;
+        font-size: 1.5em;
+        display: none;
     }
 
     .winner-container {
@@ -29274,7 +29262,7 @@
                 <input id="first-price-limit" class="winner-limit" required="true">
             </div>
             <div class="grid-item">
-                <div class="button" onclick="generateFirstPriceWinner()">Generate</div>
+                <div class="button generate-button" onclick="generateFirstPriceWinner()">Generate</div>
             </div>
             <div class="grid-item">
                 <div id="first-price-winners"></div>
@@ -29289,7 +29277,7 @@
                 <input id="second-price-limit" class="winner-limit" required="true">
             </div>
             <div class="grid-item">
-                <div class="button" onclick="generateSecondPriceWinner()">Generate</div>
+                <div class="button generate-button" onclick="generateSecondPriceWinner()">Generate</div>
             </div>
             <div class="grid-item">
                 <div id="second-price-winners"></div>
@@ -29304,7 +29292,7 @@
                 <input id="third-price-limit" class="winner-limit" required="true">
             </div>
             <div class="grid-item">
-                <div class="button" onclick="generateThirdPriceWinner()">Generate</div>
+                <div class="button generate-button" onclick="generateThirdPriceWinner()">Generate</div>
             </div>
             <div class="grid-item">
                 <div id="third-price-winners"></div>
@@ -29319,7 +29307,7 @@
                 <input id="common-price-limit" class="winner-limit" required="true">
             </div>
             <div class="grid-item">
-                <div class="button" onclick="generateCommonPriceWinner()">Generate</div>
+                <div class="button generate-button" onclick="generateCommonPriceWinner()">Generate</div>
             </div>
             <div class="grid-item">
                 <div id="common-price-winners"></div>
@@ -29371,7 +29359,6 @@
             i.addEventListener("keypress", function () {
                 allowDigitKey(event);
             });
-
         }
 
         function allowDigitKey(event) {
@@ -29507,13 +29494,13 @@
         }
 
         function showGenerateButtons() {
-            for (let generateButton of document.getElementsByClassName("button")) {
+            for (let generateButton of document.getElementsByClassName("generate-button")) {
                 generateButton.style.display = "inline-block";
             }
         }
 
         function hideGenerateButtons() {
-            for (let generateButton of document.getElementsByClassName("button")) {
+            for (let generateButton of document.getElementsByClassName("generate-button")) {
                 generateButton.style.display = "none";
             }
         }
@@ -29537,13 +29524,15 @@
                 });
 
                 wb.SheetNames.forEach(function (sheetName) {      
-                    input.value = "";              
+                    input.value = "";        
+
                     if (wb.Sheets[sheetName].A1 === undefined || wb.Sheets[sheetName].B1 === undefined || wb.Sheets[sheetName].A1.v != "Id" || wb.Sheets[sheetName].B1.v != "Fullname") {                        
                         alert(
                             "The format of the given excel file is not correct! First column must be Id, second column must be Fullname! Please check again."
                         );                        
                         return;
-                    }                    
+                    }                 
+
                     let rowObj = XLSX.utils.sheet_to_row_object_array(wb.Sheets[sheetName]);
                     for (let row of rowObj) {
                         if (row.Id === undefined) {
@@ -29558,6 +29547,7 @@
                             return;
                         }
                     }
+                    
                     participants = new Map(rowObj.map(i => [i.Id, i.Fullname]));
                     participantSize = participants.size;
                     isImported = true;                    
