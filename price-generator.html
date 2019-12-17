@@ -29116,6 +29116,7 @@
     :root {
         --main-button-color: #4dc3f9;
         --main-button-color-hover: #35baf9;
+        --white-color:#ffffff;
         --overlay-color: rgba(0, 0, 0, 0.8);
     }
 
@@ -29131,7 +29132,7 @@
         display: grid;
         grid-row-gap: 0px;
         grid-template-columns: 10vw 5vw 10vw auto;
-        background-color: #ffffff;
+        background-color: var(--white-color);
         padding: 2%;
         align-items: center;
     }
@@ -29167,7 +29168,7 @@
 
     .excel-import {
         background-color: var(--main-button-color);
-        color: white;
+        color: var(--white-color);
         border-radius: 10px;
         cursor: pointer;
         padding: 6px 12px;
@@ -29196,10 +29197,10 @@
     }
 
     .button {
+        color: var(--white-color);
         padding: 6px 12px;
         border-radius: 10px;
         font-size: 2vh;
-        color: white;
         cursor: pointer;
         text-align: center;
         display: inline-block;
@@ -29228,7 +29229,7 @@
     }
 
     .current-winner {
-        color: white;
+        color: var(--white-color);
         font-size: 5em;
     }
 
@@ -29239,6 +29240,46 @@
         top: 0;
         left: 0;
         background-color: rgba(0, 0, 0, 0);
+    }
+
+    .footer {
+        display: block;
+        position: fixed;
+        bottom: 0px;
+        border-top: 1px solid #AAA;
+        color: #666;
+        background-color: #FFF;
+        font-size: 11px;
+        width: 100%;
+        height: 40px;
+        padding-top: 10px;
+        width: 100%;
+        z-index: 10;
+    }
+
+    .footer>img {
+        margin: 0px 10px;
+    }
+
+    img {
+        vertical-align: middle;
+        border: 0;
+    }
+
+    .version {
+        float: right;
+        margin-right: 10px;
+        font-size: 11px;
+    }
+
+    .footer-text {
+        margin-left: 130px;
+        margin-top: -25px;
+        font-size: 11px;
+    }
+    
+    .display {
+        display: none;
     }
 </style>
 
@@ -29323,6 +29364,16 @@
             <input type="file" onchange="readExcelFile(event)">
             Import participants excel file
         </label>
+    </div>
+
+    <div class="footer">
+        <div class="version">
+            Version 1.0.0
+        </div>
+        <img src="./Axon-Active-Vietnam_logo.png" height="30px">
+        <p class="footer-text">
+            © Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.
+        </p>
     </div>
 
     <script>
@@ -29547,7 +29598,7 @@
                             return;
                         }
                     }
-                    
+
                     participants = new Map(rowObj.map(i => [i.Id, i.Fullname]));
                     participantSize = participants.size;
                     isImported = true;                    
