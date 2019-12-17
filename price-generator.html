@@ -29320,6 +29320,9 @@
         let overlay = document.getElementById("overlay");
         overlay.style.display = "none";
         window.addEventListener("DOMContentLoaded", onLoad, false);
+        document.getElementById("first-price-limit").addEventListener("keypress", function () {
+            allowDigitKey(event);
+        });
 
         let participants;
         let participantSize;
@@ -29382,9 +29385,17 @@
             return false;
         }
 
+        function allowDigitKey(event) {
+            if (event.keyCode >= 48 && event.keyCode <= 57)
+                return true;
+            event.preventDefault();
+            return false;
+        }
+
         function readExcelFile(event) {
             var input = event.target;
             var reader = new FileReader();
+            let isImported = false;
             reader.onload = function () {
                 let fileData = reader.result;
                 let wb = XLSX.read(fileData, {
@@ -29392,16 +29403,34 @@
                 });
 
                 wb.SheetNames.forEach(function (sheetName) {
-                    let rowObj = XLSX.utils.sheet_to_row_object_array(wb.Sheets[sheetName]);
+                    if (wb.Sheets[sheetName].A1.v != "Id" || wb.Sheets[sheetName].B1.v != "Fullname") {
+                        alert(
+                            "The format of the given excel file is not correct! First column must be Id, second column must be Fullname! Please check again."
+                            );
+                        return;
+                    }
+                    let rowObj = XLSX.utils.sheet_to_row_object_array(wb.Sheets[sheetName]);                    
+                    for (let row of rowObj) {
+                        if (row.Id === undefined) {
+                            alert(`Row number ${row.__rowNum__ + 1} does not have Id. Please check again!`);
+                            return;
+                        }
+
+                        if (row.Fullname === undefined) {
+                            alert(`Row number ${row.__rowNum__ + 1} does not have Fullname. Please check again!`);
+                            return;
+                        }
+                    }
                     participants = new Map(rowObj.map(i => [i.Id, i.Fullname]));
                     participantSize = participants.size;
-                    console.log(participants);
-                    console.log(participants instanceof Map);
+                    isImported = true;
                 })
             };
 
             reader.onloadend = function () {
-                alert("Excel file was imported successfully!");
+                if (isImported) {
+                    alert("The excel file was imported successfully!");
+                }
             };
             reader.readAsBinaryString(input.files[0]);
         }
@@ -29518,8 +29547,6 @@
             function (callback) {
                 window.setTimeout(callback, 1000 / 60);
             };
-
-
 
         function updateFirework() {
             update();
