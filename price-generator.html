@@ -29116,7 +29116,7 @@
     :root {
         --main-button-color: #4dc3f9;
         --main-button-color-hover: #35baf9;
-        --white-color:#ffffff;
+        --white-color: #ffffff;
         --overlay-color: rgba(0, 0, 0, 0.8);
     }
 
@@ -29142,17 +29142,6 @@
         font-size: 0.8em;
         text-align: center;
 
-    }
-
-    .ok-button {
-        padding: 6px 12px;
-        border-radius: 10px;
-        font-size: 2vh;
-        color: white;
-        cursor: pointer;
-        text-align: center;
-        display: inline-block;
-        background-color: var(--main-button-color);
     }
 
     .grid-item>input {
@@ -29181,7 +29170,7 @@
 
     input[type="file"] {
         display: none;
-    }    
+    }
 
     #overlay {
         position: fixed;
@@ -29277,7 +29266,7 @@
         margin-top: -25px;
         font-size: 11px;
     }
-    
+
     .display {
         display: none;
     }
@@ -29356,7 +29345,7 @@
         </div>
 
         <div id="confirm-button" class="grid-item">
-            <div class="ok-button" onclick="confirmPriceLimit()">Confirm</div>
+            <div class="button confirm-button" onclick="confirmPriceLimit()">Confirm price pool</div>
         </div>
     </div>
     <div id="excel-import">
@@ -29382,14 +29371,11 @@
         let overlay = document.getElementById("overlay");
         overlay.style.display = "none";
         window.addEventListener("DOMContentLoaded", onLoad, false);
-        document.getElementById("first-price-limit").addEventListener("keypress", function () {
-            allowDigitKey(event);
-        });
-        for (let generateButton of document.getElementsByClassName("button")) {
-            generateButton.style.display = "none";
-        }
-
-
+        for (let input of document.getElementsByClassName("winner-limit")) {
+            input.addEventListener("keypress", function () {
+                allowDigitKey(event);
+            });
+        }        
 
         let participants;
         let participantSize;
@@ -29405,12 +29391,16 @@
 
         let generatorInterval = 10;
 
-        var validateInput = document.getElementsByClassName("winner-limit");
-        for (let i of validateInput) {
-            i.addEventListener("keypress", function () {
-                allowDigitKey(event);
-            });
-        }
+        let fireworkCanvas, ctx, fireworkCanvasWidth, fireworkCanvasHeight, particles = [],
+            probability = 0.04,
+            xPoint, yPoint;
+        let continueFirework = false;
+
+        function onLoad() {
+            fireworkCanvas = document.getElementById("firework-overlay");
+            ctx = fireworkCanvas.getContext("2d");
+            hideGenerateButtons();
+        }                
 
         function allowDigitKey(event) {
             if (event.keyCode >= 48 && event.keyCode <= 57)
@@ -29418,10 +29408,6 @@
             event.preventDefault();
             return false;
         }
-        let fireworkCanvas, ctx, fireworkCanvasWidth, fireworkCanvasHeight, particles = [],
-            probability = 0.04,
-            xPoint, yPoint;
-        let continueFirework = false;
 
         let generateWinner = function (winners) {
             if (generatorInterval > 500) {
@@ -29433,21 +29419,22 @@
             if (generatorInterval > 0) {
                 generatorInterval += 10;
             }
-            x = Math.floor(Math.random() * participantSize) + 1;
+            let participantId = Math.floor(Math.random() * participantSize) + 1;
 
-            displayCurrentWinner.innerHTML = x + "\t" + participants.get(`${x}`);
+            displayCurrentWinner.innerHTML = participantId + ".   " + participants.get(`${participantId}`);
+
             if (generatorInterval <= 1000) {
                 setTimeout(function () {
                     generateWinner(winners)
                 }, generatorInterval);
             } else {
                 let winner = {
-                    Id: x,
-                    Fullname: participants.get(`${x}`)
+                    Id: participantId,
+                    Fullname: participants.get(`${participantId}`)
                 };
 
                 winners.push(winner);
-                participants.delete(`${x}`);
+                participants.delete(`${participantId}`);
                 participantSize = participants.size;
 
                 generatorInterval = 10;
@@ -29470,19 +29457,8 @@
             return false;
         }
 
-        function disableGenerate() {
-            
-        }
-
-        function allowDigitKey(event) {
-            if (event.keyCode >= 48 && event.keyCode <= 57)
-                return true;
-            event.preventDefault();
-            return false;
-        }
-
         function confirmPriceLimit() {
-            if(isParticipantsListEmpty()){
+            if (isParticipantsListEmpty()) {
                 alert("Participant list is empty. Please import participant excel file before starting!");
                 return;
             }
@@ -29556,52 +29532,53 @@
             }
         }
 
-        function hideImportExcelButton(){
+        function hideImportExcelButton() {
             document.getElementById("excel-import").style.display = "none";
         }
 
-        function isParticipantsListEmpty(){            
+        function isParticipantsListEmpty() {
             return participants === undefined ? true : false;
         }
 
         function readExcelFile(event) {
-            var input = event.target;            
+            var input = event.target;
             var reader = new FileReader();
-            let isImported = false;            
+            let isImported = false;
             reader.onload = function () {
                 let fileData = reader.result;
                 let wb = XLSX.read(fileData, {
                     type: 'binary'
                 });
 
-                wb.SheetNames.forEach(function (sheetName) {      
-                    input.value = "";        
+                wb.SheetNames.forEach(function (sheetName) {
+                    input.value = "";
 
-                    if (wb.Sheets[sheetName].A1 === undefined || wb.Sheets[sheetName].B1 === undefined || wb.Sheets[sheetName].A1.v != "Id" || wb.Sheets[sheetName].B1.v != "Fullname") {                        
+                    if (wb.Sheets[sheetName].A1 === undefined || wb.Sheets[sheetName].B1 === undefined || wb
+                        .Sheets[sheetName].A1.v != "Id" || wb.Sheets[sheetName].B1.v != "Fullname") {
                         alert(
                             "The format of the given excel file is not correct! First column must be Id, second column must be Fullname! Please check again."
-                        );                        
+                        );
                         return;
-                    }                 
+                    }
 
                     let rowObj = XLSX.utils.sheet_to_row_object_array(wb.Sheets[sheetName]);
                     for (let row of rowObj) {
                         if (row.Id === undefined) {
-                            alert(`Row number ${row.__rowNum__ + 1} does not have Id. Please check again!`);                            
+                            alert(`Row number ${row.__rowNum__ + 1} does not have Id. Please check again!`);
                             return;
                         }
 
                         if (row.Fullname === undefined) {
                             alert(
                                 `Row number ${row.__rowNum__ + 1} does not have Fullname. Please check again!`
-                            );                            
+                            );
                             return;
                         }
                     }
 
                     participants = new Map(rowObj.map(i => [i.Id, i.Fullname]));
                     participantSize = participants.size;
-                    isImported = true;                    
+                    isImported = true;
                 })
             };
 
@@ -29610,7 +29587,7 @@
                     alert("The excel file was imported successfully!");
                 }
             };
-            reader.readAsBinaryString(input.files[0]);            
+            reader.readAsBinaryString(input.files[0]);
         }
 
         function updateWinnerList() {
@@ -29641,43 +29618,46 @@
 
         function updateFirstPriceWinnerList() {
             let newWinner = document.createElement("div");
-            newWinner.innerHTML = firstPriceWinners[firstPriceWinners.length - 1].Fullname;
+            newWinner.innerHTML =
+                `${firstPriceWinners[firstPriceWinners.length - 1].Id}. ${firstPriceWinners[firstPriceWinners.length - 1].Fullname}`;
             firstPriceLimit -= 1;
-            console.log(firstPriceLimit)
             document.getElementById("first-price-limit").value = firstPriceLimit;
             document.getElementById("first-price-winners").appendChild(newWinner);
-            if(Number(firstPriceLimit) == 0)
-            disableAfterRoll(document.getElementById("first-price-container"));
+            if (Number(firstPriceLimit) == 0)
+                disableAfterRoll(document.getElementById("first-price-container"));
         }
 
         function updateSecondPriceWinnerList() {
             let newWinner = document.createElement("div");
-            newWinner.innerHTML = secondPriceWinners[secondPriceWinners.length - 1].Fullname;
+            newWinner.innerHTML =
+                `${secondPriceWinners[secondPriceWinners.length - 1].Id}. ${secondPriceWinners[secondPriceWinners.length - 1].Fullname}`;
             secondPriceLimit -= 1;
             document.getElementById("second-price-limit").value = secondPriceLimit;
             document.getElementById("second-price-winners").appendChild(newWinner);
-            if(Number(secondPriceLimit) == 0)
-            disableAfterRoll(document.getElementById("second-price-container"));
+            if (Number(secondPriceLimit) == 0)
+                disableAfterRoll(document.getElementById("second-price-container"));
         }
 
         function updateThirdPriceWinnerList() {
             let newWinner = document.createElement("div");
-            newWinner.innerHTML = thirdPriceWinners[thirdPriceWinners.length - 1].Fullname;
+            newWinner.innerHTML =
+                `${thirdPriceWinners[thirdPriceWinners.length - 1].Id}. ${thirdPriceWinners[thirdPriceWinners.length - 1].Fullname}`;
             thirdPriceLimit -= 1;
             document.getElementById("third-price-limit").value = thirdPriceLimit;
             document.getElementById("third-price-winners").appendChild(newWinner);
-            if(Number(thirdPriceLimit) == 0)
-            disableAfterRoll(document.getElementById("third-price-container"));
+            if (Number(thirdPriceLimit) == 0)
+                disableAfterRoll(document.getElementById("third-price-container"));
         }
 
         function updateCommonPriceWinnerList() {
             let newWinner = document.createElement("div");
-            newWinner.innerHTML = commonPriceWinners[commonPriceWinners.length - 1].Fullname;
+            newWinner.innerHTML =
+                `${commonPriceWinners[commonPriceWinners.length - 1].Id}. ${commonPriceWinners[commonPriceWinners.length - 1].Fullname}`;
             commonPriceLimit -= 1;
             document.getElementById("common-price-limit").value = commonPriceLimit;
             document.getElementById("common-price-winners").appendChild(newWinner);
-            if(Number(commonPriceLimit) == 0)
-            disableAfterRoll(document.getElementById("common-price-container"));
+            if (Number(commonPriceLimit) == 0)
+                disableAfterRoll(document.getElementById("common-price-container"));
         }
 
         function disableAfterRoll(container) {
@@ -29731,12 +29711,7 @@
             continueFirework = false;
             let ctxx = fireworkCanvas.getContext("2d");
             ctxx.clearRect(0, 0, fireworkCanvas.width, fireworkCanvas.height);
-        }
-
-        function onLoad() {
-            fireworkCanvas = document.getElementById("firework-overlay");
-            ctx = fireworkCanvas.getContext("2d");
-        }
+        }        
 
         window.requestAnimationFrame =
             window.requestAnimationFrame ||
