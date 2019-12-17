@@ -29130,10 +29130,12 @@
         width: 95vw;
         display: grid;
         grid-row-gap: 0px;
-        grid-template-columns: 10vw 5vw 10vw auto;
+        grid-template-columns: 10vw 6vw 10vw auto;
         background-color: var(--white-color);
         padding: 1%;
+        margin: 1%;
         align-items: center;
+        border-radius: 20px;
     }
 
     .grid-item {
@@ -29157,7 +29159,7 @@
     .grid-item>input {
         font-size: 2vh;
         text-align: center;
-        width: 100%;
+        width: 90%;
         border-radius: 20px;
     }
 
@@ -29283,6 +29285,23 @@
     .winner{
         font-size: 2vh;
     }
+    .first-price{
+        background-color: #e7bd42;
+    }
+    .second-price{
+        background-color: #aaa9ad;
+    }
+    .third-price{
+        background-color: #cd7f32;
+    }
+    .common-price{
+        background-color: #4dc3f9;
+    }
+    .winner-list{
+        display: inline-block;
+
+    }
+    
 </style>
 
 <body>
@@ -29297,14 +29316,14 @@
 
     <div>
 
-        <div id="first-price-container" class="grid-container">
-            <div class="grid-item">
+        <div id="first-price-container" class="grid-container first-price">
+            <div class="grid-item first-price">
                 <span>First price</span>
             </div>
-            <div class="grid-item">
+            <div class="grid-item first-price">
                 <input id="first-price-limit" class="winner-limit" required="true">
             </div>
-            <div class="grid-item">
+            <div class="grid-item first-price">
                 <div class="button generate-button" onclick="generateFirstPriceWinner()">Generate</div>
             </div>
             <div class="grid-item">
@@ -29312,47 +29331,47 @@
             </div>
         </div>
 
-        <div id="second-price-container" class="grid-container">
-            <div class="grid-item">
+        <div id="second-price-container" class="grid-container second-price">
+            <div class="grid-item second-price">
                 <span>Second price</span>
             </div>
-            <div class="grid-item">
+            <div class="grid-item second-price">
                 <input id="second-price-limit" class="winner-limit" required="true">
             </div>
-            <div class="grid-item">
+            <div class="grid-item second-price">
                 <div class="button generate-button" onclick="generateSecondPriceWinner()">Generate</div>
             </div>
-            <div class="grid-item">
+            <div class="grid-item second-price">
                 <div id="second-price-winners" class="winner"></div>
             </div>
         </div>
 
-        <div id="third-price-container" class="grid-container">
-            <div class="grid-item">
+        <div id="third-price-container" class="grid-container third-price">
+            <div class="grid-item third-price">
                 <span>Third price</span>
             </div>
-            <div class="grid-item">
+            <div class="grid-item third-price">
                 <input id="third-price-limit" class="winner-limit" required="true">
             </div>
-            <div class="grid-item">
+            <div class="grid-item third-price">
                 <div class="button generate-button" onclick="generateThirdPriceWinner()">Generate</div>
             </div>
-            <div class="grid-item">
+            <div class="grid-item third-price">
                 <div id="third-price-winners" class="winner"></div>
             </div>
         </div>
 
-        <div id="common-price-container" class="grid-container">
-            <div class="grid-item">
+        <div id="common-price-container" class="grid-container common-price">
+            <div class="grid-item common-price">
                 <span>Common price</span>
             </div>
-            <div class="grid-item">
+            <div class="grid-item common-price">
                 <input id="common-price-limit" class="winner-limit" required="true">
             </div>
-            <div class="grid-item">
+            <div class="grid-item common-price">
                 <div class="button generate-button" onclick="generateCommonPriceWinner()">Generate</div>
             </div>
-            <div class="grid-item">
+            <div class="grid-item common-price">
                 <div id="common-price-winners" class="winner"></div>
             </div>
         </div>
@@ -29373,9 +29392,7 @@
             Version 1.0.0
         </div>
         <img src="./Axon-Active-Vietnam_logo.png" height="30px">
-        <p class="footer-text">
-            © Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.
-        </p>
+        <p class="footer-text">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.</p>
     </div>
 
     <script>
@@ -29639,7 +29656,8 @@
 
         function updateFirstPriceWinnerList() {
             let newWinner = document.createElement("div");
-            newWinner.innerHTML = firstPriceWinners[firstPriceWinners.length - 1].Fullname;
+            newWinner.className = "winner-list";
+            newWinner.innerHTML = firstPriceWinners[firstPriceWinners.length - 1].Fullname + ", "+" ";
             firstPriceLimit -= 1;
             console.log(firstPriceLimit)
             document.getElementById("first-price-limit").value = firstPriceLimit;
@@ -29650,7 +29668,8 @@
 
         function updateSecondPriceWinnerList() {
             let newWinner = document.createElement("div");
-            newWinner.innerHTML = secondPriceWinners[secondPriceWinners.length - 1].Fullname;
+            newWinner.className = "winner-list";
+            newWinner.innerHTML = secondPriceWinners[secondPriceWinners.length - 1].Fullname + ", "+" ";
             secondPriceLimit -= 1;
             document.getElementById("second-price-limit").value = secondPriceLimit;
             document.getElementById("second-price-winners").appendChild(newWinner);
@@ -29660,7 +29679,8 @@
 
         function updateThirdPriceWinnerList() {
             let newWinner = document.createElement("div");
-            newWinner.innerHTML = thirdPriceWinners[thirdPriceWinners.length - 1].Fullname;
+            newWinner.className = "winner-list";
+            newWinner.innerHTML = thirdPriceWinners[thirdPriceWinners.length - 1].Fullname + ","+" ";
             thirdPriceLimit -= 1;
             document.getElementById("third-price-limit").value = thirdPriceLimit;
             document.getElementById("third-price-winners").appendChild(newWinner);
@@ -29670,7 +29690,8 @@
 
         function updateCommonPriceWinnerList() {
             let newWinner = document.createElement("div");
-            newWinner.innerHTML = commonPriceWinners[commonPriceWinners.length - 1].Fullname;
+            newWinner.className = "winner-list";
+            newWinner.innerHTML = commonPriceWinners[commonPriceWinners.length - 1].Fullname + ", "+" ";
             commonPriceLimit -= 1;
             document.getElementById("common-price-limit").value = commonPriceLimit;
             document.getElementById("common-price-winners").appendChild(newWinner);
