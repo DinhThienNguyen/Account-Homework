@@ -30098,12 +30098,13 @@
             };
 
         function updateFirework() {
+            let requestId = 0;
             update();
             paint();
             if (continueFirework) {
-                window.requestAnimationFrame(updateFirework);
-            } else {
-                window.requestAnimationFrame(null);
+                requestId = window.requestAnimationFrame(updateFirework);
+            } else {                
+                window.cancelAnimationFrame(requestId);
             }
         }
 
