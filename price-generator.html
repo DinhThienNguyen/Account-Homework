@@ -29167,7 +29167,7 @@
     .excel-import {
         display: flex;
         justify-content: center;
-    }    
+    }
 
     input[type="file"] {
         display: none;
@@ -29352,9 +29352,9 @@
             <input id="special-price-limit" class="winner-limit" required="true">
         </div>
         <div class="grid-item">
-            <div class="button generate-button" onclick="generateFirstPriceWinner()">Generate</div>
+            <div class="button generate-button" onclick="generateSpecialPriceWinner()">Generate</div>
         </div>
-        <div class="grid-item" class="special-runner-list">
+        <div class="grid-item special-runner-list">
             <div id="special-price-winners" class="winner-list"></div>
         </div>
     </div>
@@ -29665,8 +29665,7 @@
                             return;
                         }
                     }
-
-                    console.log(rowObj);
+                    
                     participants = rowObj;
                     participantSize = participants.length;
                     isImported = true;
@@ -29680,6 +29679,33 @@
             };
             reader.readAsBinaryString(input.files[0]);
         }
+
+        function removeWinnerFromList(event) {
+            let elem = event.srcElement;            
+            let winnerId = elem.innerHTML.split(".")[0];
+            console.log(winnerId);
+            console.log(elem.parentNode.id);
+            switch (elem.parentNode.id) {
+                case "first-price-winners":
+                removeWinnerFromFirstPriceWinnerList(winnerId);
+                console.log(firstPriceWinners);
+                    break;
+            
+                default:
+                    break;
+            }
+            document.getElementById(elem.parentNode.id).removeChild(elem);
+        }
+
+        function removeWinnerFromFirstPriceWinnerList(winnerId){
+            for(let i = 0; i<firstPriceWinners.length; i++){
+                if(firstPriceWinners[i].Id == winnerId){
+                    firstPriceWinners.splice(i, 1);
+                    return;
+                }
+            }
+        }
+
 
         function updateWinnerList() {
             hideOverlay();
@@ -29716,6 +29742,9 @@
             newWinner.innerHTML =
                 `${specialPriceWinners[specialPriceWinners.length - 1].Id}. ${specialPriceWinners[specialPriceWinners.length - 1].Fullname}`;
             specialPriceLimit -= 1;
+            newWinner.addEventListener("click", function () {                
+                removeWinnerFromList(event);
+            });
             document.getElementById("special-price-limit").value = specialPriceLimit;
             document.getElementById("special-price-winners").appendChild(newWinner);
             if (Number(specialPriceLimit) == 0)
@@ -29727,6 +29756,9 @@
             newWinner.innerHTML =
                 `${firstPriceWinners[firstPriceWinners.length - 1].Id}. ${firstPriceWinners[firstPriceWinners.length - 1].Fullname}`;
             firstPriceLimit -= 1;
+            newWinner.addEventListener("click", function () {                
+                removeWinnerFromList(event);
+            });
             document.getElementById("first-price-limit").value = firstPriceLimit;
             document.getElementById("first-price-winners").appendChild(newWinner);
             if (Number(firstPriceLimit) == 0)
@@ -29776,28 +29808,28 @@
             hideFirework();
             currentPriceType = "special";
             showOverlay();
-            generateWinner(specialPriceWinners);            
+            generateWinner(specialPriceWinners);
         }
 
         function generateFirstPriceWinner() {
             hideFirework();
             currentPriceType = "first";
             showOverlay();
-            generateWinner(firstPriceWinners);            
+            generateWinner(firstPriceWinners);
         }
 
         function generateSecondPriceWinner() {
             hideFirework();
             currentPriceType = "second";
             showOverlay();
-            generateWinner(secondPriceWinners);            
+            generateWinner(secondPriceWinners);
         }
 
         function generateThirdPriceWinner() {
             hideFirework();
             currentPriceType = "third";
             showOverlay();
-            generateWinner(thirdPriceWinners);            
+            generateWinner(thirdPriceWinners);
         }
 
         function generateCommonPriceWinner() {
