@@ -29234,6 +29234,12 @@
         font-weight: bold;
         margin-left: 10px;
         cursor: pointer;
+        border-radius: 5px;
+        padding: 0px 10px;
+    }
+
+    .remove-winner-button:hover {
+        background-color: rgba(255, 255, 255, 0.4);
     }
 
     #firework-overlay {
@@ -29542,9 +29548,9 @@
         };
 
         window.onbeforeunload = function () {
-            if (window.confirm()) {
+            if (window.confirm(
+                    "Imported data and winner list will be lost upon refresh. Do you still want to reload?"))
                 return true;
-            }
             return false;
         }
 
@@ -29694,6 +29700,8 @@
         }
 
         function removeWinnerFromList(event) {
+            if (!window.confirm("Are you sure you want to remove this winner from this list?"))
+                return;
             let removeButton = event.srcElement;
             let winner = removeButton.parentNode;
             let winnerList = winner.parentNode;
