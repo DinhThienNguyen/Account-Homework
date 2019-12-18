@@ -29121,12 +29121,12 @@
         --first-runner-color: #e7bd42;
         --second-runner-color: #aaa9ad;
         --third-runner-color: #cd7f32;
-        --common-runner-color: #4dc3f9;
+        --common-runner-color: #20b2aa;
         --light-special-runner-color: rgba(255, 255, 255, 0.7);
         --light-first-runner-color: #f0d586;
         --light-second-runner-color: #d1d0d2;
         --light-third-runner-color: #dca570;
-        --light-common-runner-color: #97dcfb;
+        --light-common-runner-color: #2cd9d0;
     }
 
     body {
@@ -29154,14 +29154,14 @@
     }
 
     .grid-item>input {
-        font-size: 2vh;
+        font-size: 2.5vh;
         text-align: center;
         width: 90%;
         border-radius: 20px;
     }
 
     .grid-item>span {
-        font-size: 2vh;
+        font-size: 2.5vh;
     }
 
     .excel-import {
@@ -29190,7 +29190,7 @@
         color: var(--white-color);
         padding: 6px 12px;
         border-radius: 10px;
-        font-size: 2vh;
+        font-size: 2.5vh;
         cursor: pointer;
         text-align: center;
         display: inline-block;
@@ -29349,12 +29349,12 @@
             <span style="color: white;">Special price</span>
         </div>
         <div class="grid-item">
-            <input id="special-price-limit" class="winner-limit" required="true">
+            <input id="special-price-limit" class="winner-limit" required="true" >
         </div>
         <div class="grid-item">
             <div class="button generate-button" onclick="generateFirstPriceWinner()">Generate</div>
         </div>
-        <div class="grid-item" class="special-runner-list">
+        <div class="grid-item special-runner-list runner-list">
             <div id="special-price-winners" class="winner-list"></div>
         </div>
     </div>
@@ -29369,7 +29369,7 @@
         <div class="grid-item ">
             <div class="button generate-button" onclick="generateFirstPriceWinner()">Generate</div>
         </div>
-        <div class="grid-item first-runner-list first-price runner-list">
+        <div class="grid-item first-runner-list runner-list">
             <div id="first-price-winners" class="winner-list"></div>
         </div>
     </div>
@@ -29390,7 +29390,7 @@
     </div>
 
     <div id="third-price-container" class="grid-container third-price">
-        <div class="grid-item third-price">
+        <div class="grid-item">
             <span style="color:white;">Third price</span>
         </div>
         <div class="grid-item">
@@ -29757,7 +29757,6 @@
 
         function updateCommonPriceWinnerList() {
             let newWinner = document.createElement("div");
-            newWinner.className = "winner-list";
             newWinner.innerHTML =
                 `${commonPriceWinners[commonPriceWinners.length - 1].Id}. ${commonPriceWinners[commonPriceWinners.length - 1].Fullname}`;
             commonPriceLimit -= 1;
