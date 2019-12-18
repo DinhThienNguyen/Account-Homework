@@ -29122,6 +29122,7 @@
         --second-runner-color: #aaa9ad;
         --third-runner-color: #cd7f32;
         --common-runner-color: #4dc3f9;
+        --light-special-runner-color: rgba(255, 255, 255, 0.7);
         --light-first-runner-color: #f0d586;
         --light-second-runner-color: #d1d0d2;
         --light-third-runner-color: #dca570;
@@ -29143,9 +29144,7 @@
         padding: 0.5%;
         margin: 1%;
         align-items: center;
-        border-radius: 20px;
-
-        transition: background-color 2s;
+        border-radius: 20px;        
     }
 
     .grid-item {
@@ -29166,12 +29165,8 @@
     }
 
     .excel-import {
-        background-color: var(--main-button-color);
-        color: var(--white-color);
-        border-radius: 10px;
-        cursor: pointer;
-        padding: 6px 12px;
-        font-size: 2vh;
+        display: flex;
+        justify-content: center;
     }
 
     .excel-import:hover {
@@ -29277,24 +29272,24 @@
         font-size: 11px;
     }
 
-    .gradient-1 {
-        background: linear-gradient(90deg, var(--c1, #f6d365), var(--c2, #fda085) 51%, var(--c1, #f6d365)) var(--x, 0)/ 200%;
-        /* background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%); */
-    }
-
-    .gradient-2 {
-        background: linear-gradient(90deg, rgba(0, 212, 255, 1) 0%, rgba(2, 0, 36, 1) 35%, rgba(9, 9, 121, 1) 100%);
-    }
-
-    .gradient-3 {
-        background: linear-gradient(90deg, rgba(9, 9, 121, 1) 0%, rgba(0, 212, 255, 1) 35%, rgba(2, 0, 36, 1) 100%);
-    }
-
     .winner-list {
         font-size: 2vh;
         display: grid;
         grid-row-gap: 0px;
         grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .special-price {
+        background: linear-gradient(90deg, rgb(246, 211, 101), rgb(253, 160, 133) 51%, rgb(246, 211, 101)) 0px center / 200%;
+        animation-name: special-price;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+    }
+
+    @keyframes special-price {
+        from {background: linear-gradient(90deg, rgb(246, 211, 101), rgb(253, 160, 133) 51%, rgb(246, 211, 101)) 0px center / 200%;}
+        to {background: linear-gradient(90deg, rgb(246, 211, 101), rgb(253, 160, 133) 51%, rgb(246, 211, 101)) 100% center / 200%;}
     }
 
     .first-price {
@@ -29311,6 +29306,10 @@
 
     .common-price {
         background-color: var(--common-runner-color);
+    }
+
+    .special-runner-list {
+        background-color: var(--light-special-runner-color);
     }
 
     .first-runner-list {
@@ -29342,15 +29341,13 @@
             <span id="current-winner" class="current-winner"></span>
             <div id="ok-overlay" class="button overlay-button">OK</div>
         </div>
-
     </div>
 
     <div>
-
-        <div id="special-price-container" class="grid-container"
-            style="background: linear-gradient(90deg, #f6d365, #fda085 51%, #f6d365) 0/ 200%;">
+        <div id="special-price-container"            
+            class="grid-container special-price">
             <div class="grid-item">
-                <span>Special price</span>
+                <span style="color: white;">Special price</span>
             </div>
             <div class="grid-item">
                 <input id="special-price-limit" class="winner-limit" required="true">
@@ -29358,78 +29355,79 @@
             <div class="grid-item">
                 <div class="button generate-button" onclick="generateFirstPriceWinner()">Generate</div>
             </div>
-            <div class="grid-item">
-                <div id="special-price-winners"></div>
+            <div class="grid-item" class="special-runner-list">
+                <div id="special-price-winners" class="winner-list"></div>
             </div>
-        </div>
-
-        <div id="first-price-container" class="grid-container first-price">
-            <div class="grid-item">
-                <span style="color:white;">First price</span>
-            </div>
-            <div class="grid-item ">
-                <input id="first-price-limit" class="winner-limit" required="true">
-            </div>
-            <div class="grid-item ">
-                <div class="button generate-button" onclick="generateFirstPriceWinner()">Generate</div>
-            </div>
-            <div class="grid-item first-runner-list first-price runner-list">
-                <div id="first-price-winners" class="winner-list"></div>
-            </div>
-        </div>
-
-        <div id="second-price-container" class="grid-container second-price">
-            <div class="grid-item">
-                <span style="color:white;">Second price</span>
-            </div>
-            <div class="grid-item">
-                <input id="second-price-limit" class="winner-limit" required="true">
-            </div>
-            <div class="grid-item">
-                <div class="button generate-button" onclick="generateSecondPriceWinner()">Generate</div>
-            </div>
-            <div class="grid-item second-runner-list runner-list">
-                <div id="second-price-winners" class="winner-list"></div>
-            </div>
-        </div>
-
-        <div id="third-price-container" class="grid-container third-price">
-            <div class="grid-item third-price">
-                <span style="color:white;">Third price</span>
-            </div>
-            <div class="grid-item">
-                <input id="third-price-limit" class="winner-limit" required="true">
-            </div>
-            <div class="grid-item">
-                <div class="button generate-button" onclick="generateThirdPriceWinner()">Generate</div>
-            </div>
-            <div class="grid-item third-runner-list runner-list">
-                <div id="third-price-winners" class="winner-list"></div>
-            </div>
-        </div>
-
-        <div id="common-price-container" class="grid-container common-price">
-            <div class="grid-item">
-                <span style="color:white;">Common price</span>
-            </div>
-            <div class="grid-item">
-                <input id="common-price-limit" class="winner-limit" required="true">
-            </div>
-            <div class="grid-item">
-                <div class="button generate-button" onclick="generateCommonPriceWinner()">Generate</div>
-            </div>
-            <div class="grid-item common-runner-list runner-list">
-                <div id="common-price-winners" class="winner-list"></div>
-            </div>
-        </div>
-
-        <div id="confirm-button" class="grid-item">
-            <div class="button confirm-button" onclick="confirmPriceLimit()">Confirm price pool</div>
         </div>
     </div>
-    <div id="excel-import">
-        <div class="">
-            <label class="excel-import">
+
+    <div id="first-price-container" class="grid-container first-price">
+        <div class="grid-item">
+            <span style="color:white;">First price</span>
+        </div>
+        <div class="grid-item ">
+            <input id="first-price-limit" class="winner-limit" required="true">
+        </div>
+        <div class="grid-item ">
+            <div class="button generate-button" onclick="generateFirstPriceWinner()">Generate</div>
+        </div>
+        <div class="grid-item first-runner-list first-price runner-list">
+            <div id="first-price-winners" class="winner-list"></div>
+        </div>
+    </div>
+
+    <div id="second-price-container" class="grid-container second-price">
+        <div class="grid-item">
+            <span style="color:white;">Second price</span>
+        </div>
+        <div class="grid-item">
+            <input id="second-price-limit" class="winner-limit" required="true">
+        </div>
+        <div class="grid-item">
+            <div class="button generate-button" onclick="generateSecondPriceWinner()">Generate</div>
+        </div>
+        <div class="grid-item second-runner-list runner-list">
+            <div id="second-price-winners" class="winner-list"></div>
+        </div>
+    </div>
+
+    <div id="third-price-container" class="grid-container third-price">
+        <div class="grid-item third-price">
+            <span style="color:white;">Third price</span>
+        </div>
+        <div class="grid-item">
+            <input id="third-price-limit" class="winner-limit" required="true">
+        </div>
+        <div class="grid-item">
+            <div class="button generate-button" onclick="generateThirdPriceWinner()">Generate</div>
+        </div>
+        <div class="grid-item third-runner-list runner-list">
+            <div id="third-price-winners" class="winner-list"></div>
+        </div>
+    </div>
+
+    <div id="common-price-container" class="grid-container common-price">
+        <div class="grid-item">
+            <span style="color:white;">Common price</span>
+        </div>
+        <div class="grid-item">
+            <input id="common-price-limit" class="winner-limit" required="true">
+        </div>
+        <div class="grid-item">
+            <div class="button generate-button" onclick="generateCommonPriceWinner()">Generate</div>
+        </div>
+        <div class="grid-item common-runner-list runner-list">
+            <div id="common-price-winners" class="winner-list"></div>
+        </div>
+    </div>
+
+    <div id="confirm-button" class="grid-item">
+        <div class="button confirm-button" onclick="confirmPriceLimit()">Confirm price pool</div>
+    </div>
+    </div>
+    <div id="excel-import" class="excel-import">
+        <div>
+            <label class="button">
                 <input type="file" onchange="readExcelFile(event)">
                 Import participants excel file
             </label>
@@ -29444,23 +29442,7 @@
         <p class="footer-text">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.</p>
     </div>
 
-    <script>
-        // setInterval(function () {
-        //     let specialPriceContainer = document.getElementById("special-price-container");
-        //     if (specialPriceContainer.style.background ==
-        //         "linear-gradient(90deg, rgb(246, 211, 101), rgb(253, 160, 133) 51%, rgb(246, 211, 101)) 0px center / 200%"
-        //     ) {
-        //         console.log("change 1");
-        //         specialPriceContainer.style.background =
-        //             "linear-gradient(90deg, #f6d365, #fda085 51%, #f6d365) 100%/ 200%;"
-        //     }else{
-        //         console.log("change 2");
-        //         specialPriceContainer.style.background =
-        //             "linear-gradient(90deg, #f6d365, #fda085 51%, #f6d365) 0/ 200%;"
-        //     }
-        // }, 2000);
-
-
+    <script>    
         let displayCurrentWinner = document.getElementById("current-winner");
         document.getElementById("ok-overlay").addEventListener('click', updateWinnerList);
         let overlay = document.getElementById("overlay");
@@ -29474,10 +29456,10 @@
 
         let participants;
         let participantSize;
-        let firstPriceLimit;
-        let secondPriceLimit;
-        let thirdPriceLimit;
-        let commonPriceLimit;
+        let firstPriceLimit = 0;
+        let secondPriceLimit = 0;
+        let thirdPriceLimit = 0;
+        let commonPriceLimit = 0;
         let firstPriceWinners = [];
         let secondPriceWinners = [];
         let thirdPriceWinners = [];
