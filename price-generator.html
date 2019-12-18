@@ -29118,11 +29118,12 @@
         --main-button-color-hover: #35baf9;
         --white-color: #ffffff;
         --overlay-color: rgba(0, 0, 0, 0.8);
+        --special-runner-color:#ffb6c1;
         --first-runner-color: #e7bd42;
         --second-runner-color: #aaa9ad;
         --third-runner-color: #cd7f32;
         --common-runner-color: #20b2aa;
-        --light-special-runner-color: rgba(255, 255, 255, 0.7);
+        --light-special-runner-color: #ffe9ec;
         --light-first-runner-color: #f0d586;
         --light-second-runner-color: #d1d0d2;
         --light-third-runner-color: #dca570;
@@ -29289,57 +29290,68 @@
     }
 
     .special-price {
-        background: linear-gradient(90deg, rgb(246, 211, 101), rgb(253, 160, 133) 51%, rgb(246, 211, 101)) 0px center / 200%;
-        animation-name: special-price;
-        animation-duration: 1s;
-        animation-iteration-count: infinite;
-        animation-direction: alternate;
-    }
-
-    @keyframes special-price {
-        from {
-            background: linear-gradient(90deg, rgb(246, 211, 101), rgb(253, 160, 133) 51%, rgb(246, 211, 101)) 0px center / 200%;
-        }
-
-        to {
-            background: linear-gradient(90deg, rgb(246, 211, 101), rgb(253, 160, 133) 51%, rgb(246, 211, 101)) 100% center / 200%;
-        }
+        border: 5px solid var(--special-runner-color);
     }
 
     .first-price {
-        background-color: var(--first-runner-color);
+        /* background-color: var(--first-runner-color); */
+        border: 5px solid var(--first-runner-color);
     }
 
     .second-price {
-        background-color: var(--second-runner-color);
+        /* background-color: var(--second-runner-color); */
+        border: 5px solid var(--second-runner-color);
     }
 
     .third-price {
-        background-color: var(--third-runner-color);
+        /* background-color: var(--third-runner-color); */
+        border: 5px solid var(--third-runner-color);
+        border-radius: 20px;
     }
 
     .common-price {
-        background-color: var(--common-runner-color);
+        /* background-color: var(--common-runner-color); */
+        border: 5px solid var(--common-runner-color);
     }
 
     .special-runner-list {
         background-color: var(--light-special-runner-color);
+        padding: 6px 12px;
+        border-radius: 10px;
+        width: fit-content;
+        margin-bottom: 5px;
     }
 
     .first-runner-list {
         background-color: var(--light-first-runner-color);
+        padding: 6px 12px;
+        border-radius: 10px;
+        width: fit-content;
+        margin-bottom: 5px;
     }
 
     .second-runner-list {
         background-color: var(--light-second-runner-color);
+        padding: 6px 12px;
+        border-radius: 10px;
+        width: fit-content;
+        margin-bottom: 5px;
     }
 
     .third-runner-list {
         background-color: var(--light-third-runner-color);
+        padding: 6px 12px;
+        border-radius: 10px;
+        width: fit-content;
+        margin-bottom: 5px;
     }
 
     .common-runner-list {
         background-color: var(--light-common-runner-color);
+        padding: 6px 12px;
+        border-radius: 10px;
+        width: fit-content;
+        margin-bottom: 5px;
     }
 
     .runner-list {
@@ -29359,7 +29371,7 @@
 
     <div id="special-price-container" class="grid-container special-price">
         <div class="grid-item">
-            <span style="color: white;">Special price</span>
+            <span style="color: var(--special-runner-color);">Special price</span>
         </div>
         <div class="grid-item">
             <input id="special-price-limit" class="winner-limit" required="true">
@@ -29367,14 +29379,14 @@
         <div class="grid-item">
             <div class="button generate-button" onclick="generateSpecialPriceWinner()">Generate</div>
         </div>
-        <div class="grid-item special-runner-list runner-list">
+        <div class="grid-item  runner-list">
             <div id="special-price-winners" class="winner-list"></div>
         </div>
     </div>
 
     <div id="first-price-container" class="grid-container first-price">
         <div class="grid-item">
-            <span style="color:white;">First price</span>
+            <span style="color:var(--first-runner-color);">First price</span>
         </div>
         <div class="grid-item ">
             <input id="first-price-limit" class="winner-limit" required="true">
@@ -29382,14 +29394,14 @@
         <div class="grid-item ">
             <div class="button generate-button" onclick="generateFirstPriceWinner()">Generate</div>
         </div>
-        <div class="grid-item first-runner-list runner-list">
+        <div class="grid-item runner-list">
             <div id="first-price-winners" class="winner-list"></div>
         </div>
     </div>
 
     <div id="second-price-container" class="grid-container second-price">
         <div class="grid-item">
-            <span style="color:white;">Second price</span>
+            <span style="color:var(--second-runner-color);">Second price</span>
         </div>
         <div class="grid-item">
             <input id="second-price-limit" class="winner-limit" required="true">
@@ -29397,14 +29409,14 @@
         <div class="grid-item">
             <div class="button generate-button" onclick="generateSecondPriceWinner()">Generate</div>
         </div>
-        <div class="grid-item second-runner-list runner-list">
+        <div class="grid-item runner-list">
             <div id="second-price-winners" class="winner-list"></div>
         </div>
     </div>
 
     <div id="third-price-container" class="grid-container third-price">
         <div class="grid-item">
-            <span style="color:white;">Third price</span>
+            <span style="color:var(--third-runner-color);">Third price</span>
         </div>
         <div class="grid-item">
             <input id="third-price-limit" class="winner-limit" required="true">
@@ -29412,14 +29424,14 @@
         <div class="grid-item">
             <div class="button generate-button" onclick="generateThirdPriceWinner()">Generate</div>
         </div>
-        <div class="grid-item third-runner-list runner-list">
+        <div class="grid-item runner-list">
             <div id="third-price-winners" class="winner-list"></div>
         </div>
     </div>
 
     <div id="common-price-container" class="grid-container common-price">
         <div class="grid-item">
-            <span style="color:white;">Common price</span>
+            <span style="color:var(--common-runner-color);">Common price</span>
         </div>
         <div class="grid-item">
             <input id="common-price-limit" class="winner-limit" required="true">
@@ -29427,7 +29439,7 @@
         <div class="grid-item">
             <div class="button generate-button" onclick="generateCommonPriceWinner()">Generate</div>
         </div>
-        <div class="grid-item common-runner-list runner-list">
+        <div class="grid-item runner-list">
             <div id="common-price-winners" class="winner-list"></div>
         </div>
     </div>
@@ -29834,7 +29846,7 @@
 
         function updateSpecialPriceWinnerList() {
             let newWinner = document.createElement("div");
-            newWinner.className = "winner";
+            newWinner.className = "special-runner-list"
 
             let removeWinnerButton = document.createElement('span');
             removeWinnerButton.innerHTML = "x";
@@ -29856,7 +29868,7 @@
 
         function updateFirstPriceWinnerList() {
             let newWinner = document.createElement("div");
-            newWinner.className = "winner";
+            newWinner.className = "first-runner-list"
 
             let removeWinnerButton = document.createElement('span');
             removeWinnerButton.innerHTML = "x";
@@ -29878,7 +29890,7 @@
 
         function updateSecondPriceWinnerList() {
             let newWinner = document.createElement("div");
-            newWinner.className = "winner";
+            newWinner.className = "second-runner-list"
 
             let removeWinnerButton = document.createElement('span');
             removeWinnerButton.innerHTML = "x";
@@ -29900,7 +29912,7 @@
 
         function updateThirdPriceWinnerList() {
             let newWinner = document.createElement("div");
-            newWinner.className = "winner";
+            newWinner.className = "third-runner-list"
 
             let removeWinnerButton = document.createElement('span');
             removeWinnerButton.innerHTML = "x";
@@ -29922,7 +29934,7 @@
 
         function updateCommonPriceWinnerList() {
             let newWinner = document.createElement("div");
-            newWinner.className = "winner";
+            newWinner.className = "common-runner-list"
 
             let removeWinnerButton = document.createElement('span');
             removeWinnerButton.innerHTML = "x";
