@@ -29118,7 +29118,7 @@
         --main-button-color-hover: #35baf9;
         --white-color: #ffffff;
         --overlay-color: rgba(0, 0, 0, 0.8);
-        --special-runner-color:#ffb6c1;
+        --special-runner-color: #ffb6c1;
         --first-runner-color: #e7bd42;
         --second-runner-color: #aaa9ad;
         --third-runner-color: #cd7f32;
@@ -29137,32 +29137,26 @@
     }
 
     .grid-container {
-        width: 95vw;
+        width: 97vw;
         display: grid;
         grid-row-gap: 0px;
-        grid-template-columns: 1.5fr 0.5fr 1.5fr 8.5fr;
+        grid-template-columns: 1.5fr 0.5fr 1fr 9fr;
         background-color: var(--white-color);
-        padding: 0.5%;
-        margin: 1%;
+        padding: 10px;
+        margin: 20px;
         align-items: center;
         border-radius: 20px;
     }
 
     .grid-item {
-        font-size: 0.8em;
         text-align: center;
 
     }
 
     .grid-item>input {
-        font-size: 2.5vh;
         text-align: center;
         width: 90%;
         border-radius: 20px;
-    }
-
-    .grid-item>span {
-        font-size: 2.5vh;
     }
 
     .excel-import {
@@ -29191,7 +29185,6 @@
         color: var(--white-color);
         padding: 6px 12px;
         border-radius: 10px;
-        font-size: 2.5vh;
         cursor: pointer;
         text-align: center;
         display: inline-block;
@@ -29204,7 +29197,6 @@
 
     .button.overlay-button {
         width: 50vw;
-        font-size: 1.5em;
         display: none;
     }
 
@@ -29221,7 +29213,6 @@
 
     .current-winner {
         color: var(--white-color);
-        font-size: 5em;
     }
 
     .winner {
@@ -29235,6 +29226,12 @@
         font-weight: bold;
         margin-left: 10px;
         cursor: pointer;
+        border-radius: 5px;
+        padding: 0px 10px;
+    }
+
+    .remove-winner-button:hover {
+        background-color: rgba(255, 255, 255, 0.4);
     }
 
     #firework-overlay {
@@ -29283,7 +29280,6 @@
     }
 
     .winner-list {
-        font-size: 2vh;
         display: grid;
         grid-row-gap: 0px;
         grid-template-columns: 1fr 1fr 1fr;
@@ -29294,23 +29290,19 @@
     }
 
     .first-price {
-        /* background-color: var(--first-runner-color); */
         border: 5px solid var(--first-runner-color);
     }
 
     .second-price {
-        /* background-color: var(--second-runner-color); */
         border: 5px solid var(--second-runner-color);
     }
 
     .third-price {
-        /* background-color: var(--third-runner-color); */
         border: 5px solid var(--third-runner-color);
         border-radius: 20px;
     }
 
     .common-price {
-        /* background-color: var(--common-runner-color); */
         border: 5px solid var(--common-runner-color);
     }
 
@@ -29357,6 +29349,58 @@
     .runner-list {
         border-radius: 20px;
         padding: 20px;
+    }
+
+    @media all and (min-width: 1920px) {
+        body {
+            font-size: 2em;
+        }
+        input{
+            font-size: 1.25em;
+        }
+        .current-winner {
+        color: var(--white-color);
+        font-size: 5em;
+    }
+    }
+
+    @media all and (max-width: 1919px)  and (min-width: 1370px){
+        body {
+            font-size: 1.5em;
+        }
+        input{
+            font-size: 1em;
+        }
+        .current-winner {
+        color: var(--white-color);
+        font-size: 4em;
+    }
+    }
+
+    @media all and (max-width: 1369px) and (min-width: 600px) {
+        body {
+            font-size: 1.25em;
+        }
+        input{
+            font-size: 0.75em;
+        }
+        .current-winner {
+        color: var(--white-color);
+        font-size: 3em;
+    }
+    }
+
+    @media all and (max-width: 599px) and (min-width: 320px) {
+        body {
+            font-size: 0.5em;
+        }
+        input{
+            font-size: 0.5em;
+        }
+        .current-winner {
+        color: var(--white-color);
+        font-size: 2em;
+    }
     }
 </style>
 
@@ -29554,9 +29598,9 @@
         };
 
         window.onbeforeunload = function () {
-            if (window.confirm()) {
+            if (window.confirm(
+                    "Imported data and winner list will be lost upon refresh. Do you still want to reload?"))
                 return true;
-            }
             return false;
         }
 
@@ -29706,6 +29750,8 @@
         }
 
         function removeWinnerFromList(event) {
+            if (!window.confirm("Are you sure you want to remove this winner from this list?"))
+                return;
             let removeButton = event.srcElement;
             let winner = removeButton.parentNode;
             let winnerList = winner.parentNode;
