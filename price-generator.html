@@ -29355,52 +29355,56 @@
         body {
             font-size: 2em;
         }
-        input{
+
+        input {
             font-size: 1.25em;
         }
         .current-winner {
-        color: var(--white-color);
-        font-size: 5em;
-    }
+            color: var(--white-color);
+            font-size: 5em;
+        }
     }
 
-    @media all and (max-width: 1919px)  and (min-width: 1370px){
+    @media all and (max-width: 1919px) and (min-width: 1370px) {
         body {
             font-size: 1.5em;
         }
-        input{
+
+        input {
             font-size: 1em;
         }
         .current-winner {
-        color: var(--white-color);
-        font-size: 4em;
-    }
+            color: var(--white-color);
+            font-size: 4em;
+        }
     }
 
     @media all and (max-width: 1369px) and (min-width: 600px) {
         body {
             font-size: 1.25em;
         }
-        input{
+
+        input {
             font-size: 0.75em;
         }
         .current-winner {
-        color: var(--white-color);
-        font-size: 3em;
-    }
+            color: var(--white-color);
+            font-size: 3em;
+        }
     }
 
     @media all and (max-width: 599px) and (min-width: 320px) {
         body {
             font-size: 0.5em;
         }
-        input{
+
+        input {
             font-size: 0.5em;
         }
         .current-winner {
-        color: var(--white-color);
-        font-size: 2em;
-    }
+            color: var(--white-color);
+            font-size: 2em;
+        }
     }
 </style>
 
@@ -29696,7 +29700,7 @@
         }
 
         function isParticipantsListEmpty() {
-            return participants === undefined ? true : false;
+            return (participants === undefined ||  Number(participants.length) == 0)? true : false;
         }
 
         function readExcelFile(event) {
@@ -30008,6 +30012,9 @@
         function generateSpecialPriceWinner() {
             hideFirework();
             currentPriceType = "special";
+            if(checkParticipantListEmpty()){
+                return;
+            }
             showOverlay();
             generateWinner(specialPriceWinners);
         }
@@ -30015,6 +30022,9 @@
         function generateFirstPriceWinner() {
             hideFirework();
             currentPriceType = "first";
+            if(checkParticipantListEmpty()){
+                return;
+            }
             showOverlay();
             generateWinner(firstPriceWinners);
         }
@@ -30022,6 +30032,9 @@
         function generateSecondPriceWinner() {
             hideFirework();
             currentPriceType = "second";
+            if(checkParticipantListEmpty()){
+                return;
+            }
             showOverlay();
             generateWinner(secondPriceWinners);
         }
@@ -30029,6 +30042,9 @@
         function generateThirdPriceWinner() {
             hideFirework();
             currentPriceType = "third";
+            if(checkParticipantListEmpty()){
+                return;
+            }
             showOverlay();
             generateWinner(thirdPriceWinners);
         }
@@ -30036,8 +30052,20 @@
         function generateCommonPriceWinner() {
             hideFirework();
             currentPriceType = "common";
+            if(checkParticipantListEmpty()){
+                return;
+            }
             showOverlay();
             generateWinner(commonPriceWinners);
+        }
+
+        function checkParticipantListEmpty() {
+            if(isParticipantsListEmpty()){
+                alert("No more participant!");
+                hideGenerateButtons();
+                return true;
+            }
+            return false;
         }
 
         function hideOverlay() {
