@@ -29223,6 +29223,19 @@
         font-size: 5em;
     }
 
+    .winner {
+        padding: 6px 12px;
+        background-color: var(--first-runner-color);
+        border-radius: 5px;
+        width: fit-content;
+    }
+
+    .remove-winner-button {
+        font-weight: bold;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+
     #firework-overlay {
         position: absolute;
         width: 100%;
@@ -29349,7 +29362,7 @@
             <span style="color: white;">Special price</span>
         </div>
         <div class="grid-item">
-            <input id="special-price-limit" class="winner-limit" required="true" >
+            <input id="special-price-limit" class="winner-limit" required="true">
         </div>
         <div class="grid-item">
             <div class="button generate-button" onclick="generateSpecialPriceWinner()">Generate</div>
@@ -29665,7 +29678,7 @@
                             return;
                         }
                     }
-                    
+
                     participants = rowObj;
                     participantSize = participants.length;
                     isImported = true;
@@ -29681,29 +29694,111 @@
         }
 
         function removeWinnerFromList(event) {
-            let elem = event.srcElement;            
-            let winnerId = elem.innerHTML.split(".")[0];
+            let removeButton = event.srcElement;
+            let winner = removeButton.parentNode;
+            let winnerList = winner.parentNode;
+            let winnerId = winner.innerHTML.split(".")[0];
             console.log(winnerId);
-            console.log(elem.parentNode.id);
-            switch (elem.parentNode.id) {
-                case "first-price-winners":
-                removeWinnerFromFirstPriceWinnerList(winnerId);
-                console.log(firstPriceWinners);
+            switch (winnerList.id) {
+                case "special-price-winners":
+                    removeWinnerFromSpecialPriceWinnerList(winnerId);
+                    console.log(specialPriceWinners);
                     break;
-            
+
+                case "first-price-winners":
+                    removeWinnerFromFirstPriceWinnerList(winnerId);
+                    console.log(firstPriceWinners);
+                    break;
+
+                case "second-price-winners":
+                    removeWinnerFromSecondPriceWinnerList(winnerId);
+                    console.log(secondPriceWinners);
+                    break;
+
+                case "third-price-winners":
+                    removeWinnerFromThirdPriceWinnerList(winnerId);
+                    console.log(thirdPriceWinners);
+                    break;
+
+                case "common-price-winners":
+                    removeWinnerFromCommonPriceWinnerList(winnerId);
+                    console.log(commonPriceWinners);
+                    break;
+
                 default:
                     break;
             }
-            document.getElementById(elem.parentNode.id).removeChild(elem);
+            winnerList.removeChild(winner);
         }
 
-        function removeWinnerFromFirstPriceWinnerList(winnerId){
-            for(let i = 0; i<firstPriceWinners.length; i++){
-                if(firstPriceWinners[i].Id == winnerId){
-                    firstPriceWinners.splice(i, 1);
-                    return;
+        function removeWinnerFromSpecialPriceWinnerList(winnerId) {
+            for (let i = 0; i < specialPriceWinners.length; i++) {
+                if (specialPriceWinners[i].Id == winnerId) {
+                    specialPriceWinners.splice(i, 1);
+                    break;
                 }
             }
+
+            specialPriceLimit++;
+            document.getElementById("special-price-limit").value = specialPriceLimit;
+            document.getElementById("special-price-container").getElementsByClassName("generate-button").item(0).style
+                .display = "inline-block";
+        }
+
+        function removeWinnerFromFirstPriceWinnerList(winnerId) {
+            for (let i = 0; i < firstPriceWinners.length; i++) {
+                if (firstPriceWinners[i].Id == winnerId) {
+                    firstPriceWinners.splice(i, 1);
+                    break;
+                }
+            }
+
+            firstPriceLimit++;
+            document.getElementById("first-price-limit").value = firstPriceLimit;
+            document.getElementById("first-price-container").getElementsByClassName("generate-button").item(0).style
+                .display = "inline-block";
+        }
+
+        function removeWinnerFromSecondPriceWinnerList(winnerId) {
+            for (let i = 0; i < secondPriceWinners.length; i++) {
+                if (secondPriceWinners[i].Id == winnerId) {
+                    secondPriceWinners.splice(i, 1);
+                    break;
+                }
+            }
+
+            secondPriceLimit++;
+            document.getElementById("second-price-limit").value = secondPriceLimit;
+            document.getElementById("second-price-container").getElementsByClassName("generate-button").item(0).style
+                .display = "inline-block";
+        }
+
+        function removeWinnerFromThirdPriceWinnerList(winnerId) {
+            for (let i = 0; i < thirdPriceWinners.length; i++) {
+                if (thirdPriceWinners[i].Id == winnerId) {
+                    thirdPriceWinners.splice(i, 1);
+                    break;
+                }
+            }
+
+            thirdPriceLimit++;
+            document.getElementById("third-price-limit").value = thirdPriceLimit;
+            document.getElementById("third-price-container").getElementsByClassName("generate-button").item(0).style
+                .display = "inline-block";
+        }
+
+        function removeWinnerFromCommonPriceWinnerList(winnerId) {
+            for (let i = 0; i < commonPriceWinners.length; i++) {
+                if (commonPriceWinners[i].Id == winnerId) {
+                    commonPriceWinners.splice(i, 1);
+                    break;
+                }
+            }
+
+            commonPriceLimit++;
+            document.getElementById("common-price-limit").value = commonPriceLimit;
+            document.getElementById("common-price-container").getElementsByClassName("generate-button").item(0).style
+                .display = "inline-block";
         }
 
 
@@ -29738,62 +29833,111 @@
         }
 
         function updateSpecialPriceWinnerList() {
-            var newWinner = document.createElement("div");
+            let newWinner = document.createElement("div");
+            newWinner.className = "winner";
+
+            let removeWinnerButton = document.createElement('span');
+            removeWinnerButton.innerHTML = "x";
+            removeWinnerButton.className = "remove-winner-button";
+
             newWinner.innerHTML =
                 `${specialPriceWinners[specialPriceWinners.length - 1].Id}. ${specialPriceWinners[specialPriceWinners.length - 1].Fullname}`;
             specialPriceLimit -= 1;
-            newWinner.addEventListener("click", function () {                
+            removeWinnerButton.addEventListener("click", function () {
                 removeWinnerFromList(event);
             });
             document.getElementById("special-price-limit").value = specialPriceLimit;
             document.getElementById("special-price-winners").appendChild(newWinner);
+            newWinner.appendChild(removeWinnerButton);
+
             if (Number(specialPriceLimit) == 0)
                 disableAfterRoll(document.getElementById("special-price-container"));
         }
 
         function updateFirstPriceWinnerList() {
-            var newWinner = document.createElement("div");
+            let newWinner = document.createElement("div");
+            newWinner.className = "winner";
+
+            let removeWinnerButton = document.createElement('span');
+            removeWinnerButton.innerHTML = "x";
+            removeWinnerButton.className = "remove-winner-button";
+
             newWinner.innerHTML =
                 `${firstPriceWinners[firstPriceWinners.length - 1].Id}. ${firstPriceWinners[firstPriceWinners.length - 1].Fullname}`;
             firstPriceLimit -= 1;
-            newWinner.addEventListener("click", function () {                
+            removeWinnerButton.addEventListener("click", function () {
                 removeWinnerFromList(event);
             });
             document.getElementById("first-price-limit").value = firstPriceLimit;
             document.getElementById("first-price-winners").appendChild(newWinner);
+            newWinner.appendChild(removeWinnerButton);
+
             if (Number(firstPriceLimit) == 0)
                 disableAfterRoll(document.getElementById("first-price-container"));
         }
 
         function updateSecondPriceWinnerList() {
             let newWinner = document.createElement("div");
+            newWinner.className = "winner";
+
+            let removeWinnerButton = document.createElement('span');
+            removeWinnerButton.innerHTML = "x";
+            removeWinnerButton.className = "remove-winner-button";
+
             newWinner.innerHTML =
                 `${secondPriceWinners[secondPriceWinners.length - 1].Id}. ${secondPriceWinners[secondPriceWinners.length - 1].Fullname}`;
             secondPriceLimit -= 1;
+            removeWinnerButton.addEventListener("click", function () {
+                removeWinnerFromList(event);
+            });
             document.getElementById("second-price-limit").value = secondPriceLimit;
             document.getElementById("second-price-winners").appendChild(newWinner);
+            newWinner.appendChild(removeWinnerButton);
+
             if (Number(secondPriceLimit) == 0)
                 disableAfterRoll(document.getElementById("second-price-container"));
         }
 
         function updateThirdPriceWinnerList() {
             let newWinner = document.createElement("div");
+            newWinner.className = "winner";
+
+            let removeWinnerButton = document.createElement('span');
+            removeWinnerButton.innerHTML = "x";
+            removeWinnerButton.className = "remove-winner-button";
+
             newWinner.innerHTML =
                 `${thirdPriceWinners[thirdPriceWinners.length - 1].Id}. ${thirdPriceWinners[thirdPriceWinners.length - 1].Fullname}`;
             thirdPriceLimit -= 1;
+            removeWinnerButton.addEventListener("click", function () {
+                removeWinnerFromList(event);
+            });
             document.getElementById("third-price-limit").value = thirdPriceLimit;
             document.getElementById("third-price-winners").appendChild(newWinner);
+            newWinner.appendChild(removeWinnerButton);
+
             if (Number(thirdPriceLimit) == 0)
                 disableAfterRoll(document.getElementById("third-price-container"));
         }
 
         function updateCommonPriceWinnerList() {
             let newWinner = document.createElement("div");
+            newWinner.className = "winner";
+
+            let removeWinnerButton = document.createElement('span');
+            removeWinnerButton.innerHTML = "x";
+            removeWinnerButton.className = "remove-winner-button";
+
             newWinner.innerHTML =
                 `${commonPriceWinners[commonPriceWinners.length - 1].Id}. ${commonPriceWinners[commonPriceWinners.length - 1].Fullname}`;
             commonPriceLimit -= 1;
+            removeWinnerButton.addEventListener("click", function () {
+                removeWinnerFromList(event);
+            });
             document.getElementById("common-price-limit").value = commonPriceLimit;
             document.getElementById("common-price-winners").appendChild(newWinner);
+            newWinner.appendChild(removeWinnerButton);
+
             if (Number(commonPriceLimit) == 0)
                 disableAfterRoll(document.getElementById("common-price-container"));
         }
