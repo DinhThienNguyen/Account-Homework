@@ -29708,7 +29708,7 @@
         }
 
         function isParticipantsListEmpty() {
-            return participants === undefined ? true : false;
+            return (participants === undefined ||  Number(participants.length) == 0)? true : false;
         }
 
         function readExcelFile(event) {
@@ -30011,6 +30011,9 @@
         function generateSpecialPriceWinner() {
             hideFirework();
             currentPriceType = "special";
+            if(checkParticipantListEmpty()){
+                return;
+            }
             showOverlay();
             generateWinner(specialPriceWinners);
         }
@@ -30018,6 +30021,9 @@
         function generateFirstPriceWinner() {
             hideFirework();
             currentPriceType = "first";
+            if(checkParticipantListEmpty()){
+                return;
+            }
             showOverlay();
             generateWinner(firstPriceWinners);
         }
@@ -30025,6 +30031,9 @@
         function generateSecondPriceWinner() {
             hideFirework();
             currentPriceType = "second";
+            if(checkParticipantListEmpty()){
+                return;
+            }
             showOverlay();
             generateWinner(secondPriceWinners);
         }
@@ -30032,6 +30041,9 @@
         function generateThirdPriceWinner() {
             hideFirework();
             currentPriceType = "third";
+            if(checkParticipantListEmpty()){
+                return;
+            }
             showOverlay();
             generateWinner(thirdPriceWinners);
         }
@@ -30039,8 +30051,20 @@
         function generateCommonPriceWinner() {
             hideFirework();
             currentPriceType = "common";
+            if(checkParticipantListEmpty()){
+                return;
+            }
             showOverlay();
             generateWinner(commonPriceWinners);
+        }
+
+        function checkParticipantListEmpty() {
+            if(isParticipantsListEmpty()){
+                alert("No more participant!");
+                hideGenerateButtons();
+                return true;
+            }
+            return false;
         }
 
         function hideOverlay() {
