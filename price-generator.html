@@ -29139,12 +29139,12 @@
         width: 95vw;
         display: grid;
         grid-row-gap: 0px;
-        grid-template-columns: 10vw 6vw 10vw auto;
+        grid-template-columns: 1.5fr 0.5fr 1.5fr 8.5fr;
         background-color: var(--white-color);
         padding: 0.5%;
         margin: 1%;
         align-items: center;
-        border-radius: 20px;        
+        border-radius: 20px;
     }
 
     .grid-item {
@@ -29167,11 +29167,7 @@
     .excel-import {
         display: flex;
         justify-content: center;
-    }
-
-    .excel-import:hover {
-        background-color: var(--main-button-color-hover);
-    }
+    }    
 
     input[type="file"] {
         display: none;
@@ -29288,8 +29284,13 @@
     }
 
     @keyframes special-price {
-        from {background: linear-gradient(90deg, rgb(246, 211, 101), rgb(253, 160, 133) 51%, rgb(246, 211, 101)) 0px center / 200%;}
-        to {background: linear-gradient(90deg, rgb(246, 211, 101), rgb(253, 160, 133) 51%, rgb(246, 211, 101)) 100% center / 200%;}
+        from {
+            background: linear-gradient(90deg, rgb(246, 211, 101), rgb(253, 160, 133) 51%, rgb(246, 211, 101)) 0px center / 200%;
+        }
+
+        to {
+            background: linear-gradient(90deg, rgb(246, 211, 101), rgb(253, 160, 133) 51%, rgb(246, 211, 101)) 100% center / 200%;
+        }
     }
 
     .first-price {
@@ -29343,21 +29344,18 @@
         </div>
     </div>
 
-    <div>
-        <div id="special-price-container"            
-            class="grid-container special-price">
-            <div class="grid-item">
-                <span style="color: white;">Special price</span>
-            </div>
-            <div class="grid-item">
-                <input id="special-price-limit" class="winner-limit" required="true">
-            </div>
-            <div class="grid-item">
-                <div class="button generate-button" onclick="generateFirstPriceWinner()">Generate</div>
-            </div>
-            <div class="grid-item" class="special-runner-list">
-                <div id="special-price-winners" class="winner-list"></div>
-            </div>
+    <div id="special-price-container" class="grid-container special-price">
+        <div class="grid-item">
+            <span style="color: white;">Special price</span>
+        </div>
+        <div class="grid-item">
+            <input id="special-price-limit" class="winner-limit" required="true">
+        </div>
+        <div class="grid-item">
+            <div class="button generate-button" onclick="generateFirstPriceWinner()">Generate</div>
+        </div>
+        <div class="grid-item" class="special-runner-list">
+            <div id="special-price-winners" class="winner-list"></div>
         </div>
     </div>
 
@@ -29442,7 +29440,7 @@
         <p class="footer-text">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.</p>
     </div>
 
-    <script>    
+    <script>
         let displayCurrentWinner = document.getElementById("current-winner");
         document.getElementById("ok-overlay").addEventListener('click', updateWinnerList);
         let overlay = document.getElementById("overlay");
@@ -29456,10 +29454,12 @@
 
         let participants;
         let participantSize;
+        let specialPriceLimit = 0;
         let firstPriceLimit = 0;
         let secondPriceLimit = 0;
         let thirdPriceLimit = 0;
         let commonPriceLimit = 0;
+        let specialPriceWinners = [];
         let firstPriceWinners = [];
         let secondPriceWinners = [];
         let thirdPriceWinners = [];
@@ -29541,6 +29541,7 @@
                 return;
             }
 
+            confirmSpecialPriceLimit();
             confirmFirstPriceLimit();
             confirmSecondPriceLimit();
             confirmThirdPriceLimit();
@@ -29548,6 +29549,17 @@
             hideConfirmPriceLimitButton();
             showGenerateButtons();
             hideImportExcelButton();
+        }
+
+        function confirmSpecialPriceLimit() {
+            let specialPriceLimitInput = document.getElementById("special-price-limit");
+            let limit = specialPriceLimitInput.value;
+            if (Number(limit) == 0 || limit == "") {
+                document.getElementById("special-price-container").style.display = "none";
+            } else {
+                specialPriceLimit = limit;
+                specialPriceLimitInput.disabled = true;
+            }
         }
 
         function confirmFirstPriceLimit() {
@@ -29674,6 +29686,10 @@
             hideFirework();
 
             switch (currentPriceType) {
+                case "special":
+                    updateSpecialPriceWinnerList();
+                    break;
+
                 case "first":
                     updateFirstPriceWinnerList();
                     break;
@@ -29693,6 +29709,17 @@
                 default:
                     break;
             }
+        }
+
+        function updateSpecialPriceWinnerList() {
+            var newWinner = document.createElement("div");
+            newWinner.innerHTML =
+                `${specialPriceWinners[specialPriceWinners.length - 1].Id}. ${specialPriceWinners[specialPriceWinners.length - 1].Fullname}`;
+            specialPriceLimit -= 1;
+            document.getElementById("special-price-limit").value = specialPriceLimit;
+            document.getElementById("special-price-winners").appendChild(newWinner);
+            if (Number(specialPriceLimit) == 0)
+                disableAfterRoll(document.getElementById("special-price-container"));
         }
 
         function updateFirstPriceWinnerList() {
@@ -29745,28 +29772,32 @@
             child[0].style.display = "none";
         }
 
+        function generateSpecialPriceWinner() {
+            hideFirework();
+            currentPriceType = "special";
+            showOverlay();
+            generateWinner(specialPriceWinners);            
+        }
+
         function generateFirstPriceWinner() {
             hideFirework();
             currentPriceType = "first";
             showOverlay();
-            generateWinner(firstPriceWinners);
-            console.log(firstPriceWinners);
+            generateWinner(firstPriceWinners);            
         }
 
         function generateSecondPriceWinner() {
             hideFirework();
             currentPriceType = "second";
             showOverlay();
-            generateWinner(secondPriceWinners);
-            console.log(secondPriceWinners);
+            generateWinner(secondPriceWinners);            
         }
 
         function generateThirdPriceWinner() {
             hideFirework();
             currentPriceType = "third";
             showOverlay();
-            generateWinner(thirdPriceWinners);
-            console.log(thirdPriceWinners);
+            generateWinner(thirdPriceWinners);            
         }
 
         function generateCommonPriceWinner() {
