@@ -29256,7 +29256,7 @@
         height: 40px;
         padding-top: 10px;
         width: 100%;
-        z-index: 10;
+        z-index: 1;
     }
 
     .footer>img {
@@ -29548,6 +29548,7 @@
         let currentPriceType;
 
         let generatorInterval = 10;
+        var audio = new Audio("./NhacXoSo.mp3");
 
         let fireworkCanvas, ctx, fireworkCanvasWidth, fireworkCanvasHeight, particles = [],
             probability = 0.04,
@@ -29630,6 +29631,8 @@
             hideConfirmPriceLimitButton();
             showGenerateButtons();
             hideImportExcelButton();
+            audio.play();
+            audio.loop = true;
         }
 
         function confirmSpecialPriceLimit() {
