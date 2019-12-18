@@ -29133,19 +29133,20 @@
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-weight: normal;
-        font-size: 2em;
+        width: 100vw;
+        margin: 0;
     }
 
     .grid-container {
-        width: 97vw;
         display: grid;
+        margin: 25px 20px;
+        padding: 5px;
         grid-row-gap: 0px;
         grid-template-columns: 1.5fr 0.5fr 1fr 9fr;
+        grid-column-gap: 10px;
         background-color: var(--white-color);
-        padding: 10px;
-        margin: 20px;
-        align-items: center;
         border-radius: 20px;
+        align-items: center;
     }
 
     .grid-item {
@@ -29283,6 +29284,8 @@
         display: grid;
         grid-row-gap: 0px;
         grid-template-columns: 1fr 1fr 1fr;
+        grid-column-gap: 10px;
+        justify-items: center;
     }
 
     .special-price {
@@ -29306,7 +29309,7 @@
         border: 5px solid var(--common-runner-color);
     }
 
-    .special-runner-list {
+    .special-runner {
         background-color: var(--light-special-runner-color);
         padding: 6px 12px;
         border-radius: 10px;
@@ -29314,7 +29317,7 @@
         margin-bottom: 5px;
     }
 
-    .first-runner-list {
+    .first-runner {
         background-color: var(--light-first-runner-color);
         padding: 6px 12px;
         border-radius: 10px;
@@ -29322,7 +29325,7 @@
         margin-bottom: 5px;
     }
 
-    .second-runner-list {
+    .second-runner {
         background-color: var(--light-second-runner-color);
         padding: 6px 12px;
         border-radius: 10px;
@@ -29330,7 +29333,7 @@
         margin-bottom: 5px;
     }
 
-    .third-runner-list {
+    .third-runner {
         background-color: var(--light-third-runner-color);
         padding: 6px 12px;
         border-radius: 10px;
@@ -29338,7 +29341,7 @@
         margin-bottom: 5px;
     }
 
-    .common-runner-list {
+    .common-runner {
         background-color: var(--light-common-runner-color);
         padding: 6px 12px;
         border-radius: 10px;
@@ -29346,65 +29349,73 @@
         margin-bottom: 5px;
     }
 
-    .runner-list {
-        border-radius: 20px;
-        padding: 20px;
+    .runner-list {        
+        padding: 5px 0px;
     }
 
     @media all and (min-width: 1920px) {
         body {
             font-size: 2em;
         }
-        input{
+
+        input {
             font-size: 1.25em;
         }
+
         .current-winner {
-        color: var(--white-color);
-        font-size: 5em;
-    }
+            color: var(--white-color);
+            font-size: 5em;
+        }
     }
 
-    @media all and (max-width: 1919px)  and (min-width: 1370px){
+    @media all and (max-width: 1919px) and (min-width: 1370px) {
         body {
             font-size: 1.5em;
         }
-        input{
+
+        input {
             font-size: 1em;
         }
+
         .current-winner {
-        color: var(--white-color);
-        font-size: 4em;
-    }
+            color: var(--white-color);
+            font-size: 4em;
+        }
     }
 
     @media all and (max-width: 1369px) and (min-width: 600px) {
         body {
             font-size: 1.25em;
         }
-        input{
+
+        input {
             font-size: 0.75em;
         }
+
         .current-winner {
-        color: var(--white-color);
-        font-size: 3em;
-    }
+            color: var(--white-color);
+            font-size: 3em;
+        }
     }
 
     @media all and (max-width: 599px) and (min-width: 320px) {
         body {
             font-size: 0.5em;
         }
-        input{
+
+        input {
             font-size: 0.5em;
         }
+
         .current-winner {
-        color: var(--white-color);
-        font-size: 2em;
-    }
+            color: var(--white-color);
+            font-size: 2em;
+        }
     }
 </style>
 
 <body>
+
     <div id="overlay">
         <canvas id="firework-overlay"></canvas>
         <div id="winner-display" class="winner-container">
@@ -29508,6 +29519,7 @@
         <img src="./Axon-Active-Vietnam_logo.png" height="30px">
         <p class="footer-text">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.</p>
     </div>
+
 
     <script>
         let displayCurrentWinner = document.getElementById("current-winner");
@@ -29890,112 +29902,103 @@
             }
         }
 
-        function updateSpecialPriceWinnerList() {
-            let newWinner = document.createElement("div");
-            newWinner.className = "special-runner-list"
-
-            let removeWinnerButton = document.createElement('span');
+        function createRemoveWinnerButton(){
+            let removeWinnerButton = document.createElement('span');            
             removeWinnerButton.innerHTML = "x";
             removeWinnerButton.className = "remove-winner-button";
-
-            newWinner.innerHTML =
-                `${specialPriceWinners[specialPriceWinners.length - 1].Id}. ${specialPriceWinners[specialPriceWinners.length - 1].Fullname}`;
-            specialPriceLimit -= 1;
+            removeWinnerButton.style.display = "none";            
             removeWinnerButton.addEventListener("click", function () {
                 removeWinnerFromList(event);
-            });
-            document.getElementById("special-price-limit").value = specialPriceLimit;
+            });        
+            return removeWinnerButton;
+        }
+
+        function updateSpecialPriceWinnerList() {
+            let newWinner = document.createElement("div");        
+            let removeWinnerButton = createRemoveWinnerButton();
+            newWinner.className = "special-runner"
+            newWinner.innerHTML =
+                `${specialPriceWinners[specialPriceWinners.length - 1].Id}. ${specialPriceWinners[specialPriceWinners.length - 1].Fullname}`;
             document.getElementById("special-price-winners").appendChild(newWinner);
             newWinner.appendChild(removeWinnerButton);
+            newWinner.addEventListener("mouseleave", function(){ removeWinnerButton.style.display = "none"; })
+            newWinner.addEventListener("mouseenter", function(){ removeWinnerButton.style.display = "inline"; })
 
+            specialPriceLimit -= 1;
+            document.getElementById("special-price-limit").value = specialPriceLimit;
+                
             if (Number(specialPriceLimit) == 0)
                 disableAfterRoll(document.getElementById("special-price-container"));
         }
 
         function updateFirstPriceWinnerList() {
-            let newWinner = document.createElement("div");
-            newWinner.className = "first-runner-list"
-
-            let removeWinnerButton = document.createElement('span');
-            removeWinnerButton.innerHTML = "x";
-            removeWinnerButton.className = "remove-winner-button";
-
+            let newWinner = document.createElement("div");        
+            let removeWinnerButton = createRemoveWinnerButton();
+            newWinner.className = "first-runner"
             newWinner.innerHTML =
                 `${firstPriceWinners[firstPriceWinners.length - 1].Id}. ${firstPriceWinners[firstPriceWinners.length - 1].Fullname}`;
-            firstPriceLimit -= 1;
-            removeWinnerButton.addEventListener("click", function () {
-                removeWinnerFromList(event);
-            });
-            document.getElementById("first-price-limit").value = firstPriceLimit;
             document.getElementById("first-price-winners").appendChild(newWinner);
             newWinner.appendChild(removeWinnerButton);
+            newWinner.addEventListener("mouseleave", function(){ removeWinnerButton.style.display = "none"; })
+            newWinner.addEventListener("mouseenter", function(){ removeWinnerButton.style.display = "inline"; })
 
+            firstPriceLimit -= 1;
+            document.getElementById("first-price-limit").value = firstPriceLimit;
+                
             if (Number(firstPriceLimit) == 0)
                 disableAfterRoll(document.getElementById("first-price-container"));
         }
 
         function updateSecondPriceWinnerList() {
-            let newWinner = document.createElement("div");
-            newWinner.className = "second-runner-list"
-
-            let removeWinnerButton = document.createElement('span');
-            removeWinnerButton.innerHTML = "x";
-            removeWinnerButton.className = "remove-winner-button";
-
+            let newWinner = document.createElement("div");        
+            let removeWinnerButton = createRemoveWinnerButton();
+            newWinner.className = "second-runner"
             newWinner.innerHTML =
                 `${secondPriceWinners[secondPriceWinners.length - 1].Id}. ${secondPriceWinners[secondPriceWinners.length - 1].Fullname}`;
-            secondPriceLimit -= 1;
-            removeWinnerButton.addEventListener("click", function () {
-                removeWinnerFromList(event);
-            });
-            document.getElementById("second-price-limit").value = secondPriceLimit;
             document.getElementById("second-price-winners").appendChild(newWinner);
             newWinner.appendChild(removeWinnerButton);
+            newWinner.addEventListener("mouseleave", function(){ removeWinnerButton.style.display = "none"; })
+            newWinner.addEventListener("mouseenter", function(){ removeWinnerButton.style.display = "inline"; })
 
+            secondPriceLimit -= 1;
+            document.getElementById("second-price-limit").value = secondPriceLimit;
+                
             if (Number(secondPriceLimit) == 0)
                 disableAfterRoll(document.getElementById("second-price-container"));
         }
 
         function updateThirdPriceWinnerList() {
-            let newWinner = document.createElement("div");
-            newWinner.className = "third-runner-list"
-
-            let removeWinnerButton = document.createElement('span');
-            removeWinnerButton.innerHTML = "x";
-            removeWinnerButton.className = "remove-winner-button";
-
+            let newWinner = document.createElement("div");        
+            let removeWinnerButton = createRemoveWinnerButton();
+            newWinner.className = "third-runner"
             newWinner.innerHTML =
                 `${thirdPriceWinners[thirdPriceWinners.length - 1].Id}. ${thirdPriceWinners[thirdPriceWinners.length - 1].Fullname}`;
-            thirdPriceLimit -= 1;
-            removeWinnerButton.addEventListener("click", function () {
-                removeWinnerFromList(event);
-            });
-            document.getElementById("third-price-limit").value = thirdPriceLimit;
             document.getElementById("third-price-winners").appendChild(newWinner);
             newWinner.appendChild(removeWinnerButton);
+            newWinner.addEventListener("mouseleave", function(){ removeWinnerButton.style.display = "none"; })
+            newWinner.addEventListener("mouseenter", function(){ removeWinnerButton.style.display = "inline"; })
 
+            thirdPriceLimit -= 1;
+            document.getElementById("third-price-limit").value = thirdPriceLimit;
+                
             if (Number(thirdPriceLimit) == 0)
                 disableAfterRoll(document.getElementById("third-price-container"));
         }
 
         function updateCommonPriceWinnerList() {
-            let newWinner = document.createElement("div");
-            newWinner.className = "common-runner-list"
-
-            let removeWinnerButton = document.createElement('span');
-            removeWinnerButton.innerHTML = "x";
-            removeWinnerButton.className = "remove-winner-button";
-
+            let newWinner = document.createElement("div");        
+            let removeWinnerButton = createRemoveWinnerButton();
+            newWinner.className = "common-runner"
             newWinner.innerHTML =
                 `${commonPriceWinners[commonPriceWinners.length - 1].Id}. ${commonPriceWinners[commonPriceWinners.length - 1].Fullname}`;
-            commonPriceLimit -= 1;
-            removeWinnerButton.addEventListener("click", function () {
-                removeWinnerFromList(event);
-            });
-            document.getElementById("common-price-limit").value = commonPriceLimit;
             document.getElementById("common-price-winners").appendChild(newWinner);
             newWinner.appendChild(removeWinnerButton);
+            newWinner.addEventListener("mouseleave", function(){ removeWinnerButton.style.display = "none"; })
+            newWinner.addEventListener("mouseenter", function(){ removeWinnerButton.style.display = "inline"; })
 
+            commonPriceLimit -= 1;
+            document.getElementById("common-price-limit").value = commonPriceLimit;
+                
             if (Number(commonPriceLimit) == 0)
                 disableAfterRoll(document.getElementById("common-price-container"));
         }
