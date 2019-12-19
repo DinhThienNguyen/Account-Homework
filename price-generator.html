@@ -29130,8 +29130,8 @@
         --light-second-runner-color: #d1d0d2;
         --light-third-runner-color: #dca570;
         --light-common-runner-color: #2cd9d0;
-        --banner-image-source: url("./chrismas2.jpg");
-        --banner-image-src: url("./1280-300.png");
+        --banner-image-source: url("");
+        --banner-image-src: url("");
     }
 
     body {
@@ -29156,7 +29156,7 @@
 
     .content {
         flex: 1 0 auto;
-        background-image: url("./2560x1440.jpg");
+        background-image: url("");
         background-repeat: no-repeat;
     }
 
@@ -29226,6 +29226,7 @@
     .winner-container {
         width: 100%;
         height: 100%;
+        color: white;
         display: flex;
         position: relative;
         flex-direction: column;
@@ -29245,6 +29246,7 @@
         cursor: pointer;
         border-radius: 5px;
         padding: 0px 10px;
+        align-self: center;
     }
 
     .remove-winner-button:hover {
@@ -29267,7 +29269,6 @@
         font-size: 11px;
         width: 100%;
         height: 40px;
-        width: 100%;
         z-index: 1;
         flex-shrink: 0;
     }
@@ -29295,7 +29296,8 @@
 
     .winner-list {
         display: grid;
-        grid-row-gap: 0px;
+        justify-content: center;
+        grid-row-gap: 10px;
         grid-template-columns: 1fr 1fr 1fr;
         grid-column-gap: 10px;
         justify-items: left;
@@ -29324,9 +29326,11 @@
         border: 5px solid var(--common-runner-color);
     }
 
-    .winner {
+    .winner-card {
         border-radius: 10px;
         width: 100%;
+        display: flex;
+        justify-content: center;
     }
 
     .special-price-winner {
@@ -29510,7 +29514,8 @@
     <div id="overlay">
         <canvas id="winner-effect-overlay"></canvas>
         <div id="winner-display" class="winner-container">
-            <span id="current-winner" class="current-winner"></span>
+            <span id="current-winner-id"></span>
+            <span id="current-winner-fullname" class="current-winner"></span>
             <div id="ok-overlay" class="button overlay-button">OK</div>
         </div>
     </div>
@@ -29524,6 +29529,11 @@
             </div>
             <div id="special-price-container" class="grid-container special-price">
                 <div class="grid-item">
+                    <!-- <img id="special-price-image" style="width:100px;height:100px;">
+                    <label class="button">
+                        <input type="file" onchange="test(event)">
+                        Price image
+                    </label> -->
                     <span style="color: var(--special-runner-color);">Special Place</span>
                 </div>
                 <div class="grid-item">
@@ -29620,8 +29630,27 @@
             </p>
         </div>
     </div>
+
+
+
     <script>
-        let displayCurrentWinner = document.getElementById("current-winner");
+        function test(event) {
+            let input = event.target;
+            if (input.files && input.files[0]) {
+                console.log("reading");
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("special-price-image").src = reader.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                console.log("nothing to reading");
+            }
+
+        }
+
+        let displayCurrentWinnerFullname = document.getElementById("current-winner-fullname");
+        let displayCurrentWinnerId = document.getElementById("current-winner-id");
         document.getElementById("ok-overlay").addEventListener('click', updateWinnerList);
         let overlay = document.getElementById("overlay");
         overlay.style.display = "none";
@@ -29681,8 +29710,10 @@
             }
 
             let randomIndex = Math.floor(Math.random() * participantSize);
-            displayCurrentWinner.innerHTML =
-                `${participants[randomIndex].Id}.   ${participants[randomIndex].Fullname}`;
+            updateCurrentWinnerDisplay({
+                Id: "",
+                Fullname: participants[randomIndex].Fullname
+            });
 
             if (generatorInterval <= 1000) {
                 setTimeout(function () {
@@ -29693,6 +29724,7 @@
                     Id: participants[randomIndex].Id,
                     Fullname: participants[randomIndex].Fullname
                 };
+                updateCurrentWinnerDisplay(winner);
 
                 winners.push(winner);
                 participants.splice(randomIndex, 1);
@@ -29719,6 +29751,11 @@
                     "Imported data and winner list will be lost upon refresh. Do you still want to reload?"))
                 return true;
             return false;
+        }
+
+        function updateCurrentWinnerDisplay(winner) {
+            displayCurrentWinnerId.innerHTML = winner.Id;
+            displayCurrentWinnerFullname.innerHTML = winner.Fullname;
         }
 
         function confirmPriceLimit() {
@@ -30021,26 +30058,53 @@
             removeWinnerButton.innerHTML = "x";
             removeWinnerButton.className = "remove-winner-button";
             removeWinnerButton.style.display = "none";
+
             removeWinnerButton.addEventListener("click", function () {
                 removeWinnerFromList(event);
             });
+
             return removeWinnerButton;
         }
 
-        function updateSpecialPriceWinnerList() {
-            let newWinner = document.createElement("div");
+        function createWinnerInfoCard(winner) {
+            let winnerCard = document.createElement("div");
+            winnerCard.className = "winner-card";
+
+            let newWinnerInfo = document.createElement("div");
+
+            let newWinnerId = document.createElement("span");
+            newWinnerId.innerHTML = winner.Id;
+
+            let newWinnerFullname = document.createElement("span");
+            newWinnerFullname.innerHTML = winner.Fullname;
+            newWinnerFullname.style.display = "block";
+
+            newWinnerInfo.appendChild(newWinnerFullname);
+            newWinnerInfo.appendChild(newWinnerId);
+
+            winnerCard.appendChild(newWinnerInfo);
+
             let removeWinnerButton = createRemoveWinnerButton();
-            newWinner.className = "winner special-price-winner";
-            newWinner.innerHTML =
-                `${specialPriceWinners[specialPriceWinners.length - 1].Id}. ${specialPriceWinners[specialPriceWinners.length - 1].Fullname}`;
-            document.getElementById("special-price-winners").appendChild(newWinner);
-            newWinner.appendChild(removeWinnerButton);
-            newWinner.addEventListener("mouseleave", function () {
+            winnerCard.appendChild(removeWinnerButton);
+
+            winnerCard.addEventListener("mouseleave", function () {
                 removeWinnerButton.style.display = "none";
-            })
-            newWinner.addEventListener("mouseenter", function () {
+            });
+
+            winnerCard.addEventListener("mouseenter", function () {
                 removeWinnerButton.style.display = "inline";
-            })
+            });
+
+            return winnerCard;
+        }
+
+        function updateSpecialPriceWinnerList() {
+            let newWinner = createWinnerInfoCard({
+                Id: specialPriceWinners[specialPriceWinners.length - 1].Id,
+                Fullname: specialPriceWinners[specialPriceWinners.length - 1].Fullname
+            });
+            newWinner.className += " special-price-winner";
+            document.getElementById("special-price-winners").appendChild(newWinner);
 
             specialPriceLimit -= 1;
             document.getElementById("special-price-limit").value = specialPriceLimit;
@@ -30050,19 +30114,12 @@
         }
 
         function updateFirstPriceWinnerList() {
-            let newWinner = document.createElement("div");
-            let removeWinnerButton = createRemoveWinnerButton();
-            newWinner.className = "winner first-price-winner";
-            newWinner.innerHTML =
-                `${firstPriceWinners[firstPriceWinners.length - 1].Id}. ${firstPriceWinners[firstPriceWinners.length - 1].Fullname}`;
+            let newWinner = createWinnerInfoCard({
+                Id: firstPriceWinners[firstPriceWinners.length - 1].Id,
+                Fullname: firstPriceWinners[firstPriceWinners.length - 1].Fullname
+            });
+            newWinner.className += " first-price-winner";
             document.getElementById("first-price-winners").appendChild(newWinner);
-            newWinner.appendChild(removeWinnerButton);
-            newWinner.addEventListener("mouseleave", function () {
-                removeWinnerButton.style.display = "none";
-            })
-            newWinner.addEventListener("mouseenter", function () {
-                removeWinnerButton.style.display = "inline";
-            })
 
             firstPriceLimit -= 1;
             document.getElementById("first-price-limit").value = firstPriceLimit;
@@ -30072,19 +30129,12 @@
         }
 
         function updateSecondPriceWinnerList() {
-            let newWinner = document.createElement("div");
-            let removeWinnerButton = createRemoveWinnerButton();
-            newWinner.className = "winner second-price-winner"
-            newWinner.innerHTML =
-                `${secondPriceWinners[secondPriceWinners.length - 1].Id}. ${secondPriceWinners[secondPriceWinners.length - 1].Fullname}`;
+            let newWinner = createWinnerInfoCard({
+                Id: secondPriceWinners[secondPriceWinners.length - 1].Id,
+                Fullname: secondPriceWinners[secondPriceWinners.length - 1].Fullname
+            });
+            newWinner.className += " second-price-winner";
             document.getElementById("second-price-winners").appendChild(newWinner);
-            newWinner.appendChild(removeWinnerButton);
-            newWinner.addEventListener("mouseleave", function () {
-                removeWinnerButton.style.display = "none";
-            })
-            newWinner.addEventListener("mouseenter", function () {
-                removeWinnerButton.style.display = "inline";
-            })
 
             secondPriceLimit -= 1;
             document.getElementById("second-price-limit").value = secondPriceLimit;
@@ -30094,19 +30144,12 @@
         }
 
         function updateThirdPriceWinnerList() {
-            let newWinner = document.createElement("div");
-            let removeWinnerButton = createRemoveWinnerButton();
-            newWinner.className = "winner third-price-winner"
-            newWinner.innerHTML =
-                `${thirdPriceWinners[thirdPriceWinners.length - 1].Id}. ${thirdPriceWinners[thirdPriceWinners.length - 1].Fullname}`;
+            let newWinner = createWinnerInfoCard({
+                Id: thirdPriceWinners[thirdPriceWinners.length - 1].Id,
+                Fullname: thirdPriceWinners[thirdPriceWinners.length - 1].Fullname
+            });
+            newWinner.className += " third-price-winner";
             document.getElementById("third-price-winners").appendChild(newWinner);
-            newWinner.appendChild(removeWinnerButton);
-            newWinner.addEventListener("mouseleave", function () {
-                removeWinnerButton.style.display = "none";
-            })
-            newWinner.addEventListener("mouseenter", function () {
-                removeWinnerButton.style.display = "inline";
-            })
 
             thirdPriceLimit -= 1;
             document.getElementById("third-price-limit").value = thirdPriceLimit;
@@ -30116,19 +30159,12 @@
         }
 
         function updateCommonPriceWinnerList() {
-            let newWinner = document.createElement("div");
-            let removeWinnerButton = createRemoveWinnerButton();
-            newWinner.className = "winner common-price-winner"
-            newWinner.innerHTML =
-                `${commonPriceWinners[commonPriceWinners.length - 1].Id}. ${commonPriceWinners[commonPriceWinners.length - 1].Fullname}`;
-            document.getElementById("common-price-winners").appendChild(newWinner);
-            newWinner.appendChild(removeWinnerButton);
-            newWinner.addEventListener("mouseleave", function () {
-                removeWinnerButton.style.display = "none";
-            })
-            newWinner.addEventListener("mouseenter", function () {
-                removeWinnerButton.style.display = "inline";
-            })
+            let newWinner = createWinnerInfoCard({
+                Id: commonPriceWinners[commonPriceWinners.length - 1].Id,
+                Fullname: commonPriceWinners[commonPriceWinners.length - 1].Fullname
+            });
+            newWinner.className += " common-price-winner";            
+            document.getElementById("common-price-winners").appendChild(newWinner);        
 
             commonPriceLimit -= 1;
             document.getElementById("common-price-limit").value = commonPriceLimit;
