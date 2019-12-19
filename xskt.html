@@ -29154,7 +29154,16 @@
         align-items: center;
     }
 
+    .grid-container.before-import {
+        display: flex;
+        margin: 0;
+        margin-bottom: 20px;        
+    }
+
     .content {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
         flex: 1 0 auto;
         background-image: url("");
         background-repeat: no-repeat;
@@ -29289,7 +29298,7 @@
     }
 
     .footer-text {
-        margin-left: 130px;
+        
         margin-top: -15px;
         font-size: 11px;
     }
@@ -29465,8 +29474,7 @@
         }
     }
 
-    .banner {
-        margin: auto;
+    .banner {        
         margin-top: 50px;
     }
 
@@ -29526,7 +29534,7 @@
                 <input required="true" class="title-input" id="title-input">
                 <div id="title-input-message" class="title-input-message"></div>
             </div>
-            <div id="special-price-container" class="grid-container special-price">
+            <div id="special-price-container" class="before-import grid-container special-price">
                 <div class="grid-item">
                     <!-- <img id="special-price-image" style="width:100px;height:100px;">
                     <label class="button">
@@ -29546,7 +29554,7 @@
                 </div>
             </div>
 
-            <div id="first-price-container" class="grid-container first-price">
+            <div id="first-price-container" class="before-import grid-container first-price">
                 <div class="grid-item">
                     <span style="color:var(--first-runner-color);">First Place</span>
                 </div>
@@ -29561,7 +29569,7 @@
                 </div>
             </div>
 
-            <div id="second-price-container" class="grid-container second-price">
+            <div id="second-price-container" class="before-import grid-container second-price">
                 <div class="grid-item">
                     <span style="color:var(--second-runner-color);">Second Place</span>
                 </div>
@@ -29576,7 +29584,7 @@
                 </div>
             </div>
 
-            <div id="third-price-container" class="grid-container third-price">
+            <div id="third-price-container" class="before-import grid-container third-price">
                 <div class="grid-item">
                     <span style="color:var(--third-runner-color);">Third Place</span>
                 </div>
@@ -29591,7 +29599,7 @@
                 </div>
             </div>
 
-            <div id="common-price-container" class="grid-container common-price">
+            <div id="common-price-container" class="before-import grid-container common-price">
                 <div class="grid-item">
                     <span style="color:var(--common-runner-color);">Fourth Place</span>
                 </div>
@@ -29625,8 +29633,8 @@
                 Version 1.0.0
             </div>
             <img src="./Axon-Active-Vietnam_logo.png" height="30px" alt="AxonActiveVN">
-            <p class="footer-text" style="height:30px;">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.
-            </p>
+            <span class="footer-text" style="height:30px;">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.
+            </span>
         </div>
     </div>
 
@@ -29688,6 +29696,7 @@
             winnerEffectCanvas = document.getElementById("winner-effect-overlay");
             ctx = winnerEffectCanvas.getContext("2d");
             hideGenerateButtons();
+            hideConfirmPriceLimitButton();
         }
 
         function allowDigitKey(event) {
@@ -29831,6 +29840,10 @@
             }
         }
 
+        function showConfirmPriceLimitButton(){
+            document.getElementById("confirm-button").style.display = "block";
+        }
+
         function hideConfirmPriceLimitButton() {
             document.getElementById("confirm-button").style.display = "none";
         }
@@ -29905,6 +29918,7 @@
                 if (isImported) {
                     showSuccessExcelImportMessageWithParticipantAmount(participantSize);
                     hideImportExcelButton();
+                    showConfirmPriceLimitButton();
                 }
             };
             reader.readAsBinaryString(input.files[0]);
