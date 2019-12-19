@@ -29154,7 +29154,16 @@
         align-items: center;
     }
 
+    .grid-container.before-import {
+        width: fit-content;
+        display: block;
+        margin: 0;
+        margin-bottom: 20px;
+    }
+
     .content {
+        display: flex;
+        flex-direction: column;
         flex: 1 0 auto;
         background-image: url("");
         background-repeat: no-repeat;
@@ -29458,7 +29467,7 @@
                 <div class="banner-img"></div>
                 <!-- <img src="./christmas-4.jpg"> -->
             </div>
-            <div id="special-price-container" class="grid-container special-price">
+            <div id="special-price-container" class="before-import grid-container special-price">
                 <div class="grid-item">
                     <!-- <img id="special-price-image" style="width:100px;height:100px;">
                     <label class="button">
@@ -29478,7 +29487,7 @@
                 </div>
             </div>
 
-            <div id="first-price-container" class="grid-container first-price">
+            <div id="first-price-container" class="before-import grid-container first-price">
                 <div class="grid-item">
                     <span style="color:var(--first-runner-color);">First Place</span>
                 </div>
@@ -29493,7 +29502,7 @@
                 </div>
             </div>
 
-            <div id="second-price-container" class="grid-container second-price">
+            <div id="second-price-container" class="before-import grid-container second-price">
                 <div class="grid-item">
                     <span style="color:var(--second-runner-color);">Second Place</span>
                 </div>
@@ -29508,7 +29517,7 @@
                 </div>
             </div>
 
-            <div id="third-price-container" class="grid-container third-price">
+            <div id="third-price-container" class="before-import grid-container third-price">
                 <div class="grid-item">
                     <span style="color:var(--third-runner-color);">Third Place</span>
                 </div>
@@ -29523,7 +29532,7 @@
                 </div>
             </div>
 
-            <div id="common-price-container" class="grid-container common-price">
+            <div id="common-price-container" class="before-import grid-container common-price">
                 <div class="grid-item">
                     <span style="color:var(--common-runner-color);">Fourth Place</span>
                 </div>
@@ -29619,6 +29628,7 @@
             winnerEffectCanvas = document.getElementById("winner-effect-overlay");
             ctx = winnerEffectCanvas.getContext("2d");
             hideGenerateButtons();
+            hideConfirmPriceLimitButton();
         }
 
         function allowDigitKey(event) {
@@ -29765,6 +29775,10 @@
             document.getElementById("confirm-button").style.display = "none";
         }
 
+        function showConfirmPriceLimitButton() {
+            document.getElementById("confirm-button").style.display = "inline-block";
+        }
+
         function showGenerateButtons() {
             for (let generateButton of document.getElementsByClassName("generate-button")) {
                 generateButton.style.display = "inline-block";
@@ -29835,6 +29849,7 @@
                 if (isImported) {
                     showSuccessExcelImportMessageWithParticipantAmount(participantSize);
                     hideImportExcelButton();
+                    showConfirmPriceLimitButton();
                 }
             };
             reader.readAsBinaryString(input.files[0]);
@@ -30092,8 +30107,8 @@
                 Id: commonPriceWinners[commonPriceWinners.length - 1].Id,
                 Fullname: commonPriceWinners[commonPriceWinners.length - 1].Fullname
             });
-            newWinner.className += " common-price-winner";            
-            document.getElementById("common-price-winners").appendChild(newWinner);        
+            newWinner.className += " common-price-winner";
+            document.getElementById("common-price-winners").appendChild(newWinner);
 
             commonPriceLimit -= 1;
             document.getElementById("common-price-limit").value = commonPriceLimit;
