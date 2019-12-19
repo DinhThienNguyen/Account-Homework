@@ -29130,7 +29130,7 @@
         --light-second-runner-color: #d1d0d2;
         --light-third-runner-color: #dca570;
         --light-common-runner-color: #2cd9d0;
-        --banner-image-source:url("./chrismas2.jpg");
+        --banner-image-source: url("./chrismas2.jpg");
         --banner-image-src: url("./1280-300.png");
     }
 
@@ -29154,7 +29154,7 @@
         align-items: center;
     }
 
-    .content {        
+    .content {
         flex: 1 0 auto;
         background-image: url("./2560x1440.jpg");
         background-repeat: no-repeat;
@@ -29174,6 +29174,10 @@
         text-align: center;
         width: 90%;
         border-radius: 20px;
+    }
+
+    .grid-item>input:focus {
+        outline: none;
     }
 
     .excel-import {
@@ -29285,7 +29289,7 @@
 
     .footer-text {
         margin-left: 130px;
-        margin-top: -25px;
+        margin-top: -15px;
         font-size: 11px;
     }
 
@@ -29362,6 +29366,18 @@
             color: var(--white-color);
             font-size: 5em;
         }
+
+        .title-input-message {
+            font-size: 4em;
+        }
+
+        .banner {
+            max-width: 60%;
+        }
+
+        .title-input {
+            font-size: 4em;
+        }
     }
 
     @media all and (max-width: 1919px) and (min-width: 1370px) {
@@ -29376,6 +29392,18 @@
         .current-winner {
             color: var(--white-color);
             font-size: 4em;
+        }
+
+        .title-input-message {
+            font-size: 3em;
+        }
+
+        .banner {
+            max-width: 45%;
+        }
+
+        .title-input {
+            font-size: 3em;
         }
     }
 
@@ -29392,6 +29420,18 @@
             color: var(--white-color);
             font-size: 3em;
         }
+
+        .title-input-message {
+            font-size: 2em;
+        }
+
+        .banner {
+            max-width: 35%;
+        }
+
+        .title-input {
+            font-size: 2em;
+        }
     }
 
     @media all and (max-width: 599px) and (min-width: 320px) {
@@ -29407,19 +29447,32 @@
             color: var(--white-color);
             font-size: 2em;
         }
+
+        .title-input-message {
+            font-size: 1em;
+        }
+
+        .banner {
+            max-width: 25%;
+        }
+
+        .title-input {
+            font-size: 1em;
+        }
     }
 
-    .banner{
-        max-width: 1280px;
-        max-height: 300px;
+    .banner {
         margin: auto;
+        margin-top: 50px;
     }
-    .banner-img{
+
+    .banner-img {
         max-width: 1280px;
         height: 300px;
         background-image: var(--banner-image-src);
         background-repeat: no-repeat;
     }
+
     /* img{
         max-width: 100%;
         max-height: 100%;
@@ -29432,6 +29485,23 @@
         width: fit-content;
         margin-top: 10px;
         display: none;
+    }
+
+    .title-input-message {
+        text-align: center;
+        width: 100%;
+        display: none;
+    }
+
+    .title-input {
+        text-align: center;
+        width: 100%;
+        border-radius: 20px;
+
+    }
+
+    .title-input:focus {
+        outline: none;
     }
 </style>
 
@@ -29448,8 +29518,9 @@
     <div class="wrapper">
         <div class="content">
             <div class="banner">
-                <div class="banner-img"></div>
                 <!-- <img src="./christmas-4.jpg"> -->
+                <input required="true" class="title-input" id="title-input">
+                <div id="title-input-message" class="title-input-message"></div>
             </div>
             <div id="special-price-container" class="grid-container special-price">
                 <div class="grid-item">
@@ -29537,19 +29608,17 @@
                         Import participants excel file
                     </label>
                 </div>
-                <div id="excel-import-message" class="excel-import-message">Successfully imported 1000 participants!</div>
+                <div id="excel-import-message" class="excel-import-message"></div>
             </div>
         </div>
-        
-    </div>
-
-    <div class="footer">
-        <div class="version">
-            Version 1.0.0
+        <div class="footer">
+            <div class="version">
+                Version 1.0.0
+            </div>
+            <img src="./Axon-Active-Vietnam_logo.png" height="30px" alt="AxonActiveVN">
+            <p class="footer-text" style="height:30px;">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.
+            </p>
         </div>
-        <img src="./Axon-Active-Vietnam_logo.png" height="30px">
-        <p class="footer-text">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.</p>
-    </div>
     </div>
     <script>
         let displayCurrentWinner = document.getElementById("current-winner");
@@ -29657,7 +29726,8 @@
                 alert("Participant list is empty. Please import participant excel file before starting!");
                 return;
             }
-
+            hideTitleInput();
+            showTitleInputMessage();
             confirmSpecialPriceLimit();
             confirmFirstPriceLimit();
             confirmSecondPriceLimit();
@@ -30142,6 +30212,17 @@
             importMessage.innerHTML = `Successfully imported ${participantSize} participants!`;
         }
 
+        function showTitleInputMessage() {
+            let titleMessage = document.getElementById("title-input-message");
+            let titleInput = document.getElementById("title-input");
+            titleMessage.style.display = "block"
+            titleMessage.innerHTML = titleInput.value;
+        }
+
+        function hideTitleInput() {
+            let titleInputMessage = document.getElementById("title-input");
+            titleInputMessage.style.display = "none";
+        }
 
 
         function hideOverlay() {
