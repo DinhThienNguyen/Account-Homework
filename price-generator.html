@@ -29152,7 +29152,7 @@
         align-items: center;
     }
 
-    .content {        
+    .content {
         flex: 1 0 auto;
     }
 
@@ -29259,7 +29259,6 @@
         font-size: 11px;
         width: 100%;
         height: 40px;
-        width: 100%;
         z-index: 1;
         flex-shrink: 0;
     }
@@ -29430,6 +29429,11 @@
         <div class="content">
             <div id="special-price-container" class="grid-container special-price">
                 <div class="grid-item">
+                    <img id="special-price-image" style="width:100px;height:100px;">
+                    <label class="button">
+                        <input type="file" onchange="test(event)">
+                        Price image
+                    </label>
                     <span style="color: var(--special-runner-color);">Special Place</span>
                 </div>
                 <div class="grid-item">
@@ -29514,21 +29518,37 @@
                         Import participants excel file
                     </label>
                 </div>
-                <div id="excel-import-message" class="excel-import-message">Successfully imported 1000 participants!</div>
+                <div id="excel-import-message" class="excel-import-message">Successfully imported 1000 participants!
+                </div>
             </div>
         </div>
-        
+        <div class="footer">
+            <div class="version">
+                Version 1.0.0
+            </div>
+            <img src="./Axon-Active-Vietnam_logo.png" height="30px">
+            <p class="footer-text">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.</p>
+        </div>
     </div>
 
-    <div class="footer">
-        <div class="version">
-            Version 1.0.0
-        </div>
-        <img src="./Axon-Active-Vietnam_logo.png" height="30px">
-        <p class="footer-text">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.</p>
-    </div>
-    </div>
+
+
     <script>
+        function test(event) {
+            let input = event.target;
+            if (input.files && input.files[0]) {
+                console.log("reading");
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("special-price-image").src = reader.result;
+                }
+                reader.readAsDataURL(input.files[0]);                
+            }else {
+                console.log("nothing to reading");
+            }    
+            
+        }
+
         let displayCurrentWinner = document.getElementById("current-winner");
         document.getElementById("ok-overlay").addEventListener('click', updateWinnerList);
         let overlay = document.getElementById("overlay");
