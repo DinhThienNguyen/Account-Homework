@@ -29128,6 +29128,8 @@
         --light-second-runner-color: #d1d0d2;
         --light-third-runner-color: #dca570;
         --light-common-runner-color: #2cd9d0;
+        --banner-image-source:url("./chrismas2.jpg");
+        --banner-image-src: url("./1280-300.png");
     }
 
     body {
@@ -29151,8 +29153,9 @@
     }
 
     .content {
-        margin-bottom: 60px;
         flex: 1 0 auto;
+        background-image: url("./2560x1440.jpg");
+        background-repeat: no-repeat;
     }
 
     .wrapper {
@@ -29423,6 +29426,22 @@
             font-size: 2em;
         }
     }
+
+    .banner{
+        max-width: 1280px;
+        max-height: 300px;
+        margin: auto;
+    }
+    .banner-img{
+        max-width: 1280px;
+        height: 300px;
+        background-image: var(--banner-image-src);
+        background-repeat: no-repeat;
+    }
+    /* img{
+        max-width: 100%;
+        max-height: 100%;
+    } */
 </style>
 
 <body>
@@ -29436,6 +29455,10 @@
     </div>
     <div class="wrapper">
         <div class="content">
+            <div class="banner">
+                <div class="banner-img"></div>
+                <!-- <img src="./christmas-4.jpg"> -->
+            </div>
             <div id="special-price-container" class="grid-container special-price">
                 <div class="grid-item">
                     <span style="color: var(--special-runner-color);">Special Place</span>
