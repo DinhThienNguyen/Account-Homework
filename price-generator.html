@@ -29117,6 +29117,8 @@
         --main-button-color: #4dc3f9;
         --main-button-color-hover: #35baf9;
         --white-color: #ffffff;
+        --success-message-background-color: #d4edda;
+        --success-message-text-color: #155724;
         --overlay-color: rgba(0, 0, 0, 0.8);
         --special-runner-color: #ffb6c1;
         --first-runner-color: #e7bd42;
@@ -29152,7 +29154,7 @@
         align-items: center;
     }
 
-    .content {
+    .content {        
         flex: 1 0 auto;
         background-image: url("./2560x1440.jpg");
         background-repeat: no-repeat;
@@ -29176,7 +29178,8 @@
 
     .excel-import {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
         margin-top: 10px;
     }
 
@@ -29222,20 +29225,14 @@
         display: flex;
         position: relative;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-end;
         align-items: center;
         z-index: 4;
     }
 
     .current-winner {
         color: var(--white-color);
-    }
-
-    .winner {
-        padding: 6px 12px;
-        background-color: var(--first-runner-color);
-        border-radius: 5px;
-        width: fit-content;
+        margin-bottom: 45vh;
     }
 
     .remove-winner-button {
@@ -29250,7 +29247,7 @@
         background-color: rgba(255, 255, 255, 0.4);
     }
 
-    #firework-overlay {
+    #winner-effect-overlay {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -29323,44 +29320,29 @@
         border: 5px solid var(--common-runner-color);
     }
 
-    .special-runner {
+    .winner {
+        border-radius: 10px;
+        width: 100%;
+    }
+
+    .special-price-winner {
         background-color: var(--light-special-runner-color);
-        padding: 6px 12px;
-        border-radius: 10px;
-        width: fit-content;
-        margin-bottom: 5px;
     }
 
-    .first-runner {
+    .first-price-winner {
         background-color: var(--light-first-runner-color);
-        padding: 6px 12px;
-        border-radius: 10px;
-        width: fit-content;
-        margin-bottom: 5px;
     }
 
-    .second-runner {
+    .second-price-winner {
         background-color: var(--light-second-runner-color);
-        padding: 6px 12px;
-        border-radius: 10px;
-        width: fit-content;
-        margin-bottom: 5px;
     }
 
-    .third-runner {
+    .third-price-winner {
         background-color: var(--light-third-runner-color);
-        padding: 6px 12px;
-        border-radius: 10px;
-        width: fit-content;
-        margin-bottom: 5px;
     }
 
-    .common-runner {
+    .common-price-winner {
         background-color: var(--light-common-runner-color);
-        padding: 6px 12px;
-        border-radius: 10px;
-        width: fit-content;
-        margin-bottom: 5px;
     }
 
     .runner-list {
@@ -29442,17 +29424,27 @@
         max-width: 100%;
         max-height: 100%;
     } */
+    .excel-import-message {
+        color: var(--success-message-text-color);
+        background-color: var(--success-message-background-color);
+        padding: 6px 12px;
+        border-radius: 10px;
+        width: fit-content;
+        margin-top: 10px;
+        display: none;
+    }
 </style>
 
 <body>
 
     <div id="overlay">
-        <canvas id="firework-overlay"></canvas>
+        <canvas id="winner-effect-overlay"></canvas>
         <div id="winner-display" class="winner-container">
             <span id="current-winner" class="current-winner"></span>
             <div id="ok-overlay" class="button overlay-button">OK</div>
         </div>
     </div>
+
     <div class="wrapper">
         <div class="content">
             <div class="banner">
@@ -29535,25 +29527,29 @@
             </div>
 
             <div id="confirm-button" class="grid-item">
-                <div class="button confirm-button" onclick="confirmPriceLimit()">Confirm price pool</div>
+                <div class="button confirm-button" onclick="confirmPriceLimit()">Start</div>
             </div>
+
             <div id="excel-import" class="excel-import">
-                <div>
+                <div id="excel-import-button">
                     <label class="button">
                         <input type="file" onchange="readExcelFile(event)">
                         Import participants excel file
                     </label>
                 </div>
+                <div id="excel-import-message" class="excel-import-message">Successfully imported 1000 participants!</div>
             </div>
         </div>
+        
+    </div>
 
-        <div class="footer">
-            <div class="version">
-                Version 1.0.0
-            </div>
-            <img src="./Axon-Active-Vietnam_logo.png" height="30px">
-            <p class="footer-text">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.</p>
+    <div class="footer">
+        <div class="version">
+            Version 1.0.0
         </div>
+        <img src="./Axon-Active-Vietnam_logo.png" height="30px">
+        <p class="footer-text">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.</p>
+    </div>
     </div>
     <script>
         let displayCurrentWinner = document.getElementById("current-winner");
@@ -29584,14 +29580,16 @@
         let generatorInterval = 10;
         var audio = new Audio("./NhacXoSo.mp3");
 
-        let fireworkCanvas, ctx, fireworkCanvasWidth, fireworkCanvasHeight, particles = [],
+        let winnerEffectCanvas, winnerEffectCanvasWidth, winnerEffectCanvasHeight,
+            particles = [],
             probability = 0.04,
             xPoint, yPoint;
         let continueFirework = false;
+        let continueCoinRain = false;
 
         function onLoad() {
-            fireworkCanvas = document.getElementById("firework-overlay");
-            ctx = fireworkCanvas.getContext("2d");
+            winnerEffectCanvas = document.getElementById("winner-effect-overlay");
+            ctx = winnerEffectCanvas.getContext("2d");
             hideGenerateButtons();
         }
 
@@ -29634,11 +29632,14 @@
                 generatorInterval = 10;
 
                 document.getElementById("ok-overlay").style.display = "block";
-                showFirework();
-                if (!!fireworkCanvas) {
-                    fireworkCanvasWidth = fireworkCanvas.width = document.getElementById("firework-overlay")
+                currentPriceType == "special" ? showCoinRain() : showFirework();
+                console.log("hello");
+                if (!!winnerEffectCanvas) {
+                    winnerEffectCanvasWidth = winnerEffectCanvas.width = document.getElementById(
+                            "winner-effect-overlay")
                         .offsetWidth;
-                    fireworkCanvasHeight = fireworkCanvas.height = document.getElementById("firework-overlay")
+                    winnerEffectCanvasHeight = winnerEffectCanvas.height = document.getElementById(
+                            "winner-effect-overlay")
                         .offsetHeight;
                 }
             }
@@ -29663,8 +29664,8 @@
             confirmThirdPriceLimit();
             confirmCommonPriceLimit();
             hideConfirmPriceLimitButton();
+            hideImportExcelSection();
             showGenerateButtons();
-            hideImportExcelButton();
             audio.play();
             audio.loop = true;
         }
@@ -29741,6 +29742,10 @@
         }
 
         function hideImportExcelButton() {
+            document.getElementById("excel-import-button").style.display = "none";
+        }
+
+        function hideImportExcelSection() {
             document.getElementById("excel-import").style.display = "none";
         }
 
@@ -29792,7 +29797,8 @@
 
             reader.onloadend = function () {
                 if (isImported) {
-                    alert("The excel file was imported successfully!");
+                    showSuccessExcelImportMessageWithParticipantAmount(participantSize);
+                    hideImportExcelButton();
                 }
             };
             reader.readAsBinaryString(input.files[0]);
@@ -29912,6 +29918,7 @@
         function updateWinnerList() {
             hideOverlay();
             hideFirework();
+            hideCoinRain();
 
             switch (currentPriceType) {
                 case "special":
@@ -29953,7 +29960,7 @@
         function updateSpecialPriceWinnerList() {
             let newWinner = document.createElement("div");
             let removeWinnerButton = createRemoveWinnerButton();
-            newWinner.className = "special-runner"
+            newWinner.className = "winner special-price-winner";
             newWinner.innerHTML =
                 `${specialPriceWinners[specialPriceWinners.length - 1].Id}. ${specialPriceWinners[specialPriceWinners.length - 1].Fullname}`;
             document.getElementById("special-price-winners").appendChild(newWinner);
@@ -29975,7 +29982,7 @@
         function updateFirstPriceWinnerList() {
             let newWinner = document.createElement("div");
             let removeWinnerButton = createRemoveWinnerButton();
-            newWinner.className = "first-runner"
+            newWinner.className = "winner first-price-winner";
             newWinner.innerHTML =
                 `${firstPriceWinners[firstPriceWinners.length - 1].Id}. ${firstPriceWinners[firstPriceWinners.length - 1].Fullname}`;
             document.getElementById("first-price-winners").appendChild(newWinner);
@@ -29997,7 +30004,7 @@
         function updateSecondPriceWinnerList() {
             let newWinner = document.createElement("div");
             let removeWinnerButton = createRemoveWinnerButton();
-            newWinner.className = "second-runner"
+            newWinner.className = "winner second-price-winner"
             newWinner.innerHTML =
                 `${secondPriceWinners[secondPriceWinners.length - 1].Id}. ${secondPriceWinners[secondPriceWinners.length - 1].Fullname}`;
             document.getElementById("second-price-winners").appendChild(newWinner);
@@ -30019,7 +30026,7 @@
         function updateThirdPriceWinnerList() {
             let newWinner = document.createElement("div");
             let removeWinnerButton = createRemoveWinnerButton();
-            newWinner.className = "third-runner"
+            newWinner.className = "winner third-price-winner"
             newWinner.innerHTML =
                 `${thirdPriceWinners[thirdPriceWinners.length - 1].Id}. ${thirdPriceWinners[thirdPriceWinners.length - 1].Fullname}`;
             document.getElementById("third-price-winners").appendChild(newWinner);
@@ -30041,7 +30048,7 @@
         function updateCommonPriceWinnerList() {
             let newWinner = document.createElement("div");
             let removeWinnerButton = createRemoveWinnerButton();
-            newWinner.className = "common-runner"
+            newWinner.className = "winner common-price-winner"
             newWinner.innerHTML =
                 `${commonPriceWinners[commonPriceWinners.length - 1].Id}. ${commonPriceWinners[commonPriceWinners.length - 1].Fullname}`;
             document.getElementById("common-price-winners").appendChild(newWinner);
@@ -30066,7 +30073,7 @@
         }
 
         function generateSpecialPriceWinner() {
-            hideFirework();
+            hideCoinRain();
             currentPriceType = "special";
             if (checkParticipantListEmpty()) {
                 return;
@@ -30124,6 +30131,19 @@
             return false;
         }
 
+        function hideSuccessExcelImportMessage() {
+            let importMessage = document.getElementById("excel-import-message");
+            importMessage.style.display = "none";
+        }
+
+        function showSuccessExcelImportMessageWithParticipantAmount(participantSize) {
+            let importMessage = document.getElementById("excel-import-message");
+            importMessage.style.display = "block";
+            importMessage.innerHTML = `Successfully imported ${participantSize} participants!`;
+        }
+
+
+
         function hideOverlay() {
             overlay.style.display = "none";
             document.getElementById("ok-overlay").style.display = "none";
@@ -30136,12 +30156,21 @@
         function showFirework() {
             continueFirework = true;
             updateFirework();
+            console.log("show firework");
         }
 
         function hideFirework() {
             continueFirework = false;
-            let ctxx = fireworkCanvas.getContext("2d");
-            ctxx.clearRect(0, 0, fireworkCanvas.width, fireworkCanvas.height);
+        }
+
+        function showCoinRain() {
+            continueCoinRain = true;
+            updateCoinRain();
+            console.log("show coin rain");
+        }
+
+        function hideCoinRain() {
+            continueCoinRain = false;
         }
 
         window.requestAnimationFrame =
@@ -30161,6 +30190,7 @@
             if (continueFirework) {
                 requestId = window.requestAnimationFrame(updateFirework);
             } else {
+                ctx.clearRect(0, 0, winnerEffectCanvasWidth, winnerEffectCanvasHeight);
                 window.cancelAnimationFrame(requestId);
             }
         }
@@ -30181,7 +30211,7 @@
         function paint() {
             ctx.globalCompositeOperation = 'source-over';
             ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-            ctx.fillRect(0, 0, fireworkCanvasWidth, fireworkCanvasHeight);
+            ctx.fillRect(0, 0, winnerEffectCanvasWidth, winnerEffectCanvasHeight);
             ctx.globalCompositeOperation = 'lighter';
             for (var i = 0; i < particles.length; i++) {
                 particles[i].draw(ctx);
@@ -30189,8 +30219,8 @@
         }
 
         function createFirework() {
-            xPoint = Math.random() * (fireworkCanvasWidth - 200) + 100;
-            yPoint = Math.random() * (fireworkCanvasHeight - 200) + 100;
+            xPoint = Math.random() * (winnerEffectCanvasWidth - 200) + 100;
+            yPoint = Math.random() * (winnerEffectCanvasHeight - 200) + 100;
             var nFire = Math.random() * 50 + 100;
             var c = "rgb(" + (~~(Math.random() * 200 + 55)) + "," +
                 (~~(Math.random() * 200 + 55)) + "," + (~~(Math.random() * 200 + 55)) + ")";
@@ -30245,6 +30275,160 @@
                 c.closePath();
                 c.fill();
                 c.restore();
+            }
+        }
+
+        // Our original 4 frames of the coin pixel art. It's base36 encoded and saved as a string using:
+        // f1.map( x => ( parseInt(x).toString(36) ) ).join('-') 
+        var f1 = [
+            '111166661111',
+            '116622226611',
+            '162244444561',
+            '162432234561',
+            '624323463456',
+            '624323463456',
+            '624323463456',
+            '624323463456',
+            '624323463456',
+            '624323463456',
+            '624324463456',
+            '624324463456',
+            '164336634561',
+            '164444445561',
+            '116655556611',
+            '111166661111'
+        ];
+
+        var f2 = [
+            '111116611111',
+            '111162261111',
+            '111624456111',
+            '111623356111',
+            '116242645611',
+            '116242645611',
+            '116242645611',
+            '116242645611',
+            '116242645611',
+            '116242645611',
+            '116242645611',
+            '116242645611',
+            '111643356111',
+            '111644456111',
+            '111165561111',
+            '111116611111'
+        ];
+
+        var f3 = [
+            '111116611111',
+            '111162261111',
+            '111164461111',
+            '111163361111',
+            '111633456111',
+            '111623456111',
+            '111623456111',
+            '111623456111',
+            '111623456111',
+            '111623456111',
+            '111623456111',
+            '111623456111',
+            '111163361111',
+            '111164461111',
+            '111165561111',
+            '111116611111'
+        ];
+
+        var f4 = [
+            '111116611111',
+            '111162261111',
+            '111623246111',
+            '111622346111',
+            '116223234611',
+            '116232324611',
+            '116223234611',
+            '116232324611',
+            '116223234611',
+            '116232324611',
+            '116223234611',
+            '116232324611',
+            '111623246111',
+            '111632346111',
+            '111164461111',
+            '111116611111'
+        ];
+
+        var coinWidth = 12, // Cols in our pixel art.
+            coinHeight = 16, // Rows in our pixel art.
+            coinScale = 4, // Upscale our pixels so we're not squinting at 12x16 pixel coins.
+            t = 0,
+            R = Math.random,
+            frames = [
+                '1f2hrcon-1hkpv1yr-22j85imp-22mbyibl-7yt62jhc-7yt62jhc-7yt62jhc-7yt62jhc-7yt62jhc-7yt62jhc-7yt6nz34-7yt6nz34-23htserl-23jlz69l-1hl9pfk3-1f2hrcon',
+                '1f1nyluv-1f2f51mf-1fa2bhkf-1fa1nwsv-1hefvbe3-1hefvbe3-1hefvbe3-1hefvbe3-1hefvbe3-1hefvbe3-1hefvbe3-1hefvbe3-1fadkkwf-1fae85nz-1f2h3rx3-1f1nyluv',
+                '1f1nyluv-1f2f51mf-1f2gg75j-1f2fsmdz-1fa7oe0f-1fa1q1yn-1fa1q1yn-1fa1q1yn-1fa1q1yn-1fa1q1yn-1fa1q1yn-1fa1q1yn-1f2fsmdz-1f2gg75j-1f2h3rx3-1f1nyluv',
+                '1f1nyluv-1f2f51mf-1fa1ljxb-1fa129hb-1he4b9rn-1he9q3nn-1he4b9rn-1he9q3nn-1he4b9rn-1he9q3nn-1he4b9rn-1he9q3nn-1fa1ljxb-1fa70lj3-1f2gg75j-1f1nyluv'
+            ], // Our 4 coin frames, base36 encoded. The biggest chunk of our code by far.
+            colors = ['', '', '#fff', '#f8f800', '#f8d820', '#d8a038', '#000'], // The colors to paint the pixels.
+            coins = [],
+            Coin = function () {
+                this.i()
+            };
+        Coin.prototype = {
+            // Init the coin. Centered on the x axis, offscreen above the canvas, with a random x/y velocity, rotation speed, and initial frame.
+            i: function () {
+                this.x = winnerEffectCanvas.width / 2;
+                this.y = -coinHeight * coinScale - (R() * 99);
+                this.vX = (R() - 0.5) * 9;
+                this.vX += this.vX > 0 ? 1 : -1;
+                this.vY = (R() - 0.5) * 5;
+                this.rotationSpeed = ~~(R() * 12) + 2;
+                this.frame = ~~(R() * 4);
+            },
+            // Update the coin. Apply gravity and update position and frame. If we're off the edge on the x-axis, reinit. If we're past the bottom of the screen, bounce.
+            u: function () {
+                this.vY++;
+                this.x += this.vX;
+                this.y += this.vY;
+                if (t % this.rotationSpeed == 0) this.frame++, this.frame = this.frame % 4;
+
+                var right = this.x + coinWidth * coinScale,
+                    bottom = this.y + coinHeight * coinScale;
+                if (this.x < -coinWidth * coinScale || this.x > winnerEffectCanvas.width) this.i();
+                if (bottom > winnerEffectCanvas.height) this.y -= (bottom % winnerEffectCanvas.height), this
+                    .vY *= -.9;
+            },
+            // Draw the coin. 
+            d: function () {
+                var frame = frames[this.frame].split('-').map(x => (parseInt(x, 36)))
+                for (var i = 0; i < frame.length; i++) {
+                    var coinPixels = frame[i].toString().split('');
+                    for (var p = 0; p < coinPixels.length; p++) {
+                        if (coinPixels[p] > 1) {
+                            ctx.fillStyle = colors[coinPixels[p]];
+                            ctx.fillRect(this.x + p * coinScale, this.y + i * coinScale, coinScale, coinScale);
+                        }
+                    }
+                }
+            }
+        }
+
+        function updateCoinRain() {
+            let requestId = 0;
+            ctx.clearRect(0, 0, winnerEffectCanvasWidth, winnerEffectCanvasHeight);
+            // Produce a new coin every half second until we get 40 coins. After that, they'll reset themselves for an infinite supply.
+            if (t % 10 == 0 && coins.length < 40) {
+                coins.push(new Coin());
+            }
+            for (var i = 0; i < coins.length; i++) {
+                coins[i].u();
+                coins[i].d();
+            }
+            t++;
+            if (continueCoinRain) {
+                requestId = window.requestAnimationFrame(updateCoinRain);
+            } else {
+                ctx.clearRect(0, 0, winnerEffectCanvasWidth, winnerEffectCanvasHeight);
+                window.cancelAnimationFrame(requestId);
+                coins = [];
             }
         }
     </script>
