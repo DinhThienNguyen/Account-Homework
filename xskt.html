@@ -29288,6 +29288,7 @@
         color: #666;
         background-color: var(--white-color);
         font-size: 11px;
+        margin-top: 30px;
         width: 100%;
         height: 40px;
         z-index: 1;
@@ -29709,7 +29710,7 @@
             <div class="version">
                 Version 1.0.0
             </div>
-            <img src="./Axon-Active-Vietnam_logo.png" height="30px" alt="AxonActiveVN">
+            <img id="axon-active-logo" src="./Axon-Active-Vietnam_logo.png" onerror="hideAxonActiveLogo()" height="30px" alt="AxonActiveVN">
             <span class="footer-text" style="height:30px;">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.
             </span>
         </div>
@@ -29936,6 +29937,10 @@
 
         function showConfirmPriceLimitButton(){
             document.getElementById("confirm-button").style.display = "block";
+        }
+
+        function hideAxonActiveLogo() {
+            document.getElementById("axon-active-logo").style.display = "none";
         }
 
         function hideConfirmPriceLimitButton() {
