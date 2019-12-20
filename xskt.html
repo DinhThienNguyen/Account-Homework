@@ -29158,6 +29158,7 @@
         display: flex;
         margin: 0;
         margin-bottom: 20px;        
+        width: 40%;
     }
 
     .content {
@@ -29244,9 +29245,12 @@
         z-index: 4;
     }
 
-    .current-winner {
-        color: var(--white-color);
+    .margin-bottom-45vh {
         margin-bottom: 45vh;
+    }
+
+    .current-winner {
+        color: var(--white-color);        
     }
 
     .remove-winner-button {
@@ -29484,11 +29488,7 @@
         background-image: var(--banner-image-src);
         background-repeat: no-repeat;
     }
-
-    /* img{
-        max-width: 100%;
-        max-height: 100%;
-    } */
+    
     .excel-import-message {
         color: var(--success-message-text-color);
         background-color: var(--success-message-background-color);
@@ -29521,8 +29521,8 @@
     <div id="overlay">
         <canvas id="winner-effect-overlay"></canvas>
         <div id="winner-display" class="winner-container">
-            <span id="current-winner-id"></span>
             <span id="current-winner-fullname" class="current-winner"></span>
+            <span id="current-winner-id" class="margin-bottom-45vh"></span>
             <div id="ok-overlay" class="button overlay-button">OK</div>
         </div>
     </div>
@@ -29534,7 +29534,7 @@
                 <input required="true" class="title-input" id="title-input">
                 <div id="title-input-message" class="title-input-message"></div>
             </div>
-            <div id="special-price-container" class="before-import grid-container special-price">
+            <div id="special-price-container" class="grid-container special-price">
                 <div class="grid-item">
                     <!-- <img id="special-price-image" style="width:100px;height:100px;">
                     <label class="button">
@@ -29554,7 +29554,7 @@
                 </div>
             </div>
 
-            <div id="first-price-container" class="before-import grid-container first-price">
+            <div id="first-price-container" class="grid-container first-price">
                 <div class="grid-item">
                     <span style="color:var(--first-runner-color);">First Place</span>
                 </div>
@@ -29569,7 +29569,7 @@
                 </div>
             </div>
 
-            <div id="second-price-container" class="before-import grid-container second-price">
+            <div id="second-price-container" class="grid-container second-price">
                 <div class="grid-item">
                     <span style="color:var(--second-runner-color);">Second Place</span>
                 </div>
@@ -29584,7 +29584,7 @@
                 </div>
             </div>
 
-            <div id="third-price-container" class="before-import grid-container third-price">
+            <div id="third-price-container" class="grid-container third-price">
                 <div class="grid-item">
                     <span style="color:var(--third-runner-color);">Third Place</span>
                 </div>
@@ -29599,7 +29599,7 @@
                 </div>
             </div>
 
-            <div id="common-price-container" class="before-import grid-container common-price">
+            <div id="common-price-container" class="grid-container common-price">
                 <div class="grid-item">
                     <span style="color:var(--common-runner-color);">Fourth Place</span>
                 </div>
@@ -29751,6 +29751,7 @@
                             "winner-effect-overlay")
                         .offsetHeight;
                 }
+                
             }
         };
 
