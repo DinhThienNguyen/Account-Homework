@@ -29539,7 +29539,7 @@
     .confirm-dialog .dialog-content {
         width: 100%;
         height: 100%;
-        display: flex;        
+        display: flex;
         flex-direction: column;
         align-items: center;
     }
@@ -29548,7 +29548,7 @@
         flex: 3;
     }
 
-    .confirm-dialog .dialog-button{        
+    .confirm-dialog .dialog-button {
         width: 100%;
         height: 30px;
         flex: 1;
@@ -29828,6 +29828,10 @@
                 alert("Participant list is empty. Please import participant excel file before starting!");
                 return;
             }
+            if(isPriceLimitGreaterThanParticipants()){
+                alert("Cannot start because price limit is more than participants.")
+                return;
+            }
             hideTitleInput();
             showTitleInputMessage();
             confirmSpecialPriceLimit();
@@ -29927,6 +29931,16 @@
 
         function isParticipantsListEmpty() {
             return (participants === undefined || Number(participants.length) == 0) ? true : false;
+        }
+
+        function isPriceLimitGreaterThanParticipants() {
+            let priceLimit = 0;        
+            for (let input of document.getElementsByClassName("winner-limit")) {
+                if(input.value != ""){
+                    priceLimit += Number(input.value);
+                }
+            }
+            return priceLimit > participantSize ? true : false;            
         }
 
         function readExcelFile(event) {
