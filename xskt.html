@@ -29114,7 +29114,6 @@
 
 <style>
     :root {
-        --title-header-color: black;
         --main-button-color: #4dc3f9;
         --main-button-color-hover: #35baf9;
         --white-color: #ffffff;
@@ -29145,7 +29144,7 @@
 
     .grid-container {
         display: grid;
-        margin: 25px 30px;
+        margin: 25px 20px;
         padding: 5px;
         grid-row-gap: 0px;
         grid-template-columns: 1.5fr 0.5fr 1fr 9fr;
@@ -29158,8 +29157,7 @@
     .grid-container.before-import {
         display: flex;
         margin: 0;
-        margin-bottom: 20px;
-        width: 40%;
+        margin-bottom: 20px;        
     }
 
     .content {
@@ -29180,6 +29178,15 @@
     .grid-item {
         text-align: center;
     }
+
+     .input-before-import{
+        min-width: 300px;
+    }
+
+    .price-title-before-import{
+        min-width: 200px;
+    }
+
 
     .grid-item>input {
         text-align: center;
@@ -29245,9 +29252,12 @@
         align-items: center;
         z-index: 4;
     }
-
     .margin-bottom-45vh {
         margin-bottom: 45vh;
+    }
+    
+    .current-winner {
+        color: var(--white-color);
     }
 
     .remove-winner-button {
@@ -29299,7 +29309,7 @@
     }
 
     .footer-text {
-
+        
         margin-top: -15px;
         font-size: 11px;
     }
@@ -29475,8 +29485,8 @@
         }
     }
 
-    .banner {
-        margin-top: 50px;
+    .banner {        
+        margin: 50px 0 50px 0;
     }
 
     .banner-img {
@@ -29517,7 +29527,7 @@
     .title-input:focus {
         outline: none;
     }
-
+    
     .confirm-dialog {
         position: fixed;
         width: 40vw;
@@ -29597,11 +29607,11 @@
         <div class="content">
             <div class="banner">
                 <!-- <img src="./christmas-4.jpg"> -->
-                <input required="true" class="title-input" id="title-input" placeholder="Insert header here">
+                <input required="true" class="title-input" id="title-input"  placeholder="Insert header here">
                 <div id="title-input-message" class="title-input-message"></div>
             </div>
-            <div id="special-price-container" class="grid-container special-price">
-                <div class="grid-item">
+            <div id="special-price-container" class="before-import grid-container special-price">
+                <div class="grid-item price-title-before-import">
                     <!-- <img id="special-price-image" style="width:100px;height:100px;">
                     <label class="button">
                         <input type="file" onchange="test(event)">
@@ -29609,7 +29619,7 @@
                     </label> -->
                     <span style="color: var(--special-runner-color);">Special Place</span>
                 </div>
-                <div class="grid-item">
+                <div class="grid-item input-before-import">
                     <input id="special-price-limit" class="winner-limit" required="true">
                 </div>
                 <div class="grid-item">
@@ -29620,11 +29630,11 @@
                 </div>
             </div>
 
-            <div id="first-price-container" class="grid-container first-price">
-                <div class="grid-item">
+            <div id="first-price-container" class="before-import grid-container first-price">
+                <div class="grid-item price-title-before-import">
                     <span style="color:var(--first-runner-color);">First Place</span>
                 </div>
-                <div class="grid-item ">
+                <div class="grid-item input-before-import">
                     <input id="first-price-limit" class="winner-limit" required="true">
                 </div>
                 <div class="grid-item ">
@@ -29635,11 +29645,11 @@
                 </div>
             </div>
 
-            <div id="second-price-container" class="grid-container second-price">
-                <div class="grid-item">
+            <div id="second-price-container" class="before-import grid-container second-price">
+                <div class="grid-item price-title-before-import">
                     <span style="color:var(--second-runner-color);">Second Place</span>
                 </div>
-                <div class="grid-item">
+                <div class="grid-item input-before-import">
                     <input id="second-price-limit" class="winner-limit" required="true">
                 </div>
                 <div class="grid-item">
@@ -29650,11 +29660,11 @@
                 </div>
             </div>
 
-            <div id="third-price-container" class="grid-container third-price">
-                <div class="grid-item">
+            <div id="third-price-container" class="before-import grid-container third-price">
+                <div class="grid-item price-title-before-import">
                     <span style="color:var(--third-runner-color);">Third Place</span>
                 </div>
-                <div class="grid-item">
+                <div class="grid-item input-before-import">
                     <input id="third-price-limit" class="winner-limit" required="true">
                 </div>
                 <div class="grid-item">
@@ -29665,11 +29675,11 @@
                 </div>
             </div>
 
-            <div id="common-price-container" class="grid-container common-price">
-                <div class="grid-item">
+            <div id="common-price-container" class="before-import grid-container common-price">
+                <div class="grid-item price-title-before-import">
                     <span style="color:var(--common-runner-color);">Fourth Place</span>
                 </div>
-                <div class="grid-item">
+                <div class="grid-item input-before-import">
                     <input id="common-price-limit" class="winner-limit" required="true">
                 </div>
                 <div class="grid-item">
@@ -29699,8 +29709,7 @@
                 Version 1.0.0
             </div>
             <img src="./Axon-Active-Vietnam_logo.png" height="30px" alt="AxonActiveVN">
-            <span class="footer-text" style="height:30px;">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights
-                Reserved.
+            <span class="footer-text" style="height:30px;">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.
             </span>
         </div>
     </div>
@@ -29708,8 +29717,19 @@
 
 
     <script>
-        function showConfirmDialog() {
-            document.getElementById("confirm-dialog").style.display = "block";
+        function test(event) {
+            let input = event.target;
+            if (input.files && input.files[0]) {
+                console.log("reading");
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("special-price-image").src = reader.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                console.log("nothing to reading");
+            }
+
         }
 
         let displayCurrentWinnerFullname = document.getElementById("current-winner-fullname");
@@ -29807,7 +29827,6 @@
                             "winner-effect-overlay")
                         .offsetHeight;
                 }
-
             }
         };
 
@@ -29821,6 +29840,14 @@
         function updateCurrentWinnerDisplay(winner) {
             displayCurrentWinnerId.innerHTML = winner.Id;
             displayCurrentWinnerFullname.innerHTML = winner.Fullname;
+        }
+
+        function removeClassAfterStart(divID) {
+            let element = document.getElementById(divID);
+            let childElement = element.childNodes;
+            let classRemove = childElement[3];
+            element.classList.remove("before-import");
+            classRemove.classList.remove("input-before-import");
         }
 
         function confirmPriceLimit() {
@@ -29839,6 +29866,11 @@
             confirmSecondPriceLimit();
             confirmThirdPriceLimit();
             confirmCommonPriceLimit();
+            removeClassAfterStart("special-price-container");
+            removeClassAfterStart("first-price-container");
+            removeClassAfterStart("second-price-container");
+            removeClassAfterStart("third-price-container");
+            removeClassAfterStart("common-price-container");
             hideConfirmPriceLimitButton();
             hideImportExcelSection();
             showGenerateButtons();
@@ -29901,7 +29933,7 @@
             }
         }
 
-        function showConfirmPriceLimitButton() {
+        function showConfirmPriceLimitButton(){
             document.getElementById("confirm-button").style.display = "block";
         }
 
