@@ -29114,6 +29114,7 @@
 
 <style>
     :root {
+        --title-header-color: black;
         --main-button-color: #4dc3f9;
         --main-button-color-hover: #35baf9;
         --white-color: #ffffff;
@@ -29144,7 +29145,7 @@
 
     .grid-container {
         display: grid;
-        margin: 25px 20px;
+        margin: 25px 30px;
         padding: 5px;
         grid-row-gap: 0px;
         grid-template-columns: 1.5fr 0.5fr 1fr 9fr;
@@ -29157,7 +29158,7 @@
     .grid-container.before-import {
         display: flex;
         margin: 0;
-        margin-bottom: 20px;        
+        margin-bottom: 20px;
         width: 40%;
     }
 
@@ -29249,10 +29250,6 @@
         margin-bottom: 45vh;
     }
 
-    .current-winner {
-        color: var(--white-color);        
-    }
-
     .remove-winner-button {
         font-weight: bold;
         margin-left: 10px;
@@ -29302,7 +29299,7 @@
     }
 
     .footer-text {
-        
+
         margin-top: -15px;
         font-size: 11px;
     }
@@ -29346,6 +29343,10 @@
         justify-content: center;
     }
 
+    .winner-card .id {
+        font-size: 0.8em;
+    }
+
     .special-price-winner {
         background-color: var(--light-special-runner-color);
     }
@@ -29372,7 +29373,7 @@
 
     @media all and (min-width: 1920px) {
         body {
-            font-size: 2em;
+            font-size: 2.5em;
         }
 
         input {
@@ -29380,7 +29381,6 @@
         }
 
         .current-winner {
-            color: var(--white-color);
             font-size: 5em;
         }
 
@@ -29407,7 +29407,6 @@
         }
 
         .current-winner {
-            color: var(--white-color);
             font-size: 4em;
         }
 
@@ -29434,7 +29433,6 @@
         }
 
         .current-winner {
-            color: var(--white-color);
             font-size: 3em;
         }
 
@@ -29461,7 +29459,6 @@
         }
 
         .current-winner {
-            color: var(--white-color);
             font-size: 2em;
         }
 
@@ -29478,7 +29475,7 @@
         }
     }
 
-    .banner {        
+    .banner {
         margin-top: 50px;
     }
 
@@ -29488,7 +29485,11 @@
         background-image: var(--banner-image-src);
         background-repeat: no-repeat;
     }
-    
+
+    /* img{
+        max-width: 100%;
+        max-height: 100%;
+    } */
     .excel-import-message {
         color: var(--success-message-text-color);
         background-color: var(--success-message-background-color);
@@ -29503,6 +29504,7 @@
         text-align: center;
         width: 100%;
         display: none;
+        color: var(--title-header-color);
     }
 
     .title-input {
@@ -29514,6 +29516,59 @@
 
     .title-input:focus {
         outline: none;
+    }
+
+    .confirm-dialog {
+        position: fixed;
+        width: 40vw;
+        height: 30vh;
+        top: 35vh;
+        left: 30vw;
+        background-color: white;
+        z-index: 8;
+        border: 1px solid black;
+        display: none;
+    }
+
+    .confirm-dialog .dialog-title-bar {
+        width: 100%;
+        height: 30px;
+        background-color: #e9e9e9;
+    }
+
+    .confirm-dialog .dialog-content {
+        width: 100%;
+        height: 100%;
+        display: flex;        
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .confirm-dialog .dialog-message {
+        flex: 3;
+    }
+
+    .confirm-dialog .dialog-button{        
+        width: 100%;
+        height: 30px;
+        flex: 1;
+        border-top: 1px solid rgba(204, 204, 204, 0.5);
+    }
+
+    .confirm-dialog .button {
+        padding: 6px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(204, 204, 204, 0.5);
+    }
+
+    .confirm-dialog .button.yes-button {
+        background-color: #11882d;
+        color: white;
+    }
+
+    .confirm-dialog .button.no-button {
+        background-color: rgb(248, 248, 248);
+        color: black;
     }
 </style>
 
@@ -29527,11 +29582,22 @@
         </div>
     </div>
 
+    <div id="confirm-dialog" class="confirm-dialog">
+        <div class="dialog-title-bar"></div>
+        <div class="dialog-content">
+            <span id="confirm-dialog-message" class="dialog-message">Hello world</span>
+            <div class="dialog-button">
+                <div class="button no-button">No</div>
+                <div class="button yes-button">Yes</div>
+            </div>
+        </div>
+    </div>
+
     <div class="wrapper">
         <div class="content">
             <div class="banner">
                 <!-- <img src="./christmas-4.jpg"> -->
-                <input required="true" class="title-input" id="title-input">
+                <input required="true" class="title-input" id="title-input" placeholder="Insert header here">
                 <div id="title-input-message" class="title-input-message"></div>
             </div>
             <div id="special-price-container" class="grid-container special-price">
@@ -29633,7 +29699,8 @@
                 Version 1.0.0
             </div>
             <img src="./Axon-Active-Vietnam_logo.png" height="30px" alt="AxonActiveVN">
-            <span class="footer-text" style="height:30px;">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights Reserved.
+            <span class="footer-text" style="height:30px;">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights
+                Reserved.
             </span>
         </div>
     </div>
@@ -29641,19 +29708,8 @@
 
 
     <script>
-        function test(event) {
-            let input = event.target;
-            if (input.files && input.files[0]) {
-                console.log("reading");
-                let reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById("special-price-image").src = reader.result;
-                }
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                console.log("nothing to reading");
-            }
-
+        function showConfirmDialog() {
+            document.getElementById("confirm-dialog").style.display = "block";
         }
 
         let displayCurrentWinnerFullname = document.getElementById("current-winner-fullname");
@@ -29751,7 +29807,7 @@
                             "winner-effect-overlay")
                         .offsetHeight;
                 }
-                
+
             }
         };
 
@@ -29841,7 +29897,7 @@
             }
         }
 
-        function showConfirmPriceLimitButton(){
+        function showConfirmPriceLimitButton() {
             document.getElementById("confirm-button").style.display = "block";
         }
 
@@ -30088,6 +30144,7 @@
 
             let newWinnerId = document.createElement("span");
             newWinnerId.innerHTML = winner.Id;
+            newWinnerId.className = "id";
 
             let newWinnerFullname = document.createElement("span");
             newWinnerFullname.innerHTML = winner.Fullname;
@@ -30177,8 +30234,8 @@
                 Id: commonPriceWinners[commonPriceWinners.length - 1].Id,
                 Fullname: commonPriceWinners[commonPriceWinners.length - 1].Fullname
             });
-            newWinner.className += " common-price-winner";            
-            document.getElementById("common-price-winners").appendChild(newWinner);        
+            newWinner.className += " common-price-winner";
+            document.getElementById("common-price-winners").appendChild(newWinner);
 
             commonPriceLimit -= 1;
             document.getElementById("common-price-limit").value = commonPriceLimit;
