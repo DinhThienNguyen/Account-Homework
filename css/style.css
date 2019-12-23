@@ -118,6 +118,11 @@ input[type="file"] {
     display: inline-block;
     background-color: var(--main-button-color);
 }
+.export-button{
+    border: none;
+    margin-top: 10px;
+    display: none;
+}
 
 .button:hover {
     background-color: var(--main-button-color-hover);

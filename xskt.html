@@ -134,6 +134,7 @@
                 </div>
                 <div id="excel-import-message" class="excel-import-message"></div>
             </div>
+            <div id="export" class="export-button button">Export</div>
         </div>
         <div class="footer">
             <div class="version">
@@ -271,6 +272,7 @@
                 }
 
                 updateWinnerList();
+                showExportButton();
 
                 setTimeout(function () {
                     if (allPriceCategories[currentPriceType].priceLimit > 0 && allPriceCategories[
@@ -345,8 +347,25 @@
             hideConfirmPriceLimitButton();
             hideImportExcelSection();
             showGenerateButtons();
+            showExportButton();
             audio.play();
             audio.loop = true;
+        }
+
+        function totalPriceLimit() {
+            let limitPrice = 0;
+            allPriceCategories.forEach(element => {
+                limitPrice += Number(element.priceLimit);
+            });
+            console.log(limitPrice);
+            return limitPrice;
+        }
+
+        function showExportButton() {
+            let total = totalPriceLimit();
+            console.log(total);
+            if(total == 0)
+            document.getElementById("export").style.display = "block";
         }
 
         function showConfirmPriceLimitButton() {
@@ -480,7 +499,7 @@
             }
         }
 
-        function updateWinnerList() {            
+        function updateWinnerList() {
             let priceContainer = document.getElementsByClassName("grid-container")[currentPriceType];
             let winners = allPriceCategories[currentPriceType].winners;
             let newWinner = createWinnerInfoCard({
@@ -489,12 +508,12 @@
                 priceType: currentPriceType
             });
 
-            newWinner.style.backgroundColor = getComputedStyle(priceContainer).getPropertyValue("border-color");            
+            newWinner.style.backgroundColor = getComputedStyle(priceContainer).getPropertyValue("border-color");
 
             let winnerList = priceContainer.getElementsByClassName("winner-list")[0];
             winnerList.appendChild(newWinner);
-            
-            allPriceCategories[currentPriceType].priceLimit--;            
+
+            allPriceCategories[currentPriceType].priceLimit--;
             updatePriceLimitInput(currentPriceType);
 
             if (Number(allPriceCategories[currentPriceType].priceLimit) == 0)
@@ -621,9 +640,43 @@
                 window.setTimeout(callback, 1000 / 60);
             };
 
-        
+        function loadDataOnFile() {
+            let dataArray = [];
+            for (let i of allPriceCategories) {
+                dataArray.push(i.winners);
+            }
+            let string = "";
+            for (let i = 0; i < dataArray.length; i++) {
+                    string += allPriceCategories[i].priceName + ":" +"\n";
+                for (let j = 0; j < dataArray[i].length; j++) {
+                    string += dataArray[i][j].Fullname + ", ";
+                }
+                string += "\n" + "============================================" + "\n";
+            }
+            return string;
+        }
 
-        
+        function download(filename, text) {
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        }
+
+        // Start file download.
+        document.getElementById("export").addEventListener("click", function () {
+            // Generate download of hello.txt file with some content
+            var text = loadDataOnFile();
+            var filename = "PriceData.txt";
+
+            download(filename, text);
+        }, false);
     </script>
 </body>
 
