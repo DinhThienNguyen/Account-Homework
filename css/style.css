@@ -59,6 +59,7 @@ body {
     flex: 1 0 auto;
     background-image: url("");
     background-repeat: no-repeat;
+    margin-bottom: 30%;
 }
 
 .wrapper {
@@ -376,8 +377,17 @@ img {
 }
 
 .banner {
-    margin: 2% 0 2% 0;
     width: 90%;
+    margin: auto;
+    margin-bottom: 2%;
+    margin-top: 2%;
+}
+
+.banner-wrapper{
+    width: 100%;
+    position: sticky;
+    top: 0;
+    background-color: var(--white-color);
 }
 
 .banner-img {

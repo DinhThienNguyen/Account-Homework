@@ -70,9 +70,9 @@
         }
 
         let generateWinner = function (winners, autoGenerate) {
-            // if (generatorInterval > 500) {
-            //     generatorInterval += 200;
-            // }
+            if (generatorInterval > 500) {
+                generatorInterval += 200;
+            }
             if (generatorInterval > 200) {
                 generatorInterval += 100;
             }
@@ -86,10 +86,10 @@
                 Fullname: participants[randomIndex].Fullname
             });
 
-            if (generatorInterval <= 200) {
+            if (generatorInterval <= 1000) {
                 setTimeout(function () {
                     generateWinner(winners, autoGenerate);
-                }, 100);
+                }, generatorInterval);
             } else {
                 let winner = {
                     Id: participants[randomIndex].Id,
@@ -122,7 +122,7 @@
                             hideFirework();
                             generateWinner(winners, autoGenerate);
                         }
-                    }, 500);
+                    }, generatorAutoInterval);
                 }
             }
         };
@@ -481,7 +481,7 @@
                 string += allPriceCategories[i].priceName + ":" + "\n";
                 string += fullName + id;
                 for (let j = 0; j < dataArray[i].length; j++) {
-                    string += dataArray[i][j].Fullname + "\t" + dataArray[i][j].Id + "\n";
+                    string += dataArray[i][j].Fullname + "\t" + "\t" + "\t" + dataArray[i][j].Id + "\n";
                 }
                 string += "\n" + "============================================" + "\n";
             }
