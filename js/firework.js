@@ -50,6 +50,17 @@ function createFirework() {
     }
 }
 
+function updateFireworkCanvasDimension(){
+    if (!!winnerEffectCanvas) {
+        winnerEffectCanvasWidth = winnerEffectCanvas.width = document.getElementById(
+                "winner-effect-overlay")
+            .offsetWidth;
+        winnerEffectCanvasHeight = winnerEffectCanvas.height = document.getElementById(
+                "winner-effect-overlay")
+            .offsetHeight;
+    }
+}
+
 function Particle() {
     this.w = this.h = Math.random() * 4 + 1;
 
