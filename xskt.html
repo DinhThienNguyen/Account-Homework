@@ -37,7 +37,7 @@
                 <div id="title-input-message" class="title-input-message"></div>
             </div>
             <div id="special-price-container" class="before-import grid-container special-price">
-                <div class="grid-item price-title">
+                <div class="grid-item price-title before-import">
                     <!-- <img id="special-price-image" style="width:100px;height:100px;">
                     <label class="button">
                         <input type="file" onchange="test(event)">
@@ -58,7 +58,7 @@
             </div>
 
             <div id="first-price-container" class="before-import grid-container first-price">
-                <div class="grid-item price-title">
+                <div class="grid-item price-title before-import">
                     <span style="color:var(--first-runner-color);">First Place</span>
                     <input id="first-price-limit" class="winner-limit" required="true">
                 </div>
@@ -74,7 +74,7 @@
             </div>
 
             <div id="second-price-container" class="before-import grid-container second-price">
-                <div class="grid-item price-title">
+                <div class="grid-item price-title before-import">
                     <span style="color:var(--second-runner-color);">Second Place</span>
                     <input id="second-price-limit" class="winner-limit" required="true">
                 </div>
@@ -90,7 +90,7 @@
             </div>
 
             <div id="third-price-container" class="before-import grid-container third-price">
-                <div class="grid-item price-title">
+                <div class="grid-item price-title before-import">
                     <span style="color:var(--third-runner-color);">Third Place</span>
                     <input id="third-price-limit" class="winner-limit" required="true">
                 </div>
@@ -106,7 +106,7 @@
             </div>
 
             <div id="common-price-container" class="before-import grid-container common-price">
-                <div class="grid-item price-title">
+                <div class="grid-item price-title before-import">
                     <span style="color:var(--common-runner-color);">Giải tư</span>
                     <input id="common-price-limit" class="winner-limit" required="true">
                 </div>
@@ -140,7 +140,7 @@
             <div class="version">
                 Version 1.0.0
             </div>
-            <img id="axon-active-logo" src="./Axon-Active-Vietnam_logo.png" onerror="hideAxonActiveLogo()" height="30px"
+            <img id="axon-active-logo" onerror="hideAxonActiveLogo()" src="./Axon-Active-Vietnam_logo.png" height="30px"
                 alt="AxonActiveVN">
             <span class="footer-text" style="height:30px;">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights
                 Reserved.
@@ -148,10 +148,6 @@
         </div>
     </div>
 
-    <script src="./js/jszip.js"></script>
-    <script src="./js/sheetjs.js"></script>
-    <script src="./js/coin-rain.js"></script>
-    <script src="./js/firework.js"></script>
     <script>
         window.addEventListener("DOMContentLoaded", onLoad, false);
         let displayCurrentWinnerFullname = document.getElementById("current-winner-fullname");
@@ -180,7 +176,7 @@
                 input.addEventListener("keypress", function () {
                     allowDigitKey(event);
                 });
-            }
+            }            
             winnerEffectCanvas = document.getElementById("winner-effect-overlay");
             ctx = winnerEffectCanvas.getContext("2d");
             hideGenerateButtons();
@@ -194,8 +190,7 @@
                 let priceCategory = {
                     priceName: '',
                     winners: [],
-                    priceLimit: 0,
-                    autoGenerate: false
+                    priceLimit: 0
                 }
                 let priceTitleElement = priceContainer.getElementsByClassName("price-title")[0];
                 priceCategory.priceName = priceTitleElement.getElementsByTagName("span")[0].innerHTML;
@@ -216,7 +211,6 @@
                     priceContainers[i].getElementsByClassName("winner-limit")[0].disabled = true;
                 }
             }
-            console.log(allPriceCategories);
         }
 
         function allowDigitKey(event) {
@@ -226,7 +220,7 @@
             return false;
         }
 
-        let generateWinner = function (winners) {
+        let generateWinner = function (winners, autoGenerate) {
             if (generatorInterval > 500) {
                 generatorInterval += 200;
             }
@@ -245,7 +239,7 @@
 
             if (generatorInterval <= 1000) {
                 setTimeout(function () {
-                    generateWinner(winners)
+                    generateWinner(winners, autoGenerate);
                 }, generatorInterval);
             } else {
                 let winner = {
@@ -257,32 +251,30 @@
                 winners.push(winner);
                 participants.splice(randomIndex, 1);
                 participantSize = participants.length;
+                updateWinnerList();
 
                 generatorInterval = 10;
 
-                document.getElementById("ok-overlay").style.display = "block";
-                currentPriceType == "0" ? showCoinRain() : showFirework();
-                if (!!winnerEffectCanvas) {
-                    winnerEffectCanvasWidth = winnerEffectCanvas.width = document.getElementById(
-                            "winner-effect-overlay")
-                        .offsetWidth;
-                    winnerEffectCanvasHeight = winnerEffectCanvas.height = document.getElementById(
-                            "winner-effect-overlay")
-                        .offsetHeight;
+                if (allPriceCategories[currentPriceType].priceLimit == 0 || !autoGenerate) {
+                    document.getElementById("ok-overlay").style.display = "block";
+                } else {
+                    document.getElementById("ok-overlay").style.display = "none";
                 }
 
-                updateWinnerList();
                 showExportButton();
+                updateFireworkCanvasDimension();
+                currentPriceType == "0" ? showCoinRain() : showFirework();
 
-                setTimeout(function () {
-                    if (allPriceCategories[currentPriceType].priceLimit > 0 && allPriceCategories[
-                            currentPriceType].autoGenerate) {
-                        document.getElementById("ok-overlay").style.display = "none";
-                        hideCoinRain();
-                        hideFirework();
-                        generateWinner(winners);
-                    }
-                }, generatorAutoInterval);
+                if (autoGenerate) {
+                    setTimeout(function () {
+                        if (allPriceCategories[currentPriceType].priceLimit > 0) {
+                            document.getElementById("ok-overlay").style.display = "none";
+                            hideCoinRain();
+                            hideFirework();
+                            generateWinner(winners, autoGenerate);
+                        }
+                    }, generatorAutoInterval);
+                }
             }
         };
 
@@ -293,21 +285,19 @@
             return false;
         }
 
-        function generateWinnerForPriceType(event, auto) {
+        function generateWinnerForPriceType(event, autoGenerate) {
             showOverlay();
             let generateButton = event.target;
             let priceCategoryContainers = document.getElementsByClassName("grid-container");
             for (let i = 0; i < priceCategoryContainers.length; i++) {
                 let elem = priceCategoryContainers[i].getElementsByClassName("generate-button")[0];
                 if (elem === generateButton) {
-                    allPriceCategories[i].autoGenerate = auto;
-                    generateWinner(allPriceCategories[i].winners);
+                    generateWinner(allPriceCategories[i].winners, autoGenerate);
                     currentPriceType = i;
                 }
                 elem = priceCategoryContainers[i].getElementsByClassName("generate-button")[1];
                 if (elem === generateButton) {
-                    allPriceCategories[i].autoGenerate = auto;
-                    generateWinner(allPriceCategories[i].winners);
+                    generateWinner(allPriceCategories[i].winners, autoGenerate);
                     currentPriceType = i;
                 }
             }
@@ -318,12 +308,11 @@
             displayCurrentWinnerFullname.innerHTML = winner.Fullname;
         }
 
-        function removeClassAfterStart(divID) {
-            let element = document.getElementById(divID);
-            let childElement = element.childNodes;
-            let classRemove = childElement[3];
-            element.classList.remove("before-import");
-            classRemove.classList.remove("input-before-import");
+        function removeClassAfterStart() {
+            for (let priceContainer of document.getElementsByClassName("grid-container")) {
+                priceContainer.classList.remove("before-import");
+                priceContainer.getElementsByClassName("price-title")[0].classList.remove("before-import");
+            }
         }
 
         function confirmPriceLimit() {
@@ -339,11 +328,7 @@
             setInitialPriceCategoryLimit();
             hideTitleInput();
             showTitleInputMessage();
-            removeClassAfterStart("special-price-container");
-            removeClassAfterStart("first-price-container");
-            removeClassAfterStart("second-price-container");
-            removeClassAfterStart("third-price-container");
-            removeClassAfterStart("common-price-container");
+            removeClassAfterStart();
             hideConfirmPriceLimitButton();
             hideImportExcelSection();
             showGenerateButtons();
@@ -475,12 +460,9 @@
             }
 
             let isRemoved = false;
-            console.log(winner);
             for (let i = 0; i < allPriceCategories[winner.priceType].winners.length; i++) {
                 if (allPriceCategories[winner.priceType].winners[i].Id == winner.Id) {
-                    console.log(allPriceCategories[winner.priceType]);
                     allPriceCategories[winner.priceType].winners.splice(i, 1);
-                    console.log(allPriceCategories[winner.priceType]);
                     isRemoved = true;
                     break;
                 }
@@ -613,7 +595,6 @@
         function showFirework() {
             continueFirework = true;
             updateFirework();
-            console.log("show firework");
         }
 
         function hideFirework() {
@@ -623,7 +604,6 @@
         function showCoinRain() {
             continueCoinRain = true;
             updateCoinRain();
-            console.log("show coin rain");
         }
 
         function hideCoinRain() {
@@ -677,7 +657,14 @@
 
             download(filename, text);
         }, false);
+        function hideAxonActiveLogo() {            
+            document.getElementById("axon-active-logo").style.display = "none";            
+        }
     </script>
+    <script src="./js/jszip.js"></script>
+    <script src="./js/sheetjs.js"></script>
+    <script src="./js/coin-rain.js"></script>
+    <script src="./js/firework.js"></script>
 </body>
 
 </html>
