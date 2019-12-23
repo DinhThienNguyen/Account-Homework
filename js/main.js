@@ -469,7 +469,7 @@ window.requestAnimationFrame =
         window.setTimeout(callback, 1000 / 60);
     };
 
-function loadDataOnFile() {
+function writeDataOnFile() {
     let dataArray = [];
     for (let i of allPriceCategories) {
         dataArray.push(i.winners);
