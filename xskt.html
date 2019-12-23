@@ -16,18 +16,7 @@
             <span id="current-winner-id" class="margin-bottom-45vh"></span>
             <div id="ok-overlay" onclick="hideCurrentWinnerOverlay()" class="button overlay-button">OK</div>
         </div>
-    </div>
-
-    <div id="confirm-dialog" class="confirm-dialog">
-        <div class="dialog-title-bar"></div>
-        <div class="dialog-content">
-            <span id="confirm-dialog-message" class="dialog-message">Hello world</span>
-            <div class="dialog-button">
-                <div class="button no-button">No</div>
-                <div class="button yes-button">Yes</div>
-            </div>
-        </div>
-    </div>
+    </div>    
 
     <div class="wrapper">
         <div class="content">
@@ -38,6 +27,7 @@
             </div>
             <div id="special-price-container" class="before-import grid-container special-price">
                 <div class="grid-item price-title before-import">
+
                     <!-- <img id="special-price-image" style="width:100px;height:100px;">
                     <label class="button">
                         <input type="file" onchange="test(event)">
@@ -140,7 +130,7 @@
             <div class="version">
                 Version 1.0.0
             </div>
-            <img id="axon-active-logo" onerror="hideAxonActiveLogo()" src="./Axon-Active-Vietnam_logo.png" height="30px"
+            <img id="axon-active-logo" onerror='this.style.display = "none"' src="./Axon-Active-Vietnam_logo.png" height="30px"
                 alt="AxonActiveVN">
             <span class="footer-text" style="height:30px;">&copy; Copyright 2019. AXON ACTIVE VIETNAM. All Rights
                 Reserved.
@@ -148,11 +138,11 @@
         </div>
     </div>
 
+    <script src="./js/main.js"></script>
     <script src="./js/jszip.js"></script>
     <script src="./js/sheetjs.js"></script>
     <script src="./js/coin-rain.js"></script>
     <script src="./js/firework.js"></script>
-    <script src="./js/main.js"></script>
 </body>
 
 </html>
