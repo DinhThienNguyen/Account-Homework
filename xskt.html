@@ -29147,7 +29147,7 @@
             margin: 25px 20px;
             padding: 5px;
             grid-row-gap: 0px;
-            grid-template-columns: 2fr 0.5fr 1fr 8.5fr;
+            grid-template-columns: 2fr 1.5fr 8.5fr;
             grid-column-gap: 10px;
             background-color: var(--white-color);
             border-radius: 20px;
@@ -29184,7 +29184,7 @@
             min-width: 300px;
         }
 
-        .price-title-before-import {
+        .price-title {
             flex: 1;
             font-size: 1.5em;
         }
@@ -29243,7 +29243,9 @@
             display: none;
         }
 
-        .generate-button {}
+        .generate-button {
+            margin-bottom: 10px;
+        }
 
         .winner-container {
             width: 100%;
@@ -29578,7 +29580,7 @@
             color: black;
         }
     </style>
-    
+
 </head>
 
 <body>
@@ -29610,19 +29612,20 @@
                 <div id="title-input-message" class="title-input-message"></div>
             </div>
             <div id="special-price-container" class="before-import grid-container special-price">
-                <div class="grid-item price-title-before-import">
+                <div class="grid-item price-title">
                     <!-- <img id="special-price-image" style="width:100px;height:100px;">
                     <label class="button">
                         <input type="file" onchange="test(event)">
                         Price image
                     </label> -->
                     <span style="color: var(--special-runner-color);">Special Place</span>
-                </div>
-                <div class="grid-item input-before-import">
                     <input id="special-price-limit" class="winner-limit" required="true">
                 </div>
                 <div class="grid-item">
-                    <div class="button generate-button" onclick="generateSpecialPriceWinner()">Generate</div>
+                    <div class="button generate-button" onclick="generateWinnerForPriceType(event, false)">Generate
+                    </div>
+                    <div class="button generate-button" onclick="generateWinnerForPriceType(event, true)">All at once
+                    </div>
                 </div>
                 <div class="grid-item  runner-list">
                     <div id="special-price-winners" class="winner-list"></div>
@@ -29630,14 +29633,15 @@
             </div>
 
             <div id="first-price-container" class="before-import grid-container first-price">
-                <div class="grid-item price-title-before-import">
+                <div class="grid-item price-title">
                     <span style="color:var(--first-runner-color);">First Place</span>
-                </div>
-                <div class="grid-item input-before-import">
                     <input id="first-price-limit" class="winner-limit" required="true">
                 </div>
                 <div class="grid-item ">
-                    <div class="button generate-button" onclick="generateFirstPriceWinner()">Generate</div>
+                    <div class="button generate-button" onclick="generateWinnerForPriceType(event, false)">Generate
+                    </div>
+                    <div class="button generate-button" onclick="generateWinnerForPriceType(event, true)">All at once
+                    </div>
                 </div>
                 <div class="grid-item runner-list">
                     <div id="first-price-winners" class="winner-list"></div>
@@ -29645,14 +29649,15 @@
             </div>
 
             <div id="second-price-container" class="before-import grid-container second-price">
-                <div class="grid-item price-title-before-import">
+                <div class="grid-item price-title">
                     <span style="color:var(--second-runner-color);">Second Place</span>
-                </div>
-                <div class="grid-item input-before-import">
                     <input id="second-price-limit" class="winner-limit" required="true">
                 </div>
                 <div class="grid-item">
-                    <div class="button generate-button" onclick="generateSecondPriceWinner()">Generate</div>
+                    <div class="button generate-button" onclick="generateWinnerForPriceType(event, false)">Generate
+                    </div>
+                    <div class="button generate-button" onclick="generateWinnerForPriceType(event, true)">All at once
+                    </div>
                 </div>
                 <div class="grid-item runner-list">
                     <div id="second-price-winners" class="winner-list"></div>
@@ -29660,14 +29665,15 @@
             </div>
 
             <div id="third-price-container" class="before-import grid-container third-price">
-                <div class="grid-item price-title-before-import">
+                <div class="grid-item price-title">
                     <span style="color:var(--third-runner-color);">Third Place</span>
-                </div>
-                <div class="grid-item input-before-import">
                     <input id="third-price-limit" class="winner-limit" required="true">
                 </div>
                 <div class="grid-item">
-                    <div class="button generate-button" onclick="generateThirdPriceWinner()">Generate</div>
+                    <div class="button generate-button" onclick="generateWinnerForPriceType(event, false)">Generate
+                    </div>
+                    <div class="button generate-button" onclick="generateWinnerForPriceType(event, true)">All at once
+                    </div>
                 </div>
                 <div class="grid-item runner-list">
                     <div id="third-price-winners" class="winner-list"></div>
@@ -29675,14 +29681,15 @@
             </div>
 
             <div id="common-price-container" class="before-import grid-container common-price">
-                <div class="grid-item price-title-before-import">
+                <div class="grid-item price-title">
                     <span style="color:var(--common-runner-color);">Giải tư</span>
-                </div>
-                <div class="grid-item input-before-import">
                     <input id="common-price-limit" class="winner-limit" required="true">
                 </div>
                 <div class="grid-item">
-                    <div class="button generate-button" onclick="generateCommonPriceWinner()">Generate</div>
+                    <div class="button generate-button" onclick="generateWinnerForPriceType(event, false)">Generate
+                    </div>
+                    <div class="button generate-button" onclick="generateWinnerForPriceType(event, true)">All at once
+                    </div>
                 </div>
                 <div class="grid-item runner-list">
                     <div id="common-price-winners" class="winner-list"></div>
@@ -29718,44 +29725,14 @@
 
 
     <script>
-        function test(event) {
-            let input = event.target;
-            if (input.files && input.files[0]) {
-                console.log("reading");
-                let reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById("special-price-image").src = reader.result;
-                }
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                console.log("nothing to reading");
-            }
-
-        }
-
+        window.addEventListener("DOMContentLoaded", onLoad, false);
         let displayCurrentWinnerFullname = document.getElementById("current-winner-fullname");
         let displayCurrentWinnerId = document.getElementById("current-winner-id");
         let overlay = document.getElementById("overlay");
-        overlay.style.display = "none";
-        window.addEventListener("DOMContentLoaded", onLoad, false);
-        for (let input of document.getElementsByClassName("winner-limit")) {
-            input.addEventListener("keypress", function () {
-                allowDigitKey(event);
-            });
-        }
 
         let participants;
         let participantSize;
-        let specialPriceLimit = 0;
-        let firstPriceLimit = 0;
-        let secondPriceLimit = 0;
-        let thirdPriceLimit = 0;
-        let commonPriceLimit = 0;
-        let specialPriceWinners = [];
-        let firstPriceWinners = [];
-        let secondPriceWinners = [];
-        let thirdPriceWinners = [];
-        let commonPriceWinners = [];
+        let allPriceCategories = [];
         let currentPriceType;
 
         let generatorInterval = 10;
@@ -29769,10 +29746,48 @@
         let continueCoinRain = false;
 
         function onLoad() {
+            overlay.style.display = "none";
+            for (let input of document.getElementsByClassName("winner-limit")) {
+                input.addEventListener("keypress", function () {
+                    allowDigitKey(event);
+                });
+            }
             winnerEffectCanvas = document.getElementById("winner-effect-overlay");
             ctx = winnerEffectCanvas.getContext("2d");
             hideGenerateButtons();
             hideConfirmPriceLimitButton();
+
+            initAllPriceCategories();
+        }
+
+        function initAllPriceCategories() {
+            for (let priceContainer of document.getElementsByClassName("grid-container")) {
+                let priceCategory = {
+                    priceName: '',
+                    winners: [],
+                    priceLimit: 0,
+                    autoGenerate: false
+                }
+                let priceTitleElement = priceContainer.getElementsByClassName("price-title")[0];
+                priceCategory.priceName = priceTitleElement.getElementsByTagName("span")[0].innerHTML;
+
+                allPriceCategories.push(priceCategory);
+            }
+        }
+
+        function setInitialPriceCategoryLimit() {
+            let priceContainers = document.getElementsByClassName("grid-container");
+            let limit = 0;
+            for (let i = 0; i < priceContainers.length; i++) {
+                limit = priceContainers[i].getElementsByClassName("winner-limit")[0].value;
+                if (Number(limit) == 0 || limit == "") {
+                    priceContainers[i].style.display = "none";
+                } else {
+                    allPriceCategories[i].priceLimit = limit;
+                    priceContainers[i].getElementsByClassName("winner-limit")[0].disabled = true;
+                }
+            }
+            console.log(allPriceCategories);
         }
 
         function allowDigitKey(event) {
@@ -29817,7 +29832,7 @@
                 generatorInterval = 10;
 
                 document.getElementById("ok-overlay").style.display = "block";
-                currentPriceType == "special" ? showCoinRain() : showFirework();
+                currentPriceType == "0" ? showCoinRain() : showFirework();
                 if (!!winnerEffectCanvas) {
                     winnerEffectCanvasWidth = winnerEffectCanvas.width = document.getElementById(
                             "winner-effect-overlay")
@@ -29827,10 +29842,15 @@
                         .offsetHeight;
                 }
                 updateWinnerList();
-                // setTimeout(function () {    
-                //     hideCurrentWinnerOverlay();            
-                //     generateWinner(winners);
-                // }, 10000);
+                setTimeout(function () {
+                    if (allPriceCategories[currentPriceType].priceLimit > 0 && allPriceCategories[
+                            currentPriceType].autoGenerate) {
+                        document.getElementById("ok-overlay").style.display = "none";
+                        hideCoinRain();
+                        hideFirework();
+                        generateWinner(winners);
+                    }
+                }, 5000);
             }
         };
 
@@ -29839,6 +29859,26 @@
                     "Imported data and winner list will be lost upon refresh. Do you still want to reload?"))
                 return true;
             return false;
+        }
+
+        function generateWinnerForPriceType(event, auto) {
+            showOverlay();
+            let generateButton = event.target;
+            let priceCategoryContainers = document.getElementsByClassName("grid-container");
+            for (let i = 0; i < priceCategoryContainers.length; i++) {
+                let elem = priceCategoryContainers[i].getElementsByClassName("generate-button")[0];
+                if (elem === generateButton) {
+                    allPriceCategories[i].autoGenerate = auto;
+                    generateWinner(allPriceCategories[i].winners);
+                    currentPriceType = i;
+                }
+                elem = priceCategoryContainers[i].getElementsByClassName("generate-button")[1];
+                if (elem === generateButton) {
+                    allPriceCategories[i].autoGenerate = auto;
+                    generateWinner(allPriceCategories[i].winners);
+                    currentPriceType = i;
+                }
+            }
         }
 
         function updateCurrentWinnerDisplay(winner) {
@@ -29863,13 +29903,10 @@
                 alert("Cannot start because price limit is more than participants.")
                 return;
             }
+
+            setInitialPriceCategoryLimit();
             hideTitleInput();
             showTitleInputMessage();
-            confirmSpecialPriceLimit();
-            confirmFirstPriceLimit();
-            confirmSecondPriceLimit();
-            confirmThirdPriceLimit();
-            confirmCommonPriceLimit();
             removeClassAfterStart("special-price-container");
             removeClassAfterStart("first-price-container");
             removeClassAfterStart("second-price-container");
@@ -29882,61 +29919,6 @@
             audio.loop = true;
         }
 
-        function confirmSpecialPriceLimit() {
-            let specialPriceLimitInput = document.getElementById("special-price-limit");
-            let limit = specialPriceLimitInput.value;
-            if (Number(limit) == 0 || limit == "") {
-                document.getElementById("special-price-container").style.display = "none";
-            } else {
-                specialPriceLimit = limit;
-                specialPriceLimitInput.disabled = true;
-            }
-        }
-
-        function confirmFirstPriceLimit() {
-            let firstPriceLimitInput = document.getElementById("first-price-limit");
-            let limit = firstPriceLimitInput.value;
-            if (Number(limit) == 0 || limit == "") {
-                document.getElementById("first-price-container").style.display = "none";
-            } else {
-                firstPriceLimit = limit;
-                firstPriceLimitInput.disabled = true;
-            }
-        }
-
-        function confirmSecondPriceLimit() {
-            let secondPriceLimitInput = document.getElementById("second-price-limit");
-            let limit = secondPriceLimitInput.value;
-            if (Number(limit) == 0 || limit == "") {
-                document.getElementById("second-price-container").style.display = "none";
-            } else {
-                secondPriceLimit = limit;
-                secondPriceLimitInput.disabled = true;
-            }
-        }
-
-        function confirmThirdPriceLimit() {
-            let thirdPriceLimitInput = document.getElementById("third-price-limit");
-            let limit = thirdPriceLimitInput.value;
-            if (Number(limit) == 0 || limit == "") {
-                document.getElementById("third-price-container").style.display = "none";
-            } else {
-                thirdPriceLimit = limit;
-                thirdPriceLimitInput.disabled = true;
-            }
-        }
-
-        function confirmCommonPriceLimit() {
-            let commonPriceLimitInput = document.getElementById("common-price-limit");
-            let limit = commonPriceLimitInput.value;
-            if (Number(limit) == 0 || limit == "") {
-                document.getElementById("common-price-container").style.display = "none";
-            } else {
-                commonPriceLimit = limit;
-                commonPriceLimitInput.disabled = true;
-            }
-        }
-
         function showConfirmPriceLimitButton() {
             document.getElementById("confirm-button").style.display = "block";
         }
@@ -29947,6 +29929,13 @@
 
         function showGenerateButtons() {
             for (let generateButton of document.getElementsByClassName("generate-button")) {
+                generateButton.style.display = "inline-block";
+            }
+        }
+
+        function showGenerateButtonOfPriceType(priceType) {
+            let priceContainer = document.getElementsByClassName("grid-container")[priceType];
+            for (let generateButton of priceContainer.getElementsByClassName("generate-button")) {
                 generateButton.style.display = "inline-block";
             }
         }
@@ -30031,159 +30020,71 @@
             reader.readAsBinaryString(input.files[0]);
         }
 
-        function removeWinnerFromList(event) {
-            if (!window.confirm("Are you sure you want to remove this winner from this list?"))
+        function removeWinnerFromList(event, winner) {
+            if (!window.confirm("Are you sure you want to remove this winner from this list?")) {
                 return;
-            let removeButton = event.srcElement;
-            let winner = removeButton.parentNode;
-            let winnerList = winner.parentNode;
-            let winnerId = winner.innerHTML.split(".")[0];
-            console.log(winnerId);
-            switch (winnerList.id) {
-                case "special-price-winners":
-                    removeWinnerFromSpecialPriceWinnerList(winnerId);
-                    console.log(specialPriceWinners);
-                    break;
-
-                case "first-price-winners":
-                    removeWinnerFromFirstPriceWinnerList(winnerId);
-                    console.log(firstPriceWinners);
-                    break;
-
-                case "second-price-winners":
-                    removeWinnerFromSecondPriceWinnerList(winnerId);
-                    console.log(secondPriceWinners);
-                    break;
-
-                case "third-price-winners":
-                    removeWinnerFromThirdPriceWinnerList(winnerId);
-                    console.log(thirdPriceWinners);
-                    break;
-
-                case "common-price-winners":
-                    removeWinnerFromCommonPriceWinnerList(winnerId);
-                    console.log(commonPriceWinners);
-                    break;
-
-                default:
-                    break;
             }
-            winnerList.removeChild(winner);
-        }       
 
-        function removeWinnerFromWinnerList(winnerId, winners){
-            for (let i = 0; i < winners.length; i++) {
-                if (winners[i].Id == winnerId) {
-                    winners.splice(i, 1);
-                    break;
-                }
-            }
-        }
-
-        function removeWinnerFromSpecialPriceWinnerList(winnerId) {
-            for (let i = 0; i < specialPriceWinners.length; i++) {
-                if (specialPriceWinners[i].Id == winnerId) {
-                    specialPriceWinners.splice(i, 1);
+            let isRemoved = false;
+            console.log(winner);
+            for (let i = 0; i < allPriceCategories[winner.priceType].winners.length; i++) {
+                if (allPriceCategories[winner.priceType].winners[i].Id == winner.Id) {
+                    console.log(allPriceCategories[winner.priceType]);
+                    allPriceCategories[winner.priceType].winners.splice(i, 1);
+                    console.log(allPriceCategories[winner.priceType]);
+                    isRemoved = true;
                     break;
                 }
             }
 
-            specialPriceLimit++;
-            document.getElementById("special-price-limit").value = specialPriceLimit;
-            document.getElementById("special-price-container").getElementsByClassName("generate-button").item(0).style
-                .display = "inline-block";
-        }
+            if (isRemoved) {
+                allPriceCategories[winner.priceType].priceLimit++;
+                updatePriceLimitInput(winner.priceType);
 
-        function removeWinnerFromFirstPriceWinnerList(winnerId) {
-            for (let i = 0; i < firstPriceWinners.length; i++) {
-                if (firstPriceWinners[i].Id == winnerId) {
-                    firstPriceWinners.splice(i, 1);
-                    break;
-                }
+                let removeButton = event.srcElement;
+                let winnerCard = removeButton.parentNode;
+                let winnerList = winnerCard.parentNode;
+                winnerList.removeChild(winnerCard);
+
+                showGenerateButtonOfPriceType(winner.priceType);
             }
-
-            firstPriceLimit++;
-            document.getElementById("first-price-limit").value = firstPriceLimit;
-            document.getElementById("first-price-container").getElementsByClassName("generate-button").item(0).style
-                .display = "inline-block";
         }
-
-        function removeWinnerFromSecondPriceWinnerList(winnerId) {
-            for (let i = 0; i < secondPriceWinners.length; i++) {
-                if (secondPriceWinners[i].Id == winnerId) {
-                    secondPriceWinners.splice(i, 1);
-                    break;
-                }
-            }
-
-            secondPriceLimit++;
-            document.getElementById("second-price-limit").value = secondPriceLimit;
-            document.getElementById("second-price-container").getElementsByClassName("generate-button").item(0).style
-                .display = "inline-block";
-        }
-
-        function removeWinnerFromThirdPriceWinnerList(winnerId) {
-            for (let i = 0; i < thirdPriceWinners.length; i++) {
-                if (thirdPriceWinners[i].Id == winnerId) {
-                    thirdPriceWinners.splice(i, 1);
-                    break;
-                }
-            }
-
-            thirdPriceLimit++;
-            document.getElementById("third-price-limit").value = thirdPriceLimit;
-            document.getElementById("third-price-container").getElementsByClassName("generate-button").item(0).style
-                .display = "inline-block";
-        }
-
-        function removeWinnerFromCommonPriceWinnerList(winnerId) {
-            for (let i = 0; i < commonPriceWinners.length; i++) {
-                if (commonPriceWinners[i].Id == winnerId) {
-                    commonPriceWinners.splice(i, 1);
-                    break;
-                }
-            }
-
-            commonPriceLimit++;
-            document.getElementById("common-price-limit").value = commonPriceLimit;
-            document.getElementById("common-price-container").getElementsByClassName("generate-button").item(0).style
-                .display = "inline-block";
-        }
-
 
         function updateWinnerList() {
-            switch (currentPriceType) {
-                case "special":
-                    updateSpecialPriceWinnerList();
-                    break;
+            console.log("cuurentPriceType " + currentPriceType);
+            let winners = allPriceCategories[currentPriceType].winners;
+            let newWinner = createWinnerInfoCard({
+                Id: winners[winners.length - 1].Id,
+                Fullname: winners[winners.length - 1].Fullname,
+                priceType: currentPriceType
+            });
 
-                case "first":
-                    updateFirstPriceWinnerList();
-                    break;
+            newWinner.className += " special-price-winner";
 
-                case "second":
-                    updateSecondPriceWinnerList();
-                    break;
+            let priceContainer = document.getElementsByClassName("grid-container")[currentPriceType];
+            let winnerList = priceContainer.getElementsByClassName("winner-list")[0];
+            winnerList.appendChild(newWinner);
 
-                case "third":
-                    updateThirdPriceWinnerList();
-                    break;
+            console.log("limit " + allPriceCategories[currentPriceType].priceLimit);
+            allPriceCategories[currentPriceType].priceLimit--;
+            console.log("limit " + allPriceCategories[currentPriceType].priceLimit);
+            updatePriceLimitInput();
 
-                case "common":
-                    updateCommonPriceWinnerList();
-                    break;
-
-                default:
-                    break;
-            }
+            if (Number(allPriceCategories[currentPriceType].priceLimit) == 0)
+                disableAfterRoll(priceContainer);
         }
 
-        function createRemoveWinnerButton() {
+        function updatePriceLimitInput(priceType) {
+            document.getElementsByClassName("winner-limit")[priceType].value = allPriceCategories[
+                priceType].priceLimit;
+        }
+
+        function createRemoveWinnerButton(winner) {
             let removeWinnerButton = document.createElement("div");
             removeWinnerButton.className = "remove-winner-button";
 
             removeWinnerButton.addEventListener("click", function () {
-                removeWinnerFromList(event);
+                removeWinnerFromList(event, winner);
             });
 
             return removeWinnerButton;
@@ -30208,159 +30109,25 @@
 
             winnerCard.appendChild(newWinnerInfo);
 
-            let removeWinnerButton = createRemoveWinnerButton();
+            let removeWinnerButton = createRemoveWinnerButton(winner);
             winnerCard.appendChild(removeWinnerButton);
 
             winnerCard.addEventListener("mouseleave", function () {
-                // removeWinnerButton.style.display = "none";
                 removeWinnerButton.innerHTML = "";
             });
 
             winnerCard.addEventListener("mouseenter", function () {
-                // removeWinnerButton.style.display = "block";
                 removeWinnerButton.innerHTML = "x";
             });
 
             return winnerCard;
         }
 
-        function updateSpecialPriceWinnerList() {
-            let newWinner = createWinnerInfoCard({
-                Id: specialPriceWinners[specialPriceWinners.length - 1].Id,
-                Fullname: specialPriceWinners[specialPriceWinners.length - 1].Fullname
-            });
-            newWinner.className += " special-price-winner";
-            document.getElementById("special-price-winners").appendChild(newWinner);
-
-            specialPriceLimit -= 1;
-            document.getElementById("special-price-limit").value = specialPriceLimit;
-
-            if (Number(specialPriceLimit) == 0)
-                disableAfterRoll(document.getElementById("special-price-container"));
-        }
-
-        function updateFirstPriceWinnerList() {
-            let newWinner = createWinnerInfoCard({
-                Id: firstPriceWinners[firstPriceWinners.length - 1].Id,
-                Fullname: firstPriceWinners[firstPriceWinners.length - 1].Fullname
-            });
-            newWinner.className += " first-price-winner";
-            document.getElementById("first-price-winners").appendChild(newWinner);
-
-            firstPriceLimit -= 1;
-            document.getElementById("first-price-limit").value = firstPriceLimit;
-
-            if (Number(firstPriceLimit) == 0)
-                disableAfterRoll(document.getElementById("first-price-container"));
-        }
-
-        function updateSecondPriceWinnerList() {
-            let newWinner = createWinnerInfoCard({
-                Id: secondPriceWinners[secondPriceWinners.length - 1].Id,
-                Fullname: secondPriceWinners[secondPriceWinners.length - 1].Fullname
-            });
-            newWinner.className += " second-price-winner";
-            document.getElementById("second-price-winners").appendChild(newWinner);
-
-            secondPriceLimit -= 1;
-            document.getElementById("second-price-limit").value = secondPriceLimit;
-
-            if (Number(secondPriceLimit) == 0)
-                disableAfterRoll(document.getElementById("second-price-container"));
-        }
-
-        function updateThirdPriceWinnerList() {
-            let newWinner = createWinnerInfoCard({
-                Id: thirdPriceWinners[thirdPriceWinners.length - 1].Id,
-                Fullname: thirdPriceWinners[thirdPriceWinners.length - 1].Fullname
-            });
-            newWinner.className += " third-price-winner";
-            document.getElementById("third-price-winners").appendChild(newWinner);
-
-            thirdPriceLimit -= 1;
-            document.getElementById("third-price-limit").value = thirdPriceLimit;
-
-            if (Number(thirdPriceLimit) == 0)
-                disableAfterRoll(document.getElementById("third-price-container"));
-        }
-
-        function updateCommonPriceWinnerList() {
-            let newWinner = createWinnerInfoCard({
-                Id: commonPriceWinners[commonPriceWinners.length - 1].Id,
-                Fullname: commonPriceWinners[commonPriceWinners.length - 1].Fullname
-            });
-            newWinner.className += " common-price-winner";
-            document.getElementById("common-price-winners").appendChild(newWinner);
-
-            commonPriceLimit -= 1;
-            document.getElementById("common-price-limit").value = commonPriceLimit;
-
-            if (Number(commonPriceLimit) == 0)
-                disableAfterRoll(document.getElementById("common-price-container"));
-        }
-
         function disableAfterRoll(container) {
-            let child = container.getElementsByClassName("button");
-            child[0].style.display = "none";
-        }
-
-        function generateSpecialPriceWinner() {
-            hideCoinRain();
-            currentPriceType = "special";
-            if (checkParticipantListEmpty()) {
-                return;
+            let generateButtons = container.getElementsByClassName("generate-button");
+            for (let generateButton of generateButtons) {
+                generateButton.style.display = "none";
             }
-            showOverlay();
-            generateWinner(specialPriceWinners);
-        }
-
-        function generateFirstPriceWinner() {
-            hideFirework();
-            currentPriceType = "first";
-            if (checkParticipantListEmpty()) {
-                return;
-            }
-            showOverlay();
-            generateWinner(firstPriceWinners);
-        }
-
-        function generateSecondPriceWinner() {
-            hideFirework();
-            currentPriceType = "second";
-            if (checkParticipantListEmpty()) {
-                return;
-            }
-            showOverlay();
-            generateWinner(secondPriceWinners);
-        }
-
-        function generateThirdPriceWinner() {
-            hideFirework();
-            currentPriceType = "third";
-            if (checkParticipantListEmpty()) {
-                return;
-            }
-            showOverlay();
-            generateWinner(thirdPriceWinners);
-        }
-
-        function generateCommonPriceWinner() {
-            hideFirework();
-            currentPriceType = "common";
-            if (checkParticipantListEmpty()) {
-                return;
-            }
-            showOverlay();
-            generateWinner(commonPriceWinners);
-        }
-
-        function checkParticipantListEmpty() {
-            if (isParticipantsListEmpty()) {
-                alert("No more participant!");
-                hideGenerateButtons();
-                return true;
-            }
-            return false;
         }
 
         function hideSuccessExcelImportMessage() {
