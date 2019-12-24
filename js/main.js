@@ -9,7 +9,7 @@ let allPriceCategories = [];
 let currentPriceType;
 
 let generatorInterval = 10;
-let generatorAutoInterval = 5000;
+// let generatorAutoInterval = 5000;
 var audio = new Audio("./NhacXoSo.mp3");
 
 let winnerEffectCanvas, winnerEffectCanvasWidth, winnerEffectCanvasHeight,
@@ -20,7 +20,13 @@ let continueFirework = false;
 let continueCoinRain = false;
 
 function onLoad() {
-    overlay.style.display = "none";
+    overlay.style.display = "none";    
+    document.getElementById("export").addEventListener("click", function () {        
+        var text = loadDataOnFile();
+        var filename = "PriceData.txt";
+
+        download(filename, text);
+    }, false);
     for (let input of document.getElementsByClassName("winner-limit")) {
         input.addEventListener("keypress", function () {
             allowDigitKey(event);
@@ -86,7 +92,7 @@ let generateWinner = function (winners, autoGenerate) {
         Fullname: participants[randomIndex].Fullname
     });
 
-    if (generatorInterval <= 1000) {
+    if (generatorInterval <= manualGeneratorInterval) {
         setTimeout(function () {
             generateWinner(winners, autoGenerate);
         }, generatorInterval);
@@ -191,13 +197,11 @@ function totalPriceLimit() {
     allPriceCategories.forEach(element => {
         limitPrice += Number(element.priceLimit);
     });
-    console.log(limitPrice);
     return limitPrice;
 }
 
 function showExportButton() {
     let total = totalPriceLimit();
-    console.log(total);
     if (total == 0)
         document.getElementById("export").style.display = "block";
 }
@@ -500,12 +504,3 @@ function download(filename, text) {
 
     document.body.removeChild(element);
 }
-
-// Start file download.
-document.getElementById("export").addEventListener("click", function () {
-    // Generate download of hello.txt file with some content
-    var text = loadDataOnFile();
-    var filename = "PriceData.txt";
-
-    download(filename, text);
-}, false);
