@@ -10,6 +10,7 @@ let currentPriceType;
 
 let generatorInterval = 10;
 // let generatorAutoInterval = 5000;
+// let manualGeneratorInterval = 1000;
 var audio = new Audio("./NhacXoSo.mp3");
 
 let winnerEffectCanvas, winnerEffectCanvasWidth, winnerEffectCanvasHeight,
