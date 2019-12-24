@@ -9,8 +9,6 @@ let allPriceCategories = [];
 let currentPriceType;
 
 let generatorInterval = 10;
-// let generatorAutoInterval = 5000;
-// let manualGeneratorInterval = 1000;
 var audio = new Audio("./NhacXoSo.mp3");
 
 let winnerEffectCanvas, winnerEffectCanvasWidth, winnerEffectCanvasHeight,
@@ -21,8 +19,8 @@ let continueFirework = false;
 let continueCoinRain = false;
 
 function onLoad() {
-    overlay.style.display = "none";    
-    document.getElementById("export").addEventListener("click", function () {        
+    overlay.style.display = "none";
+    document.getElementById("export").addEventListener("click", function () {
         var text = writeDataOnFile();
         var filename = "PriceData.txt";
 
@@ -122,14 +120,14 @@ let generateWinner = function (winners, autoGenerate) {
         currentPriceType == "0" ? showCoinRain() : showFirework();
 
         if (autoGenerate) {
-            setTimeout(function () {
-                if (allPriceCategories[currentPriceType].priceLimit > 0) {
+            if (allPriceCategories[currentPriceType].priceLimit > 0) {
+                setTimeout(function () {
                     document.getElementById("ok-overlay").style.display = "none";
                     hideCoinRain();
                     hideFirework();
                     generateWinner(winners, autoGenerate);
-                }
-            }, generatorAutoInterval);
+                }, generatorAutoInterval);
+            }
         }
     }
 };
@@ -486,7 +484,7 @@ function writeDataOnFile() {
         string += allPriceCategories[i].priceName + "\n";
         string += fullName + id;
         for (let j = 0; j < dataArray[i].length; j++) {
-            string += dataArray[i][j].Fullname + "," + "\t"  + "\t" + dataArray[i][j].Id + "\n";
+            string += dataArray[i][j].Fullname + "," + "\t" + "\t" + dataArray[i][j].Id + "\n";
         }
         string += "\n" + "============================================" + "\n";
     }
