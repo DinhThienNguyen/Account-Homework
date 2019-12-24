@@ -72,15 +72,10 @@ body {
     text-align: center;
 }
 
-.input-before-import {
-    min-width: 300px;
-}
-
 .price-title {
     flex: 1;
     font-size: 1.5em;
 }
-
 
 .grid-item>input {
     text-align: center;
@@ -103,7 +98,7 @@ input[type="file"] {
     display: none;
 }
 
-#overlay {
+.overlay {
     position: fixed;
     display: none;
     width: 100%;
