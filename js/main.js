@@ -9,12 +9,7 @@ let allPriceCategories = [];
 let currentPriceType;
 
 let generatorInterval = 10;
-var audio = new Audio("./NhacXoSo.mp3");
 
-let winnerEffectCanvas, winnerEffectCanvasWidth, winnerEffectCanvasHeight,
-    particles = [],
-    probability = 0.04,
-    xPoint, yPoint;
 let continueFirework = false;
 let continueCoinRain = false;
 
@@ -36,20 +31,24 @@ function onLoad() {
     hideGenerateButtons();
     hideConfirmPriceLimitButton();
 
-    initAllPriceCategories();
+    initAllPriceTypes();
 }
 
-function initAllPriceCategories() {
+function initAllPriceTypes() {
+    let pricePos = 0;
     for (let priceContainer of document.getElementsByClassName("grid-container")) {
-        let priceCategory = {
+        let priceTitleElement = priceContainer.getElementsByClassName("price-title")[0];
+        let priceType = {
             priceName: '',
             winners: [],
             priceLimit: 0
         }
-        let priceTitleElement = priceContainer.getElementsByClassName("price-title")[0];
-        priceCategory.priceName = priceTitleElement.getElementsByTagName("span")[0].innerHTML;
+        priceContainer.style.borderColor = priceTypeColors[pricePos];
+        priceType.priceName = priceTypeNames[pricePos];
+        priceTitleElement.getElementsByTagName("span")[0].innerHTML = priceTypeNames[pricePos];
 
-        allPriceCategories.push(priceCategory);
+        allPriceCategories.push(priceType);
+        pricePos++;
     }
 }
 
@@ -75,14 +74,12 @@ function allowDigitKey(event) {
 }
 
 let generateWinner = function (winners, autoGenerate) {
-    if (generatorInterval > 500) {
-        generatorInterval += 200;
-    }
-    if (generatorInterval > 200) {
-        generatorInterval += 100;
-    }
-    if (generatorInterval > 0) {
-        generatorInterval += 10;
+    if (generatorInterval > 0 && generatorInterval <= (manualGeneratorInterval * 20 / 100)) {
+        generatorInterval += (manualGeneratorInterval * 1 / 100);
+    } else if (generatorInterval > (manualGeneratorInterval * 20 / 100) && generatorInterval < (manualGeneratorInterval * 50 / 100)) {
+        generatorInterval += (manualGeneratorInterval * 10 / 100);
+    } else if (generatorInterval > (manualGeneratorInterval * 50 / 100)) {
+        generatorInterval += (manualGeneratorInterval * 20 / 100);
     }
 
     let randomIndex = Math.floor(Math.random() * participantSize);
@@ -187,8 +184,8 @@ function confirmPriceLimit() {
     hideImportExcelSection();
     showGenerateButtons();
     showExportButton();
-    audio.play();
-    audio.loop = true;
+    audioFileToPlayWhileGenerating.play();
+    audioFileToPlayWhileGenerating.loop = true;
 }
 
 function totalPriceLimit() {

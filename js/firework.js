@@ -1,3 +1,8 @@
+let winnerEffectCanvas, winnerEffectCanvasWidth, winnerEffectCanvasHeight,
+    particles = [],
+    probability = 0.04,
+    xPoint, yPoint;
+
 function updateFirework() {
     let requestId = 0;
     update();
