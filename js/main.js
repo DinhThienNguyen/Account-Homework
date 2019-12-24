@@ -23,7 +23,7 @@ let continueCoinRain = false;
 function onLoad() {
     overlay.style.display = "none";    
     document.getElementById("export").addEventListener("click", function () {        
-        var text = loadDataOnFile();
+        var text = writeDataOnFile();
         var filename = "PriceData.txt";
 
         download(filename, text);
@@ -483,10 +483,10 @@ function writeDataOnFile() {
     let id = "ID" + "\n";
     let fullName = "Full Name" + "\t" + "\t" + "\t";
     for (let i = 0; i < dataArray.length; i++) {
-        string += allPriceCategories[i].priceName + ":" + "\n";
+        string += allPriceCategories[i].priceName + "\n";
         string += fullName + id;
         for (let j = 0; j < dataArray[i].length; j++) {
-            string += dataArray[i][j].Fullname + "\t" + dataArray[i][j].Id + "\n";
+            string += dataArray[i][j].Fullname + "," + "\t"  + "\t" + dataArray[i][j].Id + "\n";
         }
         string += "\n" + "============================================" + "\n";
     }
