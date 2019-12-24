@@ -176,7 +176,7 @@ input[type="file"] {
     background-color: #f4f5f7;
 }
 
-#winner-effect-overlay {
+.winner-effect-overlay {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -404,9 +404,9 @@ img {
     display: none;
 }
 
-.excel-import {
+/* .excel-import {
     margin-bottom: 20px;
-}
+} */
 
 .title-input-message {
     text-align: center;
