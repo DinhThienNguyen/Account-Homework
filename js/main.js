@@ -34,17 +34,17 @@ function onLoad() {
     initAllPriceTypes();
 
     document.getElementById("banner-img").src = bannerImage;        
-    document.body.style.backgroundImage = `url(${backgroundImage})`;
-    
-    let priceTitles = document.getElementsByClassName("price-title");    
+
+    let priceTitles = document.getElementsByClassName("price-title");
     for (let pricePos = 0; pricePos < allPriceCategories.length; pricePos++) {
-        console.log(priceTitles[pricePos].style);
         priceTitles[pricePos].style.color = priceTypeColors[pricePos];
-    }    
+        priceTitles[pricePos].style.fontSize = fontSize + "rem";
+        priceTitles[pricePos].getElementsByTagName("input")[0].style.fontSize = fontSize + "rem";
+    }
 }
 
-function hideTitleInput(event){
-    if(event.target.naturalWidth != 0) {
+function hideTitleInput(event) {
+    if (event.target.naturalWidth != 0) {
         document.getElementById("title-input").style.display = "none";
     }
 }
@@ -393,6 +393,7 @@ function createWinnerInfoCard(winner) {
 
     let newWinnerFullname = document.createElement("span");
     newWinnerFullname.innerHTML = winner.Fullname;
+    newWinnerFullname.style.fontSize = fontSize + "rem";
     newWinnerFullname.style.display = "block";
 
     newWinnerInfo.appendChild(newWinnerFullname);
