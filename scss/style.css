@@ -190,7 +190,7 @@ body {
 }
 
 .wrapper-content-banner .banner .banner-img {
-  width: 100%;
+  max-width: 100%;
   height: auto;
 }
 
@@ -366,8 +366,8 @@ body {
       -ms-flex-pack: center;
           justify-content: center;
   grid-row-gap: 10px;
-  -ms-grid-columns: 1fr 1fr 1fr;
-      grid-template-columns: 1fr 1fr 1fr;
+  -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
   grid-column-gap: 10px;
   justify-items: left;
   overflow: auto;
