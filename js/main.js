@@ -33,8 +33,20 @@ function onLoad() {
 
     initAllPriceTypes();
 
-    document.getElementById("banner-img").src = bannerImage;    
-    document.getElementsByClassName("wrapper")[0].style.backgroundImage = `url(${backgroundImage})`;
+    document.getElementById("banner-img").src = bannerImage;        
+    document.body.style.backgroundImage = `url(${backgroundImage})`;
+    
+    let priceTitles = document.getElementsByClassName("price-title");    
+    for (let pricePos = 0; pricePos < allPriceCategories.length; pricePos++) {
+        console.log(priceTitles[pricePos].style);
+        priceTitles[pricePos].style.color = priceTypeColors[pricePos];
+    }    
+}
+
+function hideTitleInput(event){
+    if(event.target.naturalWidth != 0) {
+        document.getElementById("title-input").style.display = "none";
+    }
 }
 
 function initAllPriceTypes() {
@@ -178,7 +190,7 @@ function confirmPriceLimit() {
         alert("Cannot start because price limit is more than participants.")
         return;
     }
-
+    console.log(document.getElementById("banner-img").getAttribute("value"));
     setInitialPriceCategoryLimit();
     hideTitleInput();
     showTitleInputMessage();
