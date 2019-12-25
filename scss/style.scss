@@ -39,23 +39,24 @@ body {
     height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: normal;
+    font-size: 62.5%;
     margin: 0;
     color: #333;    
 
     @include Responsive(QHD) {
-        font-size: 2.5em;
+        font-size: 2.5rem;
     }
 
     @include Responsive(FHD) {
-        font-size: 1.5em;
+        font-size: 1.5rem;
     }
 
     @include Responsive(HD) {
-        font-size: 1em;
+        font-size: 1rem;
     }
 
     @include Responsive(D) {
-        font-size: 0.5em;
+        font-size: 0.5rem;
     }
 }
 
@@ -119,19 +120,19 @@ body {
             color: $white-color;
 
             @include Responsive(QHD) {
-                font-size: 5em;
+                font-size: 5rem;
             }
 
             @include Responsive(FHD) {
-                font-size: 4em;
+                font-size: 4rem;
             }
 
             @include Responsive(HD) {
-                font-size: 3em;
+                font-size: 3rem;
             }
 
             @include Responsive(D) {
-                font-size: 2em;
+                font-size: 2rem;
             }
         }
 
@@ -159,6 +160,7 @@ body {
         &-banner {
             position: sticky;
             top: 0;
+            margin-bottom: 30px;            
             width: 100%;
             z-index: 1;
             background-color: $white-color;            
@@ -175,19 +177,19 @@ body {
                 border-radius: 20px;
 
                 @include Responsive(QHD) {
-                    font-size: 4em;
+                    font-size: 4rem;
                 }
 
                 @include Responsive(FHD) {
-                    font-size: 3em;
+                    font-size: 3rem;
                 }
 
                 @include Responsive(HD) {
-                    font-size: 2em;
+                    font-size: 2rem;
                 }
 
                 @include Responsive(D) {
-                    font-size: 1em;
+                    font-size: 1rem;
                 }
 
                 &:focus {
@@ -201,19 +203,19 @@ body {
                 text-align: center;
 
                 @include Responsive(QHD) {
-                    font-size: 3.5em;
+                    font-size: 3.5rem;
                 }
 
                 @include Responsive(FHD) {
-                    font-size: 2.5em;
+                    font-size: 2.5rem;
                 }
 
                 @include Responsive(HD) {
-                    font-size: 1.5em;
+                    font-size: 1.5rem;
                 }
 
                 @include Responsive(D) {
-                    font-size: 1em;
+                    font-size: 1rem;
                 }
             }
         }
@@ -261,7 +263,7 @@ body {
 
                 &.price-title {
                     flex: 1;
-                    font-size: 1.5em;
+                    font-size: 1.5rem;
 
                     &.before-import {
                         display: grid;
@@ -275,19 +277,19 @@ body {
                     border-radius: 20px;
 
                     @include Responsive(QHD) {
-                        font-size: 1.25em;
+                        font-size: 1.25rem;
                     }
 
                     @include Responsive(FHD) {
-                        font-size: 1em;
+                        font-size: 1rem;
                     }
 
                     @include Responsive(HD) {
-                        font-size: 0.75em;
+                        font-size: 0.75rem;
                     }
 
                     @include Responsive(D) {
-                        font-size: 0.5em;
+                        font-size: 0.5rem;
                     }
 
                     &:focus {
