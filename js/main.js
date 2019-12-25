@@ -33,12 +33,10 @@ function onLoad() {
 
     initAllPriceTypes();
 
-    document.getElementById("banner-img").src = bannerImage;        
-    document.body.style.backgroundImage = `url(${backgroundImage})`;
+    document.getElementById("banner-img").src = bannerImage;            
     
     let priceTitles = document.getElementsByClassName("price-title");    
-    for (let pricePos = 0; pricePos < allPriceCategories.length; pricePos++) {
-        console.log(priceTitles[pricePos].style);
+    for (let pricePos = 0; pricePos < allPriceCategories.length; pricePos++) {        
         priceTitles[pricePos].style.color = priceTypeColors[pricePos];
     }    
 }
