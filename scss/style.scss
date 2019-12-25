@@ -237,6 +237,7 @@ body {
             grid-row-gap: 0px;
             grid-template-columns: 2fr 1.5fr 8.5fr;
             grid-column-gap: 10px;
+            border: 5px solid;
             border-radius: 20px;
             align-items: center;
             width: 85%;
@@ -270,6 +271,7 @@ body {
             }
 
             .grid-item {
+                height: 100%;
                 text-align: center;
 
                 &.price-title {
