@@ -32,6 +32,9 @@ function onLoad() {
     hideConfirmPriceLimitButton();
 
     initAllPriceTypes();
+
+    document.getElementById("banner-img").src = bannerImage;    
+    document.getElementsByClassName("wrapper")[0].style.backgroundImage = `url(${backgroundImage})`;
 }
 
 function initAllPriceTypes() {

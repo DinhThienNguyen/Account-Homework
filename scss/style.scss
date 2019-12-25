@@ -40,6 +40,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: normal;
     margin: 0;
+    color: #333;
 
     @include Responsive(QHD) {
         font-size: 2.5em;
@@ -160,13 +161,13 @@ body {
             top: 0;
             width: 100%;
             z-index: 1;
-            background-color: $white-color;
+            background-color: $white-color;            
 
             .banner {
                 width: 90%;
                 margin: auto;
                 margin-bottom: 2%;
-                margin-top: 2%;
+                margin-top: 2%;                                                
             }
 
             .title-input {
@@ -324,7 +325,7 @@ body {
                                 cursor: pointer;
                                 border-radius: 5px;
                                 padding: 0px 10px;
-                                color: #42526e;
+                                color: #333;
 
                                 &:hover {
                                     background-color: #f4f5f7;
@@ -368,7 +369,7 @@ body {
         z-index: 1;
         flex-shrink: 0;
         border-top: 1px solid #AAA;
-        color: #666;
+        color: #333;
         background-color: var(--white-color);
         font-size: 11px;
 
