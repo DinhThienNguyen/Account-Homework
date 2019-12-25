@@ -9,7 +9,7 @@ body {
   font-weight: normal;
   margin: 0;
   color: #333;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
 }
 
 @media all and (min-width: 1920px) {
@@ -160,8 +160,6 @@ body {
       -ms-flex: 1 0 auto;
           flex: 1 0 auto;
   margin-bottom: 30%;
-  background-repeat: no-repeat;
-  background-image: url("");
 }
 
 .wrapper-content-banner {
@@ -170,7 +168,6 @@ body {
   top: 0;
   width: 100%;
   z-index: 1;
-  background-color: #ffffff;
 }
 
 .wrapper-content-banner .banner {
@@ -182,9 +179,18 @@ body {
       -ms-flex-direction: column;
           flex-direction: column;
   width: 90%;
+  max-height: 20%;
   margin: auto;
-  margin-bottom: 2%;
-  margin-top: 2%;
+  margin-bottom: 1%;
+  margin-top: 1%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.wrapper-content-banner .banner .banner-img {
+  width: 100%;
+  height: auto;
 }
 
 .wrapper-content-banner .title-input {
@@ -436,7 +442,7 @@ body {
       flex-shrink: 0;
   border-top: 1px solid #AAA;
   color: #333;
-  background-color: var(--white-color);
+  background-color: #ffffff;
   font-size: 11px;
 }
 

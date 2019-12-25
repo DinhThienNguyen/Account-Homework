@@ -41,7 +41,7 @@ body {
     font-weight: normal;
     margin: 0;
     color: #333;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
 
     @include Responsive(QHD) {
         font-size: 2.5em;
@@ -154,23 +154,32 @@ body {
         flex-direction: column;
         flex: 1 0 auto;
         margin-bottom: 30%;
-        background-repeat: no-repeat;
-        background-image: $background-image;
+        // background-repeat: repeat;
+        // background-image: $background-image;
 
         &-banner {
             position: sticky;
             top: 0;
             width: 100%;
             z-index: 1;
-            background-color: $white-color;
-            
+            // background-image: $banner-image-source;
+            // background-repeat: repeat;
+
             .banner {
                 display: flex;
                 flex-direction: column;
                 width: 90%;
+                max-height: 20%;
                 margin: auto;
-                margin-bottom: 2%;
-                margin-top: 2%;
+                margin-bottom: 1%;
+                margin-top: 1%;
+                align-items: center;
+
+
+                .banner-img {
+                    width: 100%;
+                    height: auto;
+                }
             }
 
             .title-input {
@@ -373,7 +382,7 @@ body {
         flex-shrink: 0;
         border-top: 1px solid #AAA;
         color: #333;
-        background-color: var(--white-color);
+        background-color: $white-color;
         font-size: 11px;
 
         .version {
