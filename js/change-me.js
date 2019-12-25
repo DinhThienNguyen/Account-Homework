@@ -6,6 +6,7 @@ let priceTypeColors = ["#ffb6c1", "#e7bd42", "#aaa9ad", "#cd7f32", "#20b2aa"];
 
 let bannerImage = "./long-ass-dinner.png";
 
-let fontSize = 2;
+// fontSize = 1 equals approximately 10px
+let fontSize = 3;
 
 let audioFileToPlayWhileGenerating = new Audio("./NhacXoSo.mp3");

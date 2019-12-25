@@ -33,7 +33,7 @@ function onLoad() {
 
     initAllPriceTypes();
 
-    document.getElementById("banner-img").src = bannerImage;        
+    document.getElementById("banner-img").src = bannerImage;
 
     let priceTitles = document.getElementsByClassName("price-title");
     for (let pricePos = 0; pricePos < allPriceCategories.length; pricePos++) {
@@ -41,6 +41,13 @@ function onLoad() {
         priceTitles[pricePos].style.fontSize = fontSize + "rem";
         priceTitles[pricePos].getElementsByTagName("input")[0].style.fontSize = fontSize + "rem";
     }
+
+    document.body.addEventListener("keypress", function (event) {
+        if (event.keyCode === 32 || event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("ok-overlay").click();
+        }
+    })
 }
 
 function hideTitleInput(event) {
@@ -361,6 +368,8 @@ function updateWinnerList() {
 
     allPriceCategories[currentPriceType].priceLimit--;
     updatePriceLimitInput(currentPriceType);
+
+    document.getElementById("ok-overlay").focus();
 
     if (Number(allPriceCategories[currentPriceType].priceLimit) == 0)
         disableAfterRoll(priceContainer);

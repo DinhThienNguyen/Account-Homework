@@ -1,0 +1,9 @@
+Ver 1
+
+Ver 2
+	- User can now auto generate all winners for each price type
+	- User can now export winner lists to text file
+
+Ver 3
+	- User can now modify various settings/properties through change_me.js file
+	- Apply scss in place of css
