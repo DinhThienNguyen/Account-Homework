@@ -238,7 +238,7 @@ body {
             grid-template-columns: 2fr 1.5fr 8.5fr;
             grid-column-gap: 10px;
             border-radius: 20px;
-            align-items: center;
+            align-items: flex-start;
             width: 85%;
             background-color: $white-color;
 
